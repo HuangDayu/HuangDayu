@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  
+  <script src="/assets/js/close_copy.js"></script>
+  
+
+  
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <title>服务端的权鉴方式</title>
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/private/icons/huangdayu.png" />
+  <link rel="stylesheet" href="/assets/css/main.css" />
+</head><body a="light">
+    <main class="page-content" aria-label="Content">
+      <div class="w">
+        <a href="/">Back</a><article>
+  
+  <h1 class="post-header">服务端的权鉴方式</h1>
+
+  <p class="post-meta">
+    <time datetime="2019-04-21 02:30:00 +0800">2019-04-21</time>
+  </p>
+  
+  <p>  <code class="language-plaintext highlighter-rouge">Http</code>请求是无状态，为了对<code class="language-plaintext highlighter-rouge">Http</code>请求进行身份识别和权限认证。<code class="language-plaintext highlighter-rouge">Token</code>，<code class="language-plaintext highlighter-rouge">Session</code>，<code class="language-plaintext highlighter-rouge">Cookie</code>都是实现的方式，本文旨在对这3中方式做分析比较。</p>
+
+<!-- more -->
+
+<h1 id="token特点">Token特点</h1>
+
+<ul>
+  <li>客户端存储，服务端不存储；</li>
+  <li>可扩展，无状态；</li>
+  <li>有加密，防篡改；</li>
+  <li>设置有效时间；</li>
+  <li>存储用户信息；</li>
+  <li>跨程序调用；</li>
+  <li>解密后可以拿到用户数据；</li>
+  <li>减少数据库查询的压力；</li>
+  <li>可以多端使用；</li>
+  <li>使用AOP注解解析Token；</li>
+</ul>
+
+<h1 id="session特点">Session特点</h1>
+
+<ul>
+  <li>服务端和客户端都得存储；</li>
+  <li>每一次请求的刷新有效时间；</li>
+  <li>及时销毁；</li>
+  <li>使用缓存，增加服务端内存开销；</li>
+  <li>可扩展性差；</li>
+  <li>不会暴露用户数据</li>
+</ul>
+
+<h1 id="cookie特点">Cookie特点</h1>
+
+<ul>
+  <li>客户端本地存储，服务端不存储；</li>
+  <li>浏览器Cookie空间有限；</li>
+  <li>浏览器确保Cookie数据的安全；</li>
+  <li>容易被恶意使用（Cookie欺骗）；</li>
+</ul>
+
+<h1 id="token的主动吊销">Token的主动吊销</h1>
+
+<p>  保存Token的ID在数据库（日后统计数据也可以用到），并同步到缓存，每一次认证Token都判断该Token的ID是否被删除，删除则是已被吊销。但是这样做便舍弃了Token的优点，即Token存在状态了！这违背了Token的设计初衷，相当于<code class="language-plaintext highlighter-rouge">Session</code>和<code class="language-plaintext highlighter-rouge">Token</code>的子集。</p>
+
+
+</article><br/>
+<br/>
+<p style="display: block;text-align:center;">©2012-2022 huangdayu.cn(大鱼叔叔的博客) 版权所有，未经授权，不得转载。</p>
+<br/>
+<a style="display: block;text-align:right;" href="/">Back</a>
+      </div>
+    </main>
+  </body>
+</html>

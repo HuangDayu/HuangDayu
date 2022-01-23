@@ -1,0 +1,2381 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  
+  <script src="/assets/js/close_copy.js"></script>
+  
+
+  
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <title>Java学习笔记</title>
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/private/icons/huangdayu.png" />
+  <link rel="stylesheet" href="/assets/css/main.css" />
+</head><body a="light">
+    <main class="page-content" aria-label="Content">
+      <div class="w">
+        <a href="/">Back</a><article>
+  
+  <h1 class="post-header">Java学习笔记</h1>
+
+  <p class="post-meta">
+    <time datetime="2016-04-03 20:22:22 +0800">2016-04-03</time>
+  </p>
+  
+  <blockquote class="blockquote-center">
+<p style="font-size: 30px">编程是思想，是用抽象的方法解决科学的问题。</p>  
+</blockquote>
+
+<!-- more -->
+
+<h1 id="面向对象">面向对象</h1>
+
+<p>  面向对象的基本特征：封装、继承、多态。目的：代码重用，接口重用。</p>
+
+<h2 id="封装">封装</h2>
+
+<hr />
+
+<p>封装，也就是把客观事物封装成抽象的类，并且类可以把自己的数据，数据操作，方法只让可信的类或者对象操作，对不可信的进行信息隐藏。</p>
+
+<ul>
+  <li>问题域中该有哪些类，哪些对象</li>
+  <li>每个类，每个对象中该具有什么属性，什么方法，什么参数</li>
+  <li>类与类之间是什么关系</li>
+  <li>封装类的考虑：名词</li>
+  <li>定义属性的考虑：不脱离具体的应用环境（不建议直接访问某各类中的属性，可以定义为privete）</li>
+  <li>方法的封装：站在主语的角度看待问题，描述问题和解决问题</li>
+  <li>如通过set/get对类的属性进行操作，降低耦合对</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">DataBean</span> <span class="o">{</span>
+	<span class="kd">private</span> <span class="kt">int</span> <span class="n">year</span><span class="o">;</span>
+	<span class="kd">private</span> <span class="kt">int</span> <span class="n">month</span><span class="o">;</span>
+	<span class="kd">private</span> <span class="kt">int</span> <span class="n">day</span><span class="o">;</span>
+
+	<span class="kd">public</span> <span class="kt">int</span> <span class="nf">getYear</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="n">year</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setYear</span><span class="o">(</span><span class="kt">int</span> <span class="n">year</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">year</span> <span class="o">=</span> <span class="n">year</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="kt">int</span> <span class="nf">getMonth</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="n">month</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setMonth</span><span class="o">(</span><span class="kt">int</span> <span class="n">month</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">month</span> <span class="o">=</span> <span class="n">month</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="kt">int</span> <span class="nf">getDay</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="n">day</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setDay</span><span class="o">(</span><span class="kt">int</span> <span class="n">day</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">day</span> <span class="o">=</span> <span class="n">day</span><span class="o">;</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="java的四种访问控制符">Java的四种访问控制符</h3>
+
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">default</code>：默认的，在同一包内可见，不使用任何修饰符。</li>
+  <li><code class="language-plaintext highlighter-rouge">private</code>：私有的，在同一类内可见。</li>
+  <li><code class="language-plaintext highlighter-rouge">public</code>：共有的，对所有类可见。</li>
+  <li><code class="language-plaintext highlighter-rouge">protected</code>：受保护的，对同一包内的类和所有子类可见。</li>
+</ul>
+
+<h2 id="继承">继承</h2>
+
+<hr />
+
+<p>它可以使用现有类的所有功能，并在无需重新编写原来的类的情况下对这些功能进行扩展。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//基类、父类、超类</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Animal</span> <span class="o">{</span>
+
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">eat</span><span class="o">()</span> <span class="o">{</span>
+	<span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">sleep</span><span class="o">()</span> <span class="o">{</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+<span class="c1">//“子类、派生类</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Dog</span> <span class="kd">extends</span> <span class="nc">Animal</span> <span class="o">{</span>
+
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">go</span><span class="o">(){</span>
+    <span class="o">}</span>
+
+    <span class="nd">@Override</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">eat</span><span class="o">(){</span>
+        
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="继承的3种实现方式">继承的3种实现方式</h3>
+
+<ul>
+  <li>实现继承是指使用基类的属性和方法而无需额外编码的能力；</li>
+  <li>接口继承是指仅使用属性和方法的名称、但是子类必须提供实现的能力；</li>
+  <li>可视继承是指子窗体（类）使用基窗体（类）的外观和实现代码的能力。</li>
+</ul>
+
+<h2 id="多态">多态</h2>
+
+<hr />
+
+<p>所谓多态就是指一个类实例的相同方法在不同情形有不同表现形式。多态机制使具有不同内部结构的对象可以共享相同的外部接口</p>
+
+<h3 id="多态的3个特征">多态的3个特征</h3>
+
+<ul>
+  <li>有继承，实现接口类是继承的一种</li>
+  <li>有重写，重写父类（抽象类）中的方法</li>
+  <li>有父类的引用指向子类的对象</li>
+</ul>
+
+<h3 id="抽象类与接口类的选择">抽象类与接口类的选择</h3>
+
+<ul>
+  <li>没有具体事物作为参考对象，或者事物种类繁多就设计为<code class="language-plaintext highlighter-rouge">抽象类</code></li>
+  <li>如果考虑一类事物或者几类事物之间的共同特征和相同属性，就设计为<code class="language-plaintext highlighter-rouge">接口类</code></li>
+</ul>
+
+<h3 id="抽象类详解">抽象类详解：</h3>
+<ul>
+  <li>含有抽象方法的类必须是抽象类,抽象类必须被继承，抽象方法必须被重写，或则重新声明定义，或则将子类也定义成抽象类</li>
+  <li>抽象类不能被实例化，也就是不能创建对象</li>
+  <li>abstract 抽象方法：只需要声明也不需要实现</li>
+  <li>子类重写实现抽象方法（抽象方法一定要被重写，或者再定义声明一遍）</li>
+</ul>
+
+<h3 id="多态的优点">多态的优点</h3>
+
+<ul>
+  <li>每个Java类只能单继承（类/抽象类）多实现（接口）</li>
+  <li>可扩展性(Extensibility)</li>
+  <li>多个无关的类可以实现同一个接口</li>
+  <li>一个类可以实现多个无关的接口</li>
+</ul>
+
+<h3 id="重载与重写">重载与重写</h3>
+<ul>
+  <li>方法重载（overload）实现的是编译时的多态性（也称为前绑定）</li>
+  <li>方法重写（override）实现的是运行时的多态性（也称为后绑定）。</li>
+  <li>覆盖(重写)，是指子类重新定义父类的虚函数的做法。</li>
+  <li>重载，是指允许存在多个同名函数，而这些函数的参数表不同（或许参数个数不同，或许参数类型不同，或许两者都不同）。</li>
+</ul>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 历</span>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Almanac</span><span class="o">{</span>
+    <span class="kd">public</span> <span class="nc">String</span> <span class="nf">getDate</span><span class="o">();</span>
+<span class="o">}</span>
+<span class="c1">// 农历</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">LunarImpl</span> <span class="kd">implements</span> <span class="nc">Almanac</span><span class="o">{</span>
+    <span class="nd">@Override</span>
+	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">getDate</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="nc">TimeUtil</span><span class="o">.</span><span class="na">dateFormat</span><span class="o">(</span><span class="n">calendar</span><span class="o">,</span> <span class="s">"yyyy年MM月dd日"</span><span class="o">);</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+<span class="c1">// 伊斯兰历</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">IslamicImpl</span> <span class="kd">implements</span> <span class="nc">Almanac</span><span class="o">{</span>
+    <span class="nd">@Override</span>
+	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">getDate</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="nf">getIslamicYear</span><span class="o">()</span> <span class="o">+</span> <span class="s">"年"</span> <span class="o">+</span> <span class="n">getIslamicMonth</span><span class="o">()</span> <span class="o">+</span> <span class="s">"月"</span> <span class="o">+</span> <span class="n">getIslamicDay</span><span class="o">()</span> <span class="o">+</span> <span class="s">"日"</span><span class="o">;</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span><span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">printDate</span><span class="o">(</span><span class="nc">Almanac</span> <span class="n">almanac</span><span class="o">){</span>
+        <span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">almanac</span><span class="o">.</span><span class="na">getDate</span><span class="o">());</span>
+    <span class="o">}</span>
+
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="n">printDate</span><span class="o">(</span><span class="k">new</span> <span class="nc">IslamicImpl</span><span class="o">());</span>
+        <span class="c1">// 或者</span>
+        <span class="n">printDate</span><span class="o">(</span><span class="k">new</span> <span class="nc">LunarImpl</span><span class="o">());</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h1 id="代码块">代码块<sup id="fnref:8" role="doc-noteref"><a href="#fn:8" class="footnote" rel="footnote">1</a></sup></h1>
+
+<h2 id="静态代码块">静态代码块</h2>
+
+<hr />
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span><span class="o">{</span>
+    <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LinkedHashMap</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;();</span>
+    <span class="kd">static</span><span class="o">{</span>
+        <span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"Test"</span><span class="o">,</span> <span class="s">"static"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<ul>
+  <li>类被加载后，只执行一次</li>
+  <li>可用户数据初始化，Map，List等</li>
+</ul>
+
+<h2 id="动态代码块">动态代码块</h2>
+
+<hr />
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span><span class="o">{</span>
+    <span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;</span> <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LinkedHashMap</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">String</span><span class="o">&gt;();</span>
+    <span class="o">{</span>
+        <span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"Test"</span><span class="o">,</span> <span class="s">"static"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>对象被创建一次（<code class="language-plaintext highlighter-rouge">new()</code>） 就执行一次</li>
+  <li>无条件加载在构造方法的前面，无论构造方法有无参数</li>
+</ul>
+
+<h1 id="类之间的关系">类之间的关系<sup id="fnref:7" role="doc-noteref"><a href="#fn:7" class="footnote" rel="footnote">2</a></sup></h1>
+
+<ol>
+  <li>继承关系：子类继承父类</li>
+  <li>实现关系：实现某一个接口类</li>
+  <li>依赖关系：方法的参数是类的引用</li>
+  <li>关联关系：两个类项目各有另外一方的引用</li>
+  <li>聚合关系：一个类拥有另一个类的引用</li>
+  <li>组合关系：一个类拥有另一个类的对象，对象必须被初始化，可以构造方法中初始化对象</li>
+  <li>耦合强度：<code class="language-plaintext highlighter-rouge">继承&gt;实现&gt;组合&gt;聚合&gt;关联&gt;依赖</code></li>
+</ol>
+
+<h1 id="关键字说明">关键字说明<sup id="fnref:4" role="doc-noteref"><a href="#fn:4" class="footnote" rel="footnote">3</a></sup></h1>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">关键字</th>
+      <th style="text-align: center">类别</th>
+      <th style="text-align: center">说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">private</code></strong></td>
+      <td style="text-align: center">访问控制（应用与类，方法，变量）</td>
+      <td style="text-align: center">私有的</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">protected</code></strong></td>
+      <td style="text-align: center">访问控制</td>
+      <td style="text-align: center">受保护的，同包与子类可访问</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">public</code></strong></td>
+      <td style="text-align: center">访问控制</td>
+      <td style="text-align: center">公开的</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">default</code></strong></td>
+      <td style="text-align: center">访问控制（默认，不存在该关键字）</td>
+      <td style="text-align: center">默认的，同包可访问</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">abstract</code></strong></td>
+      <td style="text-align: center">类，方法和变量修饰符</td>
+      <td style="text-align: center">抽象的，一种特殊的接口</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">class</code></strong></td>
+      <td style="text-align: center">类修饰符</td>
+      <td style="text-align: center">声明一个类</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">extends</code></strong></td>
+      <td style="text-align: center">类修饰符</td>
+      <td style="text-align: center">继承某个类</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">final</code></strong></td>
+      <td style="text-align: center">类，方法和变量修饰符</td>
+      <td style="text-align: center">终态的，不允许继承，重写，覆盖，修改</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">implements</code></strong></td>
+      <td style="text-align: center">类修饰符</td>
+      <td style="text-align: center">实现一个或多个接口</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">interface</code></strong></td>
+      <td style="text-align: center">类修饰符</td>
+      <td style="text-align: center">声明一个接口</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">native</code></strong></td>
+      <td style="text-align: center">方法修饰符</td>
+      <td style="text-align: center">本地的，用于调用其他语言（C、C++）语言对java方法的实现</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">new</code></strong></td>
+      <td style="text-align: center">类修饰符</td>
+      <td style="text-align: center">创建，创建类的新的实例</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">static</code></strong></td>
+      <td style="text-align: center">类，代码块，方法和变量修饰符</td>
+      <td style="text-align: center">静态的</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">strictfp</code></strong></td>
+      <td style="text-align: center">类，接口，方法和变量修饰符</td>
+      <td style="text-align: center">精准的，用于精准浮点计算</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">synchronized</code></strong></td>
+      <td style="text-align: center">代码块和方法修饰符</td>
+      <td style="text-align: center">线程同步的</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">transient</code></strong></td>
+      <td style="text-align: center">变量修饰符</td>
+      <td style="text-align: center">短暂的，表示该变量不参与序列化与反序列化</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">volatile</code></strong></td>
+      <td style="text-align: center">变量修饰符</td>
+      <td style="text-align: center">可见的，表示该变量是可以被多个线程修改的，共享的</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">break</code></strong></td>
+      <td style="text-align: center">程序控制</td>
+      <td style="text-align: center">跳出，中断</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">continue</code></strong></td>
+      <td style="text-align: center">程序控制</td>
+      <td style="text-align: center">继续</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">return</code></strong></td>
+      <td style="text-align: center">程序控制</td>
+      <td style="text-align: center">结束，返回</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">do</code></strong></td>
+      <td style="text-align: center">程序控制</td>
+      <td style="text-align: center">至少执行一次</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">while</code></strong></td>
+      <td style="text-align: center">程序控制</td>
+      <td style="text-align: center">循环</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">if</code></strong></td>
+      <td style="text-align: center">程序控制</td>
+      <td style="text-align: center">条件判断，如果</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">else</code></strong></td>
+      <td style="text-align: center">程序控制</td>
+      <td style="text-align: center">条件判断，否则</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">for</code></strong></td>
+      <td style="text-align: center">程序控制</td>
+      <td style="text-align: center">循环</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">instanceof</code></strong></td>
+      <td style="text-align: center">程序控制</td>
+      <td style="text-align: center">二元操作符，用于判断该对象是否是该类的实例</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">switch</code></strong></td>
+      <td style="text-align: center">程序控制</td>
+      <td style="text-align: center">选择表达式</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">case</code></strong></td>
+      <td style="text-align: center">程序控制</td>
+      <td style="text-align: center">选择表达式的条件</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">default</code></strong></td>
+      <td style="text-align: center">程序控制</td>
+      <td style="text-align: center">选择表达式的默认条件</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">try</code></strong></td>
+      <td style="text-align: center">异常处理</td>
+      <td style="text-align: center">尝试执行</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">catch</code></strong></td>
+      <td style="text-align: center">异常处理</td>
+      <td style="text-align: center">捕获异常</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">throw</code></strong></td>
+      <td style="text-align: center">异常处理</td>
+      <td style="text-align: center">抛出一个异常</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">throws</code></strong></td>
+      <td style="text-align: center">异常处理</td>
+      <td style="text-align: center">在方法中申明可能会抛出一个异常</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">finally</code></strong></td>
+      <td style="text-align: center">异常处理</td>
+      <td style="text-align: center">必须执行代码块</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">import</code></strong></td>
+      <td style="text-align: center">包相关</td>
+      <td style="text-align: center">导入类</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">package</code></strong></td>
+      <td style="text-align: center">包相关</td>
+      <td style="text-align: center">声明一个包</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">boolean</code></strong></td>
+      <td style="text-align: center">基本数据类型</td>
+      <td style="text-align: center">布尔型</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">byte</code></strong></td>
+      <td style="text-align: center">基本数据类型</td>
+      <td style="text-align: center">字节型</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">char</code></strong></td>
+      <td style="text-align: center">基本数据类型</td>
+      <td style="text-align: center">字符型</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">double</code></strong></td>
+      <td style="text-align: center">基本数据类型</td>
+      <td style="text-align: center">双精度浮点型</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">float</code></strong></td>
+      <td style="text-align: center">基本数据类型</td>
+      <td style="text-align: center">单精度浮点型</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">int</code></strong></td>
+      <td style="text-align: center">基本数据类型</td>
+      <td style="text-align: center">整型</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">long</code></strong></td>
+      <td style="text-align: center">基本数据类型</td>
+      <td style="text-align: center">长整型</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">short</code></strong></td>
+      <td style="text-align: center">基本数据类型</td>
+      <td style="text-align: center">短整型</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">null</code></strong></td>
+      <td style="text-align: center">基本数据类型</td>
+      <td style="text-align: center">空值</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">true</code></strong></td>
+      <td style="text-align: center">基本数据类型</td>
+      <td style="text-align: center">真</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">false</code></strong></td>
+      <td style="text-align: center">基本数据类型</td>
+      <td style="text-align: center">假</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">super</code></strong></td>
+      <td style="text-align: center">变量引用</td>
+      <td style="text-align: center">调用父类的方法</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">this</code></strong></td>
+      <td style="text-align: center">变量引用</td>
+      <td style="text-align: center">调用本对象的方法或变量</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">void</code></strong></td>
+      <td style="text-align: center">返回值声明</td>
+      <td style="text-align: center">无返回值</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">goto</code></strong></td>
+      <td style="text-align: center">保留关键字</td>
+      <td style="text-align: center">跳转</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">const</code></strong></td>
+      <td style="text-align: center">保留关键字</td>
+      <td style="text-align: center">静态类型修饰符</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="数据类型说明">数据类型说明<sup id="fnref:5" role="doc-noteref"><a href="#fn:5" class="footnote" rel="footnote">4</a></sup></h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>类型</th>
+      <th>字节</th>
+      <th>位</th>
+      <th>最小值</th>
+      <th>最大值</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">byte</code></td>
+      <td>1</td>
+      <td>8</td>
+      <td>-128</td>
+      <td>127</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">short</code></td>
+      <td>2</td>
+      <td>16</td>
+      <td>-2147483648</td>
+      <td>2147483647</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">int</code></td>
+      <td>4</td>
+      <td>32</td>
+      <td>-32768</td>
+      <td>32767</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">long</code></td>
+      <td>8</td>
+      <td>64</td>
+      <td>-9223372036854775808</td>
+      <td>9223372036854775807</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">float</code></td>
+      <td>4</td>
+      <td>32</td>
+      <td>1.4E-45</td>
+      <td>3.4028235E38</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">double</code></td>
+      <td>8</td>
+      <td>64</td>
+      <td>4.9E-324</td>
+      <td>1.7976931348623157E308</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">char</code></td>
+      <td>2</td>
+      <td>16</td>
+      <td> </td>
+      <td> </td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">boolean</code></td>
+      <td>看虚拟机心情</td>
+      <td> </td>
+      <td> </td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="可变参数">可变参数<sup id="fnref:6" role="doc-noteref"><a href="#fn:6" class="footnote" rel="footnote">5</a></sup></h1>
+
+<h2 id="什么叫可变参数">什么叫可变参数</h2>
+
+<p>方法的参数可以是0个到多个的<code class="language-plaintext highlighter-rouge">Object</code>类型或者<code class="language-plaintext highlighter-rouge">Object[]</code>类型。</p>
+
+<h2 id="调用原则">调用原则</h2>
+
+<p>如果有参数直接对应的方法，优先调用该方法，否则调用可变参数的方法。</p>
+
+<h2 id="示例一">示例一</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nf">TimeBean</span><span class="o">(</span><span class="nc">String</span><span class="o">...</span> <span class="n">str</span><span class="o">)</span> <span class="o">{</span>
+	<span class="k">this</span><span class="o">(</span><span class="n">str</span><span class="o">[</span><span class="mi">0</span><span class="o">],</span> <span class="n">str</span><span class="o">[</span><span class="mi">1</span><span class="o">],</span> <span class="nc">TimeUtil</span><span class="o">.</span><span class="na">strToCalendar</span><span class="o">(</span><span class="n">str</span><span class="o">[</span><span class="mi">2</span><span class="o">]</span> <span class="o">+</span> <span class="s">" "</span> <span class="o">+</span> <span class="n">str</span><span class="o">[</span><span class="mi">3</span><span class="o">]));</span>
+<span class="o">};</span>
+</code></pre></div></div>
+
+<h2 id="示例一的调用">示例一的调用</h2>
+
+<p>第一种方法</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">new</span> <span class="nc">TimeBean</span><span class="o">(</span><span class="s">"广东省"</span><span class="o">,</span> <span class="s">"徐闻县"</span><span class="o">,</span><span class="s">"2018-09-07"</span><span class="o">,</span><span class="s">"18:24:54"</span><span class="o">);</span>
+</code></pre></div></div>
+
+<p>第二种方法</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span><span class="o">[]</span> <span class="n">strs</span> <span class="o">=</span> <span class="o">{</span><span class="s">"广东省"</span><span class="o">,</span> <span class="s">"徐闻县"</span><span class="o">,</span><span class="s">"2018-09-07"</span><span class="o">,</span><span class="s">"18:24:54"</span><span class="o">};</span>
+<span class="nc">TimeBean</span> <span class="n">timeBean</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">TimeBean</span><span class="o">(</span><span class="n">strs</span><span class="o">);</span>
+</code></pre></div></div>
+
+<h2 id="示例二">示例二</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nf">TimeBean</span><span class="o">(</span><span class="nc">String</span><span class="o">[]...</span> <span class="n">strs</span> <span class="o">)</span> <span class="o">{</span>
+	<span class="k">this</span><span class="o">(</span><span class="n">strs</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="mi">0</span><span class="o">],</span> <span class="n">strs</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="mi">1</span><span class="o">],</span> <span class="nc">TimeUtil</span><span class="o">.</span><span class="na">strToCalendar</span><span class="o">(</span><span class="n">strs</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="mi">2</span><span class="o">]</span> <span class="o">+</span> <span class="s">" "</span> <span class="o">+</span> <span class="n">strs</span><span class="o">[</span><span class="mi">0</span><span class="o">][</span><span class="mi">3</span><span class="o">]));</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="示例二的调用">示例二的调用</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span><span class="o">[][]</span> <span class="n">strs</span> <span class="o">=</span> <span class="o">{</span> <span class="o">{</span> <span class="s">"广东省"</span><span class="o">,</span> <span class="s">"徐闻县"</span><span class="o">,</span> <span class="s">"2018-09-07"</span><span class="o">,</span> <span class="s">"18:24:54"</span> <span class="o">},</span> <span class="o">};</span>
+<span class="nc">TimeBean</span> <span class="n">timeBean</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">TimeBean</span><span class="o">(</span><span class="n">strs</span><span class="o">);</span>
+</code></pre></div></div>
+
+<h1 id="领域模型">领域模型<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">6</a></sup></h1>
+
+<ul>
+  <li>数据对象：xxxDO，xxx即为数据表名。</li>
+  <li>数据传输对象：xxxDTO，xxx为业务领域相关的名称。</li>
+  <li>展示对象：xxxVO，xxx一般为网页名称。</li>
+  <li>POJO是DO/DTO/BO/VO的统称，禁止命名成xxxPOJO。</li>
+</ul>
+
+<h2 id="分层领域模型">分层领域模型</h2>
+
+<h2 id="po">PO</h2>
+
+<p>Persistant Object 持久对象</p>
+
+<p>与数据库SQL结果O/R映射的Java类对象，可以是一个表，也可以是多个表。</p>
+
+<h2 id="do">DO</h2>
+
+<p>Data Objec 数据对象</p>
+
+<p>与数据库表字段一一对应的Java实体类，一般服务于DAO层，是MyBatis的映射实体类（Entity）。</p>
+
+<h2 id="bo">BO</h2>
+
+<p>Business Object 业务对象</p>
+
+<p>将一个业务抽象成一个具体的模型，其中可以包含多个PO，DO等。</p>
+
+<h2 id="ao">AO</h2>
+
+<p>Application Object 应用对象</p>
+
+<p>在Web层与Service层之间抽象的复用对象模型。</p>
+
+<h2 id="vo">VO</h2>
+
+<p>View Object 展示对象</p>
+
+<p>将前端页面或者某项数据抽象成一个对象模型。</p>
+
+<h2 id="dto">DTO</h2>
+
+<p>Data Transfer Object 数据传输对象</p>
+
+<p>层与层之间，请求与响应之间传递的数据模型。</p>
+
+<h1 id="泛型">泛型<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">7</a></sup></h1>
+
+<h2 id="通配符是什么">通配符是什么</h2>
+
+<p><strong><code class="language-plaintext highlighter-rouge">&lt;?&gt;</code></strong><br />
+指的是Object及其子类，也就是所有Java对象</p>
+
+<h2 id="泛型是什么">泛型是什么</h2>
+
+<ol>
+  <li><strong><code class="language-plaintext highlighter-rouge">&lt;E&gt;</code>：Element (容器中的元素，如集合)</strong></li>
+  <li><strong><code class="language-plaintext highlighter-rouge">&lt;T&gt;</code> ：Type（Java 类）</strong></li>
+  <li><strong><code class="language-plaintext highlighter-rouge">&lt;K&gt;</code>：Key（键）</strong></li>
+  <li><strong><code class="language-plaintext highlighter-rouge">&lt;V&gt;</code>：Value（值）</strong></li>
+  <li><strong><code class="language-plaintext highlighter-rouge">&lt;N&gt;</code> ：Number（数值类型）</strong></li>
+  <li><code class="language-plaintext highlighter-rouge">&lt;S&gt;</code>、&lt;<code class="language-plaintext highlighter-rouge">U&gt;</code>、<code class="language-plaintext highlighter-rouge">&lt;A&gt;</code> 、<code class="language-plaintext highlighter-rouge">&lt;B&gt;</code> ….</li>
+</ol>
+
+<h2 id="声明泛型">声明泛型</h2>
+
+<p><strong><code class="language-plaintext highlighter-rouge">&lt;T&gt;</code></strong><br />
+声明一个泛型类或者泛型方法  <br />
+示例：</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ResultDTO</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span>  <span class="kd">implements</span> <span class="nc">Serializable</span><span class="o">{</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="kt">long</span> <span class="n">serialVersionUID</span> <span class="o">=</span> <span class="mi">801125677591974439L</span><span class="o">;</span>
+	<span class="kd">private</span> <span class="kt">int</span> <span class="n">code</span><span class="o">;</span>
+	<span class="kd">private</span> <span class="nc">String</span> <span class="n">msg</span><span class="o">;</span>
+    <span class="nd">@JsonInclude</span><span class="o">(</span><span class="nc">JsonInclude</span><span class="o">.</span><span class="na">Include</span><span class="o">.</span><span class="na">NON_DEFAULT</span><span class="o">)</span>
+	<span class="kd">private</span> <span class="nc">Object</span> <span class="n">data</span><span class="o">;</span>
+	
+	<span class="kd">private</span> <span class="nf">ResultDTO</span><span class="o">(</span><span class="nc">ResultEnum</span> <span class="n">stateEnum</span><span class="o">,</span> <span class="nc">Object</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">code</span> <span class="o">=</span> <span class="n">stateEnum</span><span class="o">.</span><span class="na">getCode</span><span class="o">();</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">msg</span> <span class="o">=</span> <span class="n">stateEnum</span><span class="o">.</span><span class="na">getMsg</span><span class="o">();</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">;</span>
+	<span class="o">};</span>
+    <span class="c1">//setter</span>
+    <span class="c1">//getter</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="使用泛型">使用泛型</h2>
+
+<p><strong><code class="language-plaintext highlighter-rouge">&lt;?&gt;</code></strong><br />
+使用一个泛型类或者泛型方法  <br />
+示例：</p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="nc">ResultDTO</span><span class="o">&lt;?&gt;</span> <span class="n">entity</span><span class="o">(</span><span class="kt">int</span> <span class="n">code</span><span class="o">,</span><span class="nc">Object</span><span class="o">...</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
+    <span class="nc">ResultEnum</span> <span class="n">resultEnum</span> <span class="o">=</span> <span class="nc">ResultEnum</span><span class="o">.</span><span class="na">getEnum</span><span class="o">(</span><span class="n">code</span><span class="o">);</span>
+	<span class="k">if</span><span class="o">(</span><span class="mi">0</span><span class="o">==</span><span class="n">data</span><span class="o">.</span><span class="na">length</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="k">new</span> <span class="nc">ResultDTO</span><span class="o">&lt;</span><span class="nc">ResultEnum</span><span class="o">&gt;(</span><span class="n">resultEnum</span><span class="o">);</span>
+	<span class="o">}</span><span class="k">else</span><span class="o">{</span>
+		<span class="k">return</span> <span class="k">new</span> <span class="nc">ResultDTO</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">&gt;(</span><span class="n">resultEnum</span><span class="o">,</span><span class="n">data</span><span class="o">);</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="通配符之边界">通配符之边界</h2>
+
+<h3 id="为什么通配符要加边界">为什么通配符要加边界</h3>
+
+<p>为了解决容器中存储的元素不能是该基类（<code class="language-plaintext highlighter-rouge">父类</code>）的<code class="language-plaintext highlighter-rouge">子类</code>。</p>
+
+<h3 id="上界通配符">上界通配符</h3>
+
+<p>关键字：<strong><code class="language-plaintext highlighter-rouge">extends</code></strong><br />
+<strong>禁止做插入操作，只做读取</strong><br />
+最大只能是该<code class="language-plaintext highlighter-rouge">基类</code>（<code class="language-plaintext highlighter-rouge">父类</code>）的<code class="language-plaintext highlighter-rouge">子类 </code></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="nc">ResultDTO</span><span class="o">&lt;?</span> <span class="kd">extends</span> <span class="nc">Object</span><span class="o">&gt;</span> <span class="nf">entity1</span><span class="o">(</span><span class="kt">int</span> <span class="n">code</span><span class="o">,</span><span class="nc">Object</span><span class="o">...</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
+	<span class="nc">ResultEnum</span> <span class="n">resultEnum</span> <span class="o">=</span> <span class="nc">ResultEnum</span><span class="o">.</span><span class="na">getEnum</span><span class="o">(</span><span class="n">code</span><span class="o">);</span>
+	<span class="k">if</span><span class="o">(</span><span class="mi">0</span><span class="o">==</span><span class="n">data</span><span class="o">.</span><span class="na">length</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="k">new</span> <span class="nc">ResultDTO</span><span class="o">&lt;</span><span class="nc">ResultEnum</span><span class="o">&gt;(</span><span class="n">resultEnum</span><span class="o">);</span>
+	<span class="o">}</span><span class="k">else</span><span class="o">{</span>
+		<span class="k">return</span> <span class="k">new</span> <span class="nc">ResultDTO</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">&gt;(</span><span class="n">resultEnum</span><span class="o">,</span><span class="n">data</span><span class="o">);</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="下界通配符">下界通配符</h3>
+
+<p>关键字：<strong><code class="language-plaintext highlighter-rouge">super</code></strong><br />
+最小只能是该<code class="language-plaintext highlighter-rouge">子类</code>,不能是该类的<code class="language-plaintext highlighter-rouge">子类</code> <br />
+<strong>无法确定存入类型，可以插入操作，而无法读取操作</strong><br />
+<code class="language-plaintext highlighter-rouge">Apple</code> 继承 <code class="language-plaintext highlighter-rouge">Fruit</code>，<code class="language-plaintext highlighter-rouge">Fruit</code> 继承 <code class="language-plaintext highlighter-rouge">Food</code></p>
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="nc">ResultDTO</span><span class="o">&lt;?</span> <span class="kd">super</span> <span class="nc">Fruit</span><span class="o">&gt;</span> <span class="nf">entity</span><span class="o">(</span><span class="kt">int</span> <span class="n">code</span><span class="o">,</span><span class="nc">Object</span><span class="o">...</span> <span class="n">data</span><span class="o">)</span> <span class="o">{</span>
+	<span class="nc">ResultEnum</span> <span class="n">resultEnum</span> <span class="o">=</span> <span class="nc">ResultEnum</span><span class="o">.</span><span class="na">getEnum</span><span class="o">(</span><span class="n">code</span><span class="o">);</span>
+	<span class="k">if</span><span class="o">(</span><span class="mi">0</span><span class="o">==</span><span class="n">data</span><span class="o">.</span><span class="na">length</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="k">new</span> <span class="nc">ResultDTO</span><span class="o">&lt;</span><span class="nc">Food</span><span class="o">&gt;(</span><span class="n">resultEnum</span><span class="o">);</span>
+	<span class="o">}</span><span class="k">if</span><span class="o">(</span><span class="mi">1</span><span class="o">==</span><span class="n">data</span><span class="o">.</span><span class="na">length</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="k">new</span> <span class="nc">ResultDTO</span><span class="o">&lt;</span><span class="nc">Fruit</span><span class="o">&gt;(</span><span class="n">resultEnum</span><span class="o">);</span>
+	<span class="o">}</span><span class="k">else</span><span class="o">{</span>
+		<span class="k">return</span> <span class="k">new</span> <span class="nc">ResultDTO</span><span class="o">&lt;</span><span class="nc">Apple</span><span class="o">&gt;(</span><span class="n">resultEnum</span><span class="o">,</span><span class="n">data</span><span class="o">);</span><span class="c1">//报错</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+<p>报错</p>
+<pre><code class="language-error">Type mismatch: cannot convert from ResultDTO&lt;Apple&gt; to ResultDTO&lt;? super Fruit&gt;
+</code></pre>
+
+<h3 id="pecs原则">PECS原则</h3>
+
+<p><strong>Producer Extends Consumer Super原则</strong></p>
+
+<ol>
+  <li><code class="language-plaintext highlighter-rouge">extends</code> 推荐读操作</li>
+  <li><code class="language-plaintext highlighter-rouge">super</code> 推荐写操作</li>
+</ol>
+
+<h2 id="其他说明">其他说明</h2>
+
+<ol>
+  <li>声明泛型不能用无边界通配符<code class="language-plaintext highlighter-rouge">&lt;?&gt;</code></li>
+  <li>上界<code class="language-plaintext highlighter-rouge">&lt;? extends T&gt;</code>不能往里存，只能往外取</li>
+  <li>下界<code class="language-plaintext highlighter-rouge">&lt;? super T&gt;</code>不影响往里存，但往外取只能放在Object对象里</li>
+</ol>
+
+<h1 id="java8新特性">Java8新特性<sup id="fnref:3" role="doc-noteref"><a href="#fn:3" class="footnote" rel="footnote">8</a></sup></h1>
+
+<h2 id="新特性之lambda表达式">新特性之Lambda表达式</h2>
+
+<h3 id="什么是lambda表达式">什么是Lambda表达式</h3>
+
+<p>  Lambda是Java 8引入的新特性，可以替代匿名函数，类似于JS的闭包。没有声明的方法，也即没有访问修饰符、返回值声明和名字，它将函数作为参数传入方法中。标志性符号是<strong><code class="language-plaintext highlighter-rouge">-&gt;</code></strong>,<strong><code class="language-plaintext highlighter-rouge">() -&gt;</code></strong>或者<strong><code class="language-plaintext highlighter-rouge">() -&gt; {}</code></strong> <br />
+  Lambda表达式是隐式地赋值给函数式接口，也就是必须用在函数式接口上，函数式接口是指被<code class="language-plaintext highlighter-rouge">@FunctionalInterface</code>注解的接口，例如<code class="language-plaintext highlighter-rouge">java.lang.Runnable</code>。 <br />
+  Lambda表达式会隐式的将成员变量或局部变量变成<code class="language-plaintext highlighter-rouge">final</code>终态类型。</p>
+
+<h3 id="为什么需要lambda表达式">为什么需要Lambda表达式</h3>
+
+<p>  以简洁而紧凑的语言结构来替代匿名内部类。</p>
+
+<h3 id="怎么样使用lambda表达式">怎么样使用Lambda表达式</h3>
+
+<h4 id="lambda在循环中使用">Lambda在循环中使用</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+<span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">map</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">LinkedHashMap</span><span class="o">&lt;&gt;();</span>
+<span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"0"</span><span class="o">,</span><span class="s">"h"</span><span class="o">);</span>
+<span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"1"</span><span class="o">,</span><span class="s">"u"</span><span class="o">);</span>
+<span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"2"</span><span class="o">,</span><span class="s">"a"</span><span class="o">);</span>
+<span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"3"</span><span class="o">,</span><span class="s">"n"</span><span class="o">);</span>
+<span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"4"</span><span class="o">,</span><span class="s">"g"</span><span class="o">);</span>
+<span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"5"</span><span class="o">,</span><span class="s">"d"</span><span class="o">);</span>
+<span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"6"</span><span class="o">,</span><span class="s">"a"</span><span class="o">);</span>
+<span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"7"</span><span class="o">,</span><span class="s">"y"</span><span class="o">);</span>
+<span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"8"</span><span class="o">,</span><span class="s">"u"</span><span class="o">);</span>
+<span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"9"</span><span class="o">,</span><span class="s">"."</span><span class="o">);</span>
+<span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"10"</span><span class="o">,</span><span class="s">"c"</span><span class="o">);</span>
+<span class="n">map</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"11"</span><span class="o">,</span><span class="s">"n"</span><span class="o">);</span>
+
+<span class="c1">//--------------Java7--------------</span>
+
+<span class="k">for</span> <span class="o">(</span><span class="nc">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">m</span> <span class="o">:</span> <span class="n">map</span><span class="o">.</span><span class="na">entrySet</span><span class="o">())</span> <span class="o">{</span>
+	<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="n">m</span><span class="o">.</span><span class="na">getKey</span><span class="o">()+</span><span class="s">":"</span><span class="o">+</span><span class="n">m</span><span class="o">.</span><span class="na">getValue</span><span class="o">()+</span><span class="s">","</span><span class="o">);</span>
+<span class="o">}</span>
+
+<span class="c1">//--------------Java 8--------------</span>
+
+<span class="n">map</span><span class="o">.</span><span class="na">forEach</span><span class="o">((</span><span class="no">K</span><span class="o">,</span><span class="no">V</span><span class="o">)-&gt;{</span>
+	<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="no">K</span><span class="o">+</span><span class="s">":"</span><span class="o">+</span><span class="no">V</span><span class="o">+</span><span class="s">","</span><span class="o">);</span>
+<span class="o">});</span>
+	<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="lambda在线程中使用">Lambda在线程中使用</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">//--------------Java7--------------</span>
+
+<span class="nc">Thread</span> <span class="n">t1</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Thread</span><span class="o">(</span><span class="k">new</span> <span class="nc">Runnable</span><span class="o">()</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+    	<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Java7：规规矩矩的写法。"</span><span class="o">);</span>
+    <span class="o">}</span>
+<span class="o">});</span>
+<span class="n">t1</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+
+<span class="k">new</span> <span class="nf">Thread</span><span class="o">(</span><span class="k">new</span> <span class="nc">Runnable</span><span class="o">()</span> <span class="o">{</span>
+	<span class="nd">@Override</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Java7：节省引用的写法。"</span><span class="o">);</span>
+	<span class="o">}</span>
+<span class="o">}).</span><span class="na">start</span><span class="o">();</span>
+
+<span class="k">new</span> <span class="nf">Thread</span><span class="o">()</span> <span class="o">{</span>
+	<span class="nd">@Override</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Java7：节省内部匿名类的写法。"</span><span class="o">);</span>
+	<span class="o">}</span>
+<span class="o">}.</span><span class="na">start</span><span class="o">();</span>
+
+<span class="k">new</span> <span class="nf">Thread</span><span class="o">(()-&gt;</span> <span class="o">{</span>
+	<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Java 8：Lambda写法，节省匿名内部类与方法。"</span><span class="o">);</span>
+<span class="o">}).</span><span class="na">start</span><span class="o">();</span>
+
+<span class="k">new</span> <span class="nf">Thread</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">).</span><span class="na">start</span><span class="o">();</span>
+
+<span class="k">new</span> <span class="nf">Thread</span><span class="o">(</span><span class="nl">Test3:</span><span class="o">:</span><span class="n">print</span><span class="o">).</span><span class="na">start</span><span class="o">();</span>
+
+<span class="nc">Runnable</span> <span class="n">r</span> <span class="o">=</span> <span class="o">()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+	<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Java 8：直接使用函数式接口"</span><span class="o">);</span>
+<span class="o">};</span>
+<span class="n">r</span><span class="o">.</span><span class="na">run</span><span class="o">();</span>
+</code></pre></div></div>
+
+<h2 id="新特性之函数式接口">新特性之函数式接口</h2>
+
+<h3 id="什么是函数式接口">什么是函数式接口</h3>
+
+<p>  Functional Interface，顾名思义就是函数式接口。它有以下特征：</p>
+<ul>
+  <li>一个有且仅有一个抽象方法。</li>
+  <li>被<code class="language-plaintext highlighter-rouge">@FunctionalInterface</code>注解的接口声明是函数式接口，例如<code class="language-plaintext highlighter-rouge">java.lang.Runnable</code>,<code class="language-plaintext highlighter-rouge">java.util.concurrent.Callable</code>,<code class="language-plaintext highlighter-rouge">java.util.function.*</code>。</li>
+  <li><strong>默认方法</strong>和<strong>静态方法</strong>对函数式接口不影响。</li>
+</ul>
+
+<h3 id="为什么要函数式接口">为什么要函数式接口</h3>
+
+<p>  为了让现有的功能与Lmabdas表达式有很好的兼容，不受非抽象函数的影响，和将接口（匿名内部类）隐式转为Lambda表达式。例如<code class="language-plaintext highlighter-rouge">java.lang.Runnable</code>接口。</p>
+
+<h3 id="怎么样使用函数式接口">怎么样使用函数式接口</h3>
+
+<p><strong>Service.java</strong></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@FunctionalInterface</span>
+<span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Service</span> <span class="o">{</span>
+	<span class="cm">/***
+	 * 抽象方法
+	 */</span>
+	<span class="kd">public</span> <span class="kd">abstract</span> <span class="kt">void</span> <span class="nf">create</span><span class="o">();</span>
+	
+	<span class="cm">/***
+	 * 静态方法：必须有方法体，实现着可以覆盖
+	 * @param pid
+	 */</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">delete</span><span class="o">(</span><span class="kt">int</span> <span class="n">pid</span><span class="o">)</span> <span class="o">{};</span>
+	
+	<span class="cm">/***
+	 * 默认方法：必须有方法体，实现着可以覆盖
+	 */</span>
+	<span class="kd">public</span> <span class="k">default</span> <span class="kt">void</span> <span class="nf">update</span><span class="o">()</span> <span class="o">{};</span>
+	
+	<span class="cm">/**
+	 * 默认方法：必须有方法体，实现着可以覆盖
+	 * @param pid
+	 */</span>
+	<span class="kd">public</span> <span class="k">default</span> <span class="kt">void</span> <span class="nf">get</span><span class="o">(</span><span class="kt">int</span> <span class="n">pid</span><span class="o">)</span> <span class="o">{};</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>Server.java</strong></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Server</span> <span class="kd">implements</span> <span class="nc">Service</span> <span class="o">{</span>
+
+	<span class="kd">private</span> <span class="nc">Service</span> <span class="n">service</span><span class="o">;</span>
+
+	<span class="kd">public</span> <span class="nf">Server</span><span class="o">(</span><span class="nc">Service</span> <span class="n">service</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">service</span> <span class="o">=</span> <span class="n">service</span><span class="o">;</span>
+	<span class="o">};</span>
+
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">start</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">service</span><span class="o">.</span><span class="na">create</span><span class="o">();</span>
+	<span class="o">};</span>
+
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">restart</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">if</span> <span class="o">(</span><span class="n">service</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+			<span class="k">this</span><span class="o">.</span><span class="na">service</span><span class="o">.</span><span class="na">create</span><span class="o">();</span>
+		<span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+			<span class="k">this</span><span class="o">.</span><span class="na">service</span><span class="o">.</span><span class="na">create</span><span class="o">();</span>
+		<span class="o">}</span>
+	<span class="o">};</span>
+
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">update</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">service</span><span class="o">.</span><span class="na">update</span><span class="o">();</span>
+	<span class="o">};</span>
+
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">stop</span><span class="o">(</span><span class="kt">int</span> <span class="n">pid</span><span class="o">)</span> <span class="o">{</span>
+		<span class="nc">Service</span><span class="o">.</span><span class="na">delete</span><span class="o">(</span><span class="n">pid</span><span class="o">);</span>
+	<span class="o">}</span>
+
+	<span class="nd">@Override</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">create</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">if</span> <span class="o">(</span><span class="n">service</span> <span class="o">!=</span> <span class="kc">null</span><span class="o">)</span> <span class="o">{</span>
+			<span class="n">service</span><span class="o">.</span><span class="na">create</span><span class="o">();</span>
+		<span class="o">}</span>
+	<span class="o">};</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p><strong>Test.java</strong></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+		<span class="c1">// 使用函数接口的匿名内部类</span>
+		<span class="k">new</span> <span class="nf">Server</span><span class="o">(</span><span class="k">new</span> <span class="nc">Service</span><span class="o">()</span> <span class="o">{</span>
+			<span class="nd">@Override</span>
+			<span class="kd">public</span> <span class="kt">void</span> <span class="nf">create</span><span class="o">()</span> <span class="o">{</span>
+				<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"start"</span><span class="o">);</span>
+			<span class="o">}</span>
+		<span class="o">}).</span><span class="na">start</span><span class="o">();</span>
+		
+		<span class="c1">// 实际隐藏式转化为以下Lambda表达式</span>
+		<span class="k">new</span> <span class="nf">Server</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"restart"</span><span class="o">);</span>
+		<span class="o">}).</span><span class="na">restart</span><span class="o">();</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="新特性之方法引用">新特性之方法引用</h2>
+
+<h3 id="什么是方法引用">什么是方法引用</h3>
+
+<p>  通过<strong><code class="language-plaintext highlighter-rouge">::</code></strong>双冒号特殊符号，可以直接引用Java类的方法，对象，构造器。此表达式的目标类型必须是函数接口。</p>
+
+<h3 id="为什么要方法引用">为什么要方法引用</h3>
+
+<p>  与Lambda表达式一起用，可以减少代码冗余。</p>
+
+<h3 id="怎么样使用方法引用">怎么样使用方法引用</h3>
+
+<h4 id="引用方法">引用方法</h4>
+<ul>
+  <li>引用构造器</li>
+  <li>引用静态方法</li>
+  <li>特定对象的方法引用</li>
+  <li>特定类的任意对象的方法引用</li>
+</ul>
+
+<h4 id="实例">实例</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.util.Arrays</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.List</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.function.Supplier</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test5</span> <span class="o">{</span>
+
+	<span class="cm">/***
+	 * 
+	 * @param supplier 一个函数式接口，可以用作lambda表达式或方法引用的赋值目标。
+	 * @return 返回对象
+	 */</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="nc">Test5</span> <span class="nf">a</span><span class="o">(</span><span class="kd">final</span> <span class="nc">Supplier</span><span class="o">&lt;</span><span class="nc">Test5</span><span class="o">&gt;</span> <span class="n">supplier</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="n">supplier</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+	<span class="o">}</span>
+	
+	<span class="cm">/***
+	 * 静态方法传入对象
+	 * @param t
+	 */</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">b</span><span class="o">(</span><span class="kd">final</span> <span class="nc">Test5</span> <span class="n">t</span><span class="o">)</span> <span class="o">{</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+	<span class="o">}</span>
+
+	<span class="cm">/***
+	 * 无返回值方法传入对象
+	 * @param t
+	 */</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">c</span><span class="o">(</span><span class="kd">final</span> <span class="nc">Test5</span> <span class="n">t</span><span class="o">)</span> <span class="o">{</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+	<span class="o">}</span>
+
+	<span class="cm">/***
+	 * 无返回值无参数方法
+	 */</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">d</span><span class="o">()</span> <span class="o">{</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="k">this</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+	<span class="o">}</span>
+	
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">e</span><span class="o">(</span><span class="nc">String</span> <span class="n">s</span><span class="o">)</span> <span class="o">{</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">s</span><span class="o">);</span>
+	<span class="o">}</span>
+	
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+		<span class="c1">//引用构造器</span>
+		<span class="nc">Test5</span> <span class="n">t</span> <span class="o">=</span> <span class="nc">Test5</span><span class="o">.</span><span class="na">a</span><span class="o">(</span><span class="nl">Test5:</span><span class="o">:</span><span class="k">new</span><span class="o">);</span>
+		
+		<span class="nc">List</span><span class="o">&lt;</span> <span class="nc">Test5</span> <span class="o">&gt;</span> <span class="n">lt</span> <span class="o">=</span> <span class="nc">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span> <span class="n">t</span> <span class="o">);</span>
+		
+		<span class="c1">//forEach会拿到一个Test5对象</span>
+		
+		<span class="c1">//引用 静态方法</span>
+		<span class="n">lt</span><span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="nl">Test5:</span><span class="o">:</span><span class="n">b</span><span class="o">);</span>
+		
+		<span class="c1">//特定对象的方法引用</span>
+		<span class="n">lt</span><span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="nl">t:</span><span class="o">:</span><span class="n">c</span><span class="o">);</span>
+		
+		<span class="c1">//特定类的任意对象的方法引用</span>
+		<span class="n">lt</span><span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="nl">Test5:</span><span class="o">:</span><span class="n">d</span><span class="o">);</span>
+		
+	<span class="o">}</span>
+	
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="新特性之接口的兼容">新特性之接口的兼容</h2>
+
+<h3 id="什么是接口的兼容">什么是接口的兼容</h3>
+
+<p>  Java 8引入了<strong>默认方法</strong>和<strong>静态方法</strong>，这两个方法可以直接在接口中写实现，不影响接口的实现类，也就是解决了接口兼容的问题。</p>
+
+<h3 id="为什么要接口的兼容">为什么要接口的兼容</h3>
+
+<p>  Java 8之前，每一次对接口的修改都会影响其的全部实现。</p>
+
+<h4 id="注意">注意</h4>
+
+<ul>
+  <li>实现类中不可以重写静态方法</li>
+  <li>实现类中可以重写默认方法，需要去掉<code class="language-plaintext highlighter-rouge">default</code>关键字</li>
+  <li>实现类中可以通过<code class="language-plaintext highlighter-rouge">类.super.默认方法</code>对默认方法进行重载</li>
+  <li>接口中的默认方法通过<code class="language-plaintext highlighter-rouge">对象.方法</code>调用</li>
+  <li>接口中的静态方法通过<code class="language-plaintext highlighter-rouge">类.方法</code>调用</li>
+</ul>
+
+<h3 id="什么是默认方法">什么是默认方法</h3>
+
+<p>  被<strong><code class="language-plaintext highlighter-rouge">default</code></strong> 关键字修饰的方法。</p>
+
+<h3 id="什么是静态方法">什么是静态方法</h3>
+
+<p>  被<strong><code class="language-plaintext highlighter-rouge">static</code></strong> 关键字修饰的方法。</p>
+
+<h3 id="如何实现接口的兼容">如何实现接口的兼容</h3>
+
+<h4 id="接口实例">接口实例</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">interface</span> <span class="nc">Animal</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="k">default</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"run"</span><span class="o">);</span>
+	<span class="o">};</span>
+	
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">eat</span><span class="o">()</span> <span class="o">{</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"eat"</span><span class="o">);</span>
+	<span class="o">}</span>
+	
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">sleep</span><span class="o">()</span> <span class="o">{</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"sleep"</span><span class="o">);</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="实现类实例">实现类实例</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Dog</span> <span class="kd">implements</span> <span class="nc">Animal</span> <span class="o">{</span>
+	
+<span class="c1">//  报错	</span>
+<span class="c1">//	@Override</span>
+<span class="c1">//	public default void run() {</span>
+<span class="c1">//		Animal.super.run();</span>
+<span class="c1">//	};</span>
+	
+	<span class="nd">@Override</span>
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">run</span><span class="o">()</span> <span class="o">{</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"dog run"</span><span class="o">);</span>
+	<span class="o">};</span>
+
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">run2</span><span class="o">()</span> <span class="o">{</span>
+		<span class="nc">Animal</span><span class="o">.</span><span class="na">super</span><span class="o">.</span><span class="na">run</span><span class="o">();</span>
+	<span class="o">};</span>
+
+<span class="c1">//  报错</span>
+<span class="c1">//	@Override</span>
+<span class="c1">//	public static void eat() {</span>
+<span class="c1">//		System.out.println("eat");</span>
+<span class="c1">//	}</span>
+
+<span class="c1">//  报错</span>
+<span class="c1">//	@Override</span>
+<span class="c1">//	public void eat() {</span>
+<span class="c1">//		System.out.println("eat");</span>
+<span class="c1">//	}</span>
+	
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">eat</span><span class="o">()</span> <span class="o">{</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"dog eat"</span><span class="o">);</span>
+	<span class="o">}</span>
+	
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">sleep</span><span class="o">()</span> <span class="o">{</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"dog sleep"</span><span class="o">);</span>
+	<span class="o">}</span>
+	
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+		<span class="nc">Animal</span> <span class="n">a</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Dog</span><span class="o">();</span>
+		<span class="n">a</span><span class="o">.</span><span class="na">run</span><span class="o">();</span>
+		
+		<span class="nc">Animal</span><span class="o">.</span><span class="na">eat</span><span class="o">();</span>
+		<span class="nc">Animal</span><span class="o">.</span><span class="na">sleep</span><span class="o">();</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="输出结果">输出结果</h4>
+
+<div class="language-verilog highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dog</span> <span class="n">run</span>
+<span class="n">eat</span>
+<span class="n">sleep</span>
+</code></pre></div></div>
+
+<h2 id="新特性之重复注解">新特性之重复注解</h2>
+
+<h3 id="什么是重复注解">什么是重复注解</h3>
+
+<p>  同一个地方（类、方法、成员变量、局部变量、泛型类、父类、接口、接口的实现）可以重复声明同一个注解。</p>
+
+<h3 id="为什么要重复注解">为什么要重复注解</h3>
+
+<p>  Java5引入了注解机制，但是使用注解的一个限制是相同的注解在同一位置只能声明一次，不能声明多次。</p>
+
+<h3 id="如何实现重复注解">如何实现重复注解</h3>
+
+<p><strong><code class="language-plaintext highlighter-rouge">@Repeatable</code>注解是关键:表示该注解是一个可以重复的注解。</strong></p>
+
+<h4 id="实例-1">实例</h4>
+
+<p>说明：<strong>ElementType.TYPE_USE</strong>和<strong>ElementType.TYPE_PARAMETER</strong>是用于描述适当的注解上下文的元素类型。</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * @author huangdayu.cn
+ */</span>
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test6</span> <span class="o">{</span>
+	
+	<span class="nd">@Target</span><span class="o">(</span> <span class="nc">ElementType</span><span class="o">.</span><span class="na">TYPE</span> <span class="o">)</span>
+    <span class="nd">@Retention</span><span class="o">(</span> <span class="nc">RetentionPolicy</span><span class="o">.</span><span class="na">RUNTIME</span> <span class="o">)</span>
+	<span class="kd">public</span> <span class="nd">@interface</span> <span class="nc">Run</span> <span class="o">{</span>
+		
+	<span class="o">}</span>
+	
+	<span class="nd">@Target</span><span class="o">(</span> <span class="nc">ElementType</span><span class="o">.</span><span class="na">TYPE</span> <span class="o">)</span>
+    <span class="nd">@Retention</span><span class="o">(</span> <span class="nc">RetentionPolicy</span><span class="o">.</span><span class="na">RUNTIME</span> <span class="o">)</span>
+	<span class="kd">public</span> <span class="nd">@interface</span> <span class="nc">Eats</span> <span class="o">{</span>
+		<span class="cm">/***
+		 * 表示返回一个注解数组，方法名必须是value()
+		 * @return
+		 */</span>
+		<span class="nc">Eat</span><span class="o">[]</span> <span class="nf">value</span><span class="o">();</span>
+	<span class="o">}</span>
+	
+	<span class="nd">@Target</span><span class="o">(</span> <span class="nc">ElementType</span><span class="o">.</span><span class="na">TYPE</span> <span class="o">)</span>
+    <span class="nd">@Retention</span><span class="o">(</span> <span class="nc">RetentionPolicy</span><span class="o">.</span><span class="na">RUNTIME</span> <span class="o">)</span>
+	<span class="nd">@Repeatable</span><span class="o">(</span> <span class="nc">Eats</span><span class="o">.</span><span class="na">class</span> <span class="o">)</span><span class="c1">//制作一个可重复的注解</span>
+	<span class="kd">public</span> <span class="nd">@interface</span> <span class="nc">Eat</span> <span class="o">{</span>
+		
+	<span class="o">}</span>
+	
+	<span class="cm">/***
+	 * @Eat 可以重复注解
+	 * @Run 不可以重复注解
+	 *
+	 */</span>
+	<span class="nd">@Eat</span>
+	<span class="nd">@Eat</span>
+	<span class="nd">@Run</span>
+	<span class="kd">public</span> <span class="nd">@interface</span> <span class="nc">Animal</span> <span class="o">{</span>
+		
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="新特性之optional类">新特性之Optional类</h2>
+
+<h3 id="什么是optional类">什么是Optional类</h3>
+
+<p>  <code class="language-plaintext highlighter-rouge">Optional</code>类是Java 8引入的新类，所在类库是<code class="language-plaintext highlighter-rouge">java.util.Optional&lt;T&gt;</code>。Optional  是个容器，可以存储类型为<code class="language-plaintext highlighter-rouge">T</code>的值，也可以存储为null的对象，也就是说，即使对象为null，也不报<code class="language-plaintext highlighter-rouge">java.lang.NullPointerException</code>空对象异常。</p>
+
+<h3 id="为什么要optional类">为什么要Optional类</h3>
+
+<p>  从上面就可以看出，该类就是为了解决臭名昭著的空对象异常而生。</p>
+
+<h3 id="如何使用optional类">如何使用Optional类</h3>
+
+<h4 id="提供的方法">提供的方法</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>方法</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">static &lt;T&gt; Optional&lt;T&gt; empty()</code></td>
+      <td>返回空的 Optional 实例。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">boolean equals(Object obj)</code></td>
+      <td>判断其他对象是否等于 Optional。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Optional&lt;T&gt; filter(Predicate&lt;? super &lt;T&gt; predicate)</code></td>
+      <td>如果值存在，并且这个值匹配给定的 predicate，返回一个Optional用以描述这个值，否则返回一个空的Optional。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">&lt;U&gt; Optional&lt;U&gt; flatMap(Function&lt;? super T,Optional&lt;U&gt;&gt; mapper)</code></td>
+      <td>如果值存在，返回基于Optional包含的映射方法的值，否则返回一个空的Optional</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">T get()</code></td>
+      <td>如果在这个Optional中包含这个值，返回值，否则抛出异常：NoSuchElementException</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">int hashCode()</code></td>
+      <td>返回存在值的哈希码，如果值不存在 返回 0。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">void ifPresent(Consumer&lt;? super T&gt; consumer)</code></td>
+      <td>如果值存在则使用该值调用 consumer , 否则不做任何事情。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">boolean isPresent()</code></td>
+      <td>如果值存在则方法会返回true，否则返回 false。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">&lt;U&gt;Optional&lt;U&gt; map(Function&lt;? super T,? extends U&gt; mapper)</code></td>
+      <td>如果有值，则对其执行调用映射函数得到返回值。如果返回值不为 null，则创建包含映射返回值的Optional作为map方法返回值，否则返回空Optional。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">static &lt;T&gt; Optional&lt;T&gt; of(T value)</code></td>
+      <td>返回一个指定非null值的Optional，value为null则直接抛出空对象异常。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">static &lt;T&gt; Optional&lt;T&gt; ofNullable(T value)</code></td>
+      <td>如果为非空，返回 Optional 描述的指定值，否则返回空的 Optional。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">T orElse(T other)</code></td>
+      <td>如果存在该值，返回值， 否则返回 other，可以视为默认值。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">T orElseGet(Supplier&lt;? extends T&gt; other)</code></td>
+      <td>如果存在该值，返回值， 否则触发 other（一个Lambda表达式），并返回 other 调用的结果。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">&lt;X extends Throwable&gt; T orElseThrow(Supplier&lt;? extends X&gt; exceptionSupplier)</code></td>
+      <td>如果存在该值，返回包含的值，否则抛出由 Supplier 继承的异常</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">String toString()</code></td>
+      <td>返回一个Optional的非空字符串，用来调试</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="实例-2">实例</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.util.Optional</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test9</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+	
+		<span class="c1">//如果为非空，返回 Optional 描述的指定值，否则返回空的 Optional。</span>
+		<span class="nc">Optional</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="nc">Optional</span><span class="o">.</span><span class="na">ofNullable</span><span class="o">(</span><span class="kc">null</span><span class="o">);</span>
+		<span class="nc">Test9</span><span class="o">.</span><span class="na">test</span><span class="o">(</span><span class="n">a</span><span class="o">);</span>
+		
+		<span class="c1">//值为null则直接抛出空对象异常</span>
+		<span class="nc">Optional</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">&gt;</span> <span class="n">b</span> <span class="o">=</span> <span class="nc">Optional</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="s">"yes"</span><span class="o">);</span>
+		<span class="nc">Test9</span><span class="o">.</span><span class="na">test</span><span class="o">(</span><span class="n">b</span><span class="o">);</span>
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="kd">static</span> <span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="kt">void</span> <span class="nf">test</span><span class="o">(</span><span class="nc">Optional</span><span class="o">&lt;</span><span class="no">T</span><span class="o">&gt;</span> <span class="n">t</span><span class="o">)</span> <span class="o">{</span>
+
+		<span class="k">if</span> <span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="na">isPresent</span><span class="o">())</span> <span class="o">{</span><span class="c1">// 该值是否存在，否则为null</span>
+			<span class="no">T</span> <span class="n">s</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="na">get</span><span class="o">();</span>
+			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"获取到的值："</span><span class="o">+</span><span class="n">s</span><span class="o">);</span>
+		<span class="o">}</span> <span class="k">else</span> <span class="o">{</span>
+			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"值为空！"</span><span class="o">);</span>
+		<span class="o">}</span>
+
+		<span class="c1">//如果存在该值，返回值， 否则返回Lambda表达式的结果。</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="na">orElseGet</span><span class="o">(()</span> <span class="o">-&gt;</span> <span class="o">{</span>
+			<span class="k">return</span> <span class="o">(</span><span class="no">T</span><span class="o">)</span> <span class="s">"Lambda表达式返回值！"</span><span class="o">;</span>
+		<span class="o">}));</span>
+
+		<span class="c1">//如果存在该值，返回值， 否则返回Lambda表达式的结果。</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="na">orElse</span><span class="o">((</span><span class="no">T</span><span class="o">)</span> <span class="s">"我是默认值-1!"</span><span class="o">));</span>
+		
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">t</span><span class="o">.</span><span class="na">map</span><span class="o">(</span><span class="n">s</span> <span class="o">-&gt;</span> <span class="s">"值是： "</span> <span class="o">+</span> <span class="n">s</span> <span class="o">+</span> <span class="s">"!\n"</span><span class="o">).</span><span class="na">orElse</span><span class="o">(</span><span class="s">"我是默认值-2!\n"</span><span class="o">));</span>
+
+	<span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="输出结果-1">输出结果</h4>
+
+<div class="language-verilog highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">值为空！</span>
+<span class="n">Lambda</span><span class="err">表达式返回值！</span>
+<span class="err">我是默认值</span><span class="o">-</span><span class="mi">1</span><span class="o">!</span>
+<span class="err">我是默认值</span><span class="o">-</span><span class="mi">2</span><span class="o">!</span>
+
+<span class="err">获取到的值：</span><span class="n">yes</span>
+<span class="n">yes</span>
+<span class="n">yes</span>
+<span class="err">值是：</span> <span class="n">yes</span><span class="o">!</span>
+</code></pre></div></div>
+
+<h2 id="新特性之stream流">新特性之Stream流</h2>
+
+<h3 id="什么是stream流">什么是Stream流</h3>
+
+<p>  <code class="language-plaintext highlighter-rouge">java.util.stream.*</code>是Java 8引入的函数式编程类库，以一种声明的方式来处理元素集合里的数据，可以理解为<code class="language-plaintext highlighter-rouge">shell</code>脚本中<code class="language-plaintext highlighter-rouge">管道</code>（<strong>|</strong>）一样的概念。<br />
+  首先将<code class="language-plaintext highlighter-rouge">数据源</code>（<strong>集合</strong>，<strong>数组</strong>，<strong>I/O channel</strong>， <strong>产生器generator</strong>）的<code class="language-plaintext highlighter-rouge">元素</code>形成<code class="language-plaintext highlighter-rouge">队列</code>，然后管道中传输，并且可以在管道的<code class="language-plaintext highlighter-rouge">节点</code>上进行<strong><code class="language-plaintext highlighter-rouge">聚合操作</code></strong>， 比如<code class="language-plaintext highlighter-rouge">筛选</code>， <code class="language-plaintext highlighter-rouge">排序</code>，<code class="language-plaintext highlighter-rouge">聚合</code>，<code class="language-plaintext highlighter-rouge">计算</code>等，这个视为<code class="language-plaintext highlighter-rouge">中间操作</code>。<code class="language-plaintext highlighter-rouge">最终操作</code>将结果返回。Java中将这一系列操作抽象为<strong>Stream流</strong>。</p>
+
+<h4 id="stream流的分类">Stream流的分类</h4>
+
+<ul>
+  <li><strong>stream()</strong>：串行流</li>
+  <li><strong>parallelStream()</strong>：并行流</li>
+</ul>
+
+<p><strong>PS</strong>：串行流与并行流的区别就是单线程与多线程的区别，并行流处理比串行流快很多。具体业务使用具体流，比如并行流对元素的排序（<strong>sorted()</strong>）就返回了错误的结果，对条件判断（<strong>filter()</strong>）则不影响结果。</p>
+
+<h4 id="stream流的特征">Stream流的特征</h4>
+
+<ul>
+  <li><strong>Pipelining</strong>：中间操作都会返回流对象本身， 如同流式风格（fluent style）的管道。 可以进行延迟执行(laziness)和短路( short-circuiting)等操作。</li>
+  <li><strong>内部迭代</strong>： 通常集合遍历都是通过Iterator或者For-Each的方式, 显式的在集合外部进行外部迭代。 Stream提供了内部迭代的方式， 通过访问者模式(Visitor)实现。</li>
+</ul>
+
+<h3 id="为什么要stream流">为什么要Stream流</h3>
+
+<p>  为了让开发者能够快速，简洁，高效地对<code class="language-plaintext highlighter-rouge">数据源</code>（<strong>集合</strong>，<strong>数组</strong>，<strong>I/O channel</strong>， <strong>产生器generator</strong>）中的元素进行操作。<br />
+  凡是提供了<strong>stream()</strong>方法的集合都可以用流处理。如<code class="language-plaintext highlighter-rouge">Collection</code>接口。</p>
+
+<h3 id="如何使用stream流">如何使用Stream流</h3>
+
+<h5 id="接口说明">接口说明</h5>
+
+<p><strong>java.util.stream.* 接口说明</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>接口</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/BaseStream.html">BaseStream</a>&lt;T,S extends <a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/BaseStream.html">BaseStream</a>&lt;T,S»</td>
+      <td>流的基本接口，它是支持串行和并行聚合操作的元素序列。</td>
+    </tr>
+    <tr>
+      <td><a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Collector.html">Collector</a>&lt;T,A,R&gt;</td>
+      <td>可变缩减操作，将输入元素累积到可变结果容器中，可选地在处理完所有输入元素后将累积结果转换为最终表示。</td>
+    </tr>
+    <tr>
+      <td><a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/DoubleStream.html">DoubleStream</a></td>
+      <td>一系列原始双值元素，支持串行和并行聚合操作。</td>
+    </tr>
+    <tr>
+      <td><a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/DoubleStream.Builder.html">DoubleStream.Builder</a></td>
+      <td><code class="language-plaintext highlighter-rouge">DoubleStream</code>的可变构建器。</td>
+    </tr>
+    <tr>
+      <td><a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/IntStream.html">IntStream</a></td>
+      <td>支持串行和并行聚合操作的一系列原始int值元素。</td>
+    </tr>
+    <tr>
+      <td><a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/IntStream.Builder.html">IntStream.Builder</a></td>
+      <td><code class="language-plaintext highlighter-rouge">IntStream</code>的可变构建器。</td>
+    </tr>
+    <tr>
+      <td><a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/LongStream.html">LongStream</a></td>
+      <td>一系列原始长值元素，支持串行和并行聚合操作。</td>
+    </tr>
+    <tr>
+      <td><a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/LongStream.Builder.html">LongStream.Builder</a></td>
+      <td><code class="language-plaintext highlighter-rouge">LongStream</code>的可变构建器。</td>
+    </tr>
+    <tr>
+      <td><a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html">Stream</a><code class="language-plaintext highlighter-rouge">&lt;T&gt;</code></td>
+      <td>支持串行和并行聚合操作的一系列元素。</td>
+    </tr>
+    <tr>
+      <td><a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.Builder.html">Stream.Builder</a><code class="language-plaintext highlighter-rouge">&lt;T&gt; </code></td>
+      <td><code class="language-plaintext highlighter-rouge">Stream</code>的可变构建器。</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="stream的方法说明">Stream的方法说明</h3>
+
+<p><strong>java.util.stream.Stream 类的方法说明</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th>返回值类型</th>
+      <th>方法</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">boolean</code></td>
+      <td><code class="language-plaintext highlighter-rouge">allMatch(Predicate&lt;? super T&gt; predicate)</code></td>
+      <td>返回此流的所有元素是否与提供的谓词匹配。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">boolean</code></td>
+      <td><code class="language-plaintext highlighter-rouge">anyMatch(Predicate&lt;? super T&gt; predicate)</code></td>
+      <td>返回此流的任何元素是否与提供的谓词匹配。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">static &lt;T&gt; Stream.Builder&lt;T&gt;</code></td>
+      <td><code class="language-plaintext highlighter-rouge">builder()</code></td>
+      <td>返回Stream的构建器。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">&lt;R,A&gt; R</code></td>
+      <td><code class="language-plaintext highlighter-rouge">collect(Collector&lt;? super T,A,R&gt; collector)</code></td>
+      <td>使用收集器对此流的元素执行可变减少操作。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">&lt;R&gt; R</code></td>
+      <td><code class="language-plaintext highlighter-rouge">collect(Supplier&lt;R&gt; supplier, BiConsumer&lt;R,? super T&gt; accumulator, BiConsumer&lt;R,R&gt; combiner)</code></td>
+      <td>Performs a <a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/package-summary.html#MutableReduction">mutable reduction</a> operation on the elements of this stream.</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">static &lt;T&gt; Stream&lt;T&gt;</code></td>
+      <td><code class="language-plaintext highlighter-rouge">concat(Stream&lt;? extends T&gt; a, Stream&lt;? extends T&gt; b)</code></td>
+      <td>创建一个延迟连接的流，其元素是第一个流的所有元素，后跟第二个流的所有元素。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">long</code></td>
+      <td><code class="language-plaintext highlighter-rouge">count()</code></td>
+      <td>返回此流中元素的数量。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Stream&lt;T&gt;</code></td>
+      <td><code class="language-plaintext highlighter-rouge">distinct()</code></td>
+      <td>返回由此流的不同元素（根据Object.equals（Object））组成的流。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">static &lt;T&gt; Stream&lt;T&gt;</code></td>
+      <td><code class="language-plaintext highlighter-rouge">empty()</code></td>
+      <td>返回一个空的顺序Stream。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Stream&lt;T&gt;</code></td>
+      <td><code class="language-plaintext highlighter-rouge">filter(Predicate&lt;? super T&gt; predicate)</code></td>
+      <td>返回由与此给定谓词匹配的此流的元素组成的流。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Optional&lt;T&gt;</code></td>
+      <td><code class="language-plaintext highlighter-rouge">findAny()</code></td>
+      <td>返回描述流的某个元素的Optional，如果流为空，则返回空Optional。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Optional&lt;T&gt;</code></td>
+      <td><code class="language-plaintext highlighter-rouge">findFirst()</code></td>
+      <td>返回描述此流的第一个元素的Optional，如果流为空，则返回空Optional。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">&lt;R&gt; Stream&lt;R&gt;</code></td>
+      <td><code class="language-plaintext highlighter-rouge">flatMap(Function&lt;? super T,? extends Stream&lt;? extends R&gt;&gt; mapper)</code></td>
+      <td>返回一个流，该流包含将此流的每个元素替换为通过将提供的映射函数应用于每个元素而生成的映射流的内容的结果。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">DoubleStream</code></td>
+      <td><code class="language-plaintext highlighter-rouge">flatMapToDouble(Function&lt;? super T,? extends DoubleStream&gt; mapper)</code></td>
+      <td>返回一个DoubleStream，它包含将此流的每个元素替换为通过将提供的映射函数应用于每个元素而生成的映射流的内容的结果。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">IntStream</code></td>
+      <td><code class="language-plaintext highlighter-rouge">flatMapToInt(Function&lt;? super T,? extends IntStream&gt; mapper)</code></td>
+      <td>返回一个IntStream，它包含将此流的每个元素替换为通过将提供的映射函数应用于每个元素而生成的映射流的内容的结果。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">LongStream</code></td>
+      <td><code class="language-plaintext highlighter-rouge">flatMapToLong(Function&lt;? super T,? extends LongStream&gt; mapper)</code></td>
+      <td>返回一个LongStream，它包含将此流的每个元素替换为通过将提供的映射函数应用于每个元素而生成的映射流的内容的结果。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">void</code></td>
+      <td><code class="language-plaintext highlighter-rouge">forEach(Consumer&lt;? super T&gt; action)</code></td>
+      <td>对此流的每个元素执行操作。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">void</code></td>
+      <td><code class="language-plaintext highlighter-rouge">forEachOrdered(Consumer&lt;? super T&gt; action)</code></td>
+      <td>如果流具有已定义的遭遇顺序，则按流的遭遇顺序对此流的每个元素执行操作。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">static &lt;T&gt; Stream&lt;T&gt;</code></td>
+      <td><code class="language-plaintext highlighter-rouge">generate(Supplier&lt;T&gt; s)</code></td>
+      <td>返回无限顺序无序流，其中每个元素由提供的Supplier生成。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">static &lt;T&gt; Stream&lt;T&gt;</code></td>
+      <td><code class="language-plaintext highlighter-rouge">iterate(T seed, UnaryOperator&lt;T&gt; f)</code></td>
+      <td>返回通过将函数f迭代应用于初始元素种子而生成的无限顺序有序流，生成由种子，f（seed），f（f（seed））等组成的流。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Stream&lt;T&gt;</code></td>
+      <td><code class="language-plaintext highlighter-rouge">limit(long maxSize)</code></td>
+      <td>返回由此流的元素组成的流，截断长度不超过maxSize。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">&lt;R&gt; Stream&lt;R&gt;</code></td>
+      <td><code class="language-plaintext highlighter-rouge">map(Function&lt;? super T,? extends R&gt; mapper)</code></td>
+      <td>返回一个流，该流包含将给定函数应用于此流的元素的结果。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">DoubleStream</code></td>
+      <td><code class="language-plaintext highlighter-rouge">mapToDouble(ToDoubleFunction&lt;? super T&gt; mapper)</code></td>
+      <td>返回DoubleStream，其中包含将给定函数应用于此流的元素的结果。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">IntStream</code></td>
+      <td><code class="language-plaintext highlighter-rouge">mapToInt(ToIntFunction&lt;? super T&gt; mapper)</code></td>
+      <td>返回一个IntStream，它包含将给定函数应用于此流的元素的结果。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">LongStream</code></td>
+      <td><code class="language-plaintext highlighter-rouge">mapToLong(ToLongFunction&lt;? super T&gt; mapper)</code>Returns a <code class="language-plaintext highlighter-rouge">LongStream</code> consisting of the results of applying the given function to the elements of this stream.</td>
+      <td>返回一个LongStream，它包含将给定函数应用于此流的元素的结果。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Optional&lt;T&gt;</code></td>
+      <td><code class="language-plaintext highlighter-rouge">max(Comparator&lt;? super T&gt; comparator)</code></td>
+      <td>根据提供的Comparator返回此流的最大元素。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Optional&lt;T&gt;</code></td>
+      <td><code class="language-plaintext highlighter-rouge">min(Comparator&lt;? super T&gt; comparator)</code></td>
+      <td>根据提供的Comparator返回此流的最小元素。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">boolean</code></td>
+      <td><code class="language-plaintext highlighter-rouge">noneMatch(Predicate&lt;? super T&gt; predicate)</code></td>
+      <td>返回此流的元素是否与提供的谓词匹配。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">static &lt;T&gt; Stream&lt;T&gt;</code></td>
+      <td><code class="language-plaintext highlighter-rouge">of(T... values)</code></td>
+      <td>返回其元素为指定值的顺序有序流。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">static &lt;T&gt; Stream&lt;T&gt;</code></td>
+      <td><code class="language-plaintext highlighter-rouge">of(T t)</code></td>
+      <td>返回包含单个元素的顺序Stream。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Stream&lt;T&gt;</code></td>
+      <td><code class="language-plaintext highlighter-rouge">peek(Consumer&lt;? super T&gt; action)</code></td>
+      <td>返回由此流的元素组成的流，此外还在从结果流中消耗元素时对每个元素执行提供的操作。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Optional&lt;T&gt;</code></td>
+      <td><code class="language-plaintext highlighter-rouge">reduce(BinaryOperator&lt;T&gt; accumulator)</code></td>
+      <td>使用关联累加函数执行此流的元素的减少，并返回描述减少值的Optional（如果有）。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">T</code></td>
+      <td><code class="language-plaintext highlighter-rouge">reduce(T identity, BinaryOperator&lt;T&gt; accumulator)</code></td>
+      <td>使用提供的标识值和关联累加函数执行此流的元素的减少，并返回减少的值。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">&lt;U&gt; U</code></td>
+      <td><code class="language-plaintext highlighter-rouge">reduce(U identity, BiFunction&lt;U,? super T,U&gt; accumulator, BinaryOperator&lt;U&gt; combiner)</code></td>
+      <td>使用提供的标识，累积和组合功能，对此流的元素执行减少。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Stream&lt;T&gt;</code></td>
+      <td><code class="language-plaintext highlighter-rouge">skip(long n)</code></td>
+      <td>在丢弃流的前n个元素后，返回由此流的其余元素组成的流。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Stream&lt;T&gt;</code></td>
+      <td><code class="language-plaintext highlighter-rouge">sorted()</code></td>
+      <td>返回由此流的元素组成的流，按照自然顺序排序。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Stream&lt;T&gt;</code></td>
+      <td><code class="language-plaintext highlighter-rouge">sorted(Comparator&lt;? super T&gt; comparator)</code></td>
+      <td>返回由此流的元素组成的流，根据提供的Comparator进行排序。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">Object[]</code></td>
+      <td><code class="language-plaintext highlighter-rouge">toArray()</code></td>
+      <td>返回包含此流的元素的数组。</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">&lt;A&gt; A[]</code></td>
+      <td><code class="language-plaintext highlighter-rouge">toArray(IntFunction&lt;A[]&gt; generator)</code></td>
+      <td>返回一个包含此流元素的数组，使用提供的生成器函数分配返回的数组，以及分区执行或调整大小可能需要的任何其他数组。</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="实例-3">实例</h3>
+
+<h4 id="peoplejava">People.java</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">People</span> <span class="o">{</span>
+	<span class="kd">private</span> <span class="nc">String</span> <span class="n">name</span><span class="o">;</span>
+	<span class="kd">private</span> <span class="kt">int</span> <span class="n">age</span><span class="o">;</span>
+	<span class="kd">private</span> <span class="nc">String</span> <span class="n">address</span><span class="o">;</span>
+	
+	<span class="kd">public</span> <span class="nf">People</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">,</span><span class="kt">int</span> <span class="n">age</span><span class="o">,</span><span class="nc">String</span> <span class="n">address</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">age</span> <span class="o">=</span> <span class="n">age</span><span class="o">;</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">address</span> <span class="o">=</span> <span class="n">address</span><span class="o">;</span>
+	<span class="o">};</span>
+
+	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">getName</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="n">name</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setName</span><span class="o">(</span><span class="nc">String</span> <span class="n">name</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="kt">int</span> <span class="nf">getAge</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="n">age</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setAge</span><span class="o">(</span><span class="kt">int</span> <span class="n">age</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">age</span> <span class="o">=</span> <span class="n">age</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">getAddress</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="n">address</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="kd">public</span> <span class="kt">void</span> <span class="nf">setAddress</span><span class="o">(</span><span class="nc">String</span> <span class="n">address</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">this</span><span class="o">.</span><span class="na">address</span> <span class="o">=</span> <span class="n">address</span><span class="o">;</span>
+	<span class="o">}</span>
+
+	<span class="nd">@Override</span>
+	<span class="kd">public</span> <span class="nc">String</span> <span class="nf">toString</span><span class="o">()</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="s">"People [name="</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s">", age="</span> <span class="o">+</span> <span class="n">age</span> <span class="o">+</span> <span class="s">", address="</span> <span class="o">+</span> <span class="n">address</span> <span class="o">+</span> <span class="s">"]"</span><span class="o">;</span>
+	<span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="testjava">Test.java</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.util.Arrays</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Collection</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Comparator</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Iterator</span><span class="o">;</span>
+
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test10</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+		<span class="nc">Collection</span><span class="o">&lt;</span> <span class="nc">People</span> <span class="o">&gt;</span> <span class="n">peoples</span> <span class="o">=</span> <span class="nc">Arrays</span><span class="o">.</span><span class="na">asList</span><span class="o">(</span>
+			    <span class="k">new</span> <span class="nf">People</span><span class="o">(</span> <span class="s">"a"</span><span class="o">,</span><span class="mi">1</span><span class="o">,</span><span class="s">"aa"</span> <span class="o">),</span>
+			    <span class="k">new</span> <span class="nf">People</span><span class="o">(</span> <span class="s">"b"</span><span class="o">,</span><span class="mi">2</span><span class="o">,</span><span class="s">"bb"</span> <span class="o">),</span>
+			    <span class="k">new</span> <span class="nf">People</span><span class="o">(</span> <span class="s">"c"</span><span class="o">,</span><span class="mi">3</span><span class="o">,</span><span class="s">"cc"</span> <span class="o">),</span> 
+			    <span class="k">new</span> <span class="nf">People</span><span class="o">(</span> <span class="s">"d"</span><span class="o">,</span><span class="mi">4</span><span class="o">,</span><span class="s">"dd"</span> <span class="o">),</span>
+			    <span class="k">new</span> <span class="nf">People</span><span class="o">(</span> <span class="s">"e"</span><span class="o">,</span><span class="mi">5</span><span class="o">,</span><span class="s">"ee"</span> <span class="o">),</span>
+			    <span class="k">new</span> <span class="nf">People</span><span class="o">(</span> <span class="s">"f"</span><span class="o">,</span><span class="mi">6</span><span class="o">,</span><span class="s">"ff"</span> <span class="o">),</span>
+			    <span class="k">new</span> <span class="nf">People</span><span class="o">(</span> <span class="s">"g"</span><span class="o">,</span><span class="mi">7</span><span class="o">,</span><span class="s">"gg"</span> <span class="o">),</span>
+			    <span class="k">new</span> <span class="nf">People</span><span class="o">(</span> <span class="s">"h"</span><span class="o">,</span><span class="mi">8</span><span class="o">,</span><span class="s">"hh"</span> <span class="o">),</span> 
+			    <span class="k">new</span> <span class="nf">People</span><span class="o">(</span> <span class="s">"i"</span><span class="o">,</span><span class="mi">9</span><span class="o">,</span><span class="s">"ii"</span> <span class="o">)</span>
+		<span class="o">);</span>
+		
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">"\n使用iterator\n"</span><span class="o">);</span>
+		<span class="c1">// 使用iterator</span>
+		<span class="k">for</span> <span class="o">(</span><span class="nc">Iterator</span> <span class="n">iterator</span> <span class="o">=</span> <span class="n">peoples</span><span class="o">.</span><span class="na">iterator</span><span class="o">();</span> <span class="n">iterator</span><span class="o">.</span><span class="na">hasNext</span><span class="o">();)</span> <span class="o">{</span>
+			<span class="nc">People</span> <span class="n">people</span> <span class="o">=</span> <span class="o">(</span><span class="nc">People</span><span class="o">)</span> <span class="n">iterator</span><span class="o">.</span><span class="na">next</span><span class="o">();</span>
+			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">people</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+		<span class="o">}</span>
+
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">"\n使用lambda\n"</span><span class="o">);</span>
+		<span class="c1">// 使用lambda</span>
+		<span class="n">peoples</span><span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="n">people</span> <span class="o">-&gt;</span> <span class="o">{</span>
+			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">people</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+		<span class="o">});</span>
+
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">"\n使用方法引用\n"</span><span class="o">);</span>
+		<span class="c1">// 使用方法引用</span>
+		<span class="n">peoples</span><span class="o">.</span><span class="na">forEach</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">"\n使用Stream流limit()方法\n"</span><span class="o">);</span>
+
+		<span class="c1">// Stream提供了 forEach()方法来迭代（Iteration）流中的每个数据</span>
+		<span class="c1">// Stream提供了limit()方法用于获取指定数量的流。</span>
+		<span class="n">peoples</span><span class="o">.</span><span class="na">stream</span><span class="o">().</span><span class="na">limit</span><span class="o">(</span><span class="mi">8</span><span class="o">).</span><span class="na">forEach</span><span class="o">(</span><span class="n">s</span> <span class="o">-&gt;</span> <span class="o">{</span>
+			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">s</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+		<span class="o">});</span>
+
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">"\n使用Stream流map()方法\n"</span><span class="o">);</span>
+		<span class="c1">// Stream提供了map()方法用于映射每个元素到对应的结果</span>
+		<span class="n">peoples</span><span class="o">.</span><span class="na">stream</span><span class="o">().</span><span class="na">map</span><span class="o">(</span><span class="n">people</span> <span class="o">-&gt;</span> <span class="o">{</span>
+			<span class="k">if</span> <span class="o">(</span><span class="n">people</span><span class="o">.</span><span class="na">getAge</span><span class="o">()</span> <span class="o">==</span> <span class="mi">5</span><span class="o">)</span> <span class="o">{</span>
+				<span class="n">people</span><span class="o">.</span><span class="na">setAge</span><span class="o">(</span><span class="mi">0</span><span class="o">);</span>
+			<span class="o">}</span>
+			<span class="k">return</span> <span class="n">people</span><span class="o">;</span>
+		<span class="o">}).</span><span class="na">forEach</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">"\n使用Stream流filter()方法\n"</span><span class="o">);</span>
+		<span class="c1">// Stream提供了filter()方法用于通过设置的条件过滤出元素。</span>
+		<span class="c1">// parallelStream提供了count()方法用于统计符合条件的元素的数量</span>
+		<span class="kt">long</span> <span class="n">a</span> <span class="o">=</span> <span class="n">peoples</span><span class="o">.</span><span class="na">parallelStream</span><span class="o">().</span><span class="na">filter</span><span class="o">(</span><span class="n">people</span> <span class="o">-&gt;</span> <span class="o">{</span>
+			<span class="k">if</span> <span class="o">(</span><span class="n">people</span><span class="o">.</span><span class="na">getAge</span><span class="o">()</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">||</span> <span class="n">people</span><span class="o">.</span><span class="na">getName</span><span class="o">().</span><span class="na">equals</span><span class="o">(</span><span class="s">"a"</span><span class="o">))</span> <span class="o">{</span>
+				<span class="k">return</span> <span class="kc">true</span><span class="o">;</span>
+			<span class="o">}</span>
+			<span class="k">return</span> <span class="kc">false</span><span class="o">;</span>
+		<span class="o">}).</span><span class="na">count</span><span class="o">();</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"符合条件的总共："</span> <span class="o">+</span> <span class="n">a</span><span class="o">);</span>
+		
+		<span class="c1">// Stream提供了sorted()方法用于对元素进行排序</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">print</span><span class="o">(</span><span class="s">"\n使用Stream流sorted()方法\n"</span><span class="o">);</span>
+		<span class="n">peoples</span><span class="o">.</span><span class="na">stream</span><span class="o">().</span><span class="na">sorted</span><span class="o">(</span><span class="nc">Comparator</span><span class="o">.</span><span class="na">comparing</span><span class="o">(</span><span class="nl">People:</span><span class="o">:</span><span class="n">getAge</span><span class="o">).</span><span class="na">reversed</span><span class="o">()).</span><span class="na">forEach</span><span class="o">(</span><span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">::</span><span class="n">println</span><span class="o">);</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="输出结果-2">输出结果</h4>
+
+<div class="language-verilog highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="err">使用</span><span class="n">iterator</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">aa</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">b</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">bb</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">cc</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">d</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">dd</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">e</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">ee</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">f</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">ff</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">g</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">gg</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">h</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">hh</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">ii</span><span class="p">]</span>
+
+<span class="err">使用</span><span class="n">lambda</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">aa</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">b</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">bb</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">cc</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">d</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">dd</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">e</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">ee</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">f</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">ff</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">g</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">gg</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">h</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">hh</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">ii</span><span class="p">]</span>
+
+<span class="err">使用方法引用</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">aa</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">b</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">bb</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">cc</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">d</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">dd</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">e</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">ee</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">f</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">ff</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">g</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">gg</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">h</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">hh</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">ii</span><span class="p">]</span>
+
+<span class="err">使用</span><span class="n">Stream</span><span class="err">流</span><span class="n">limit</span><span class="p">()</span><span class="err">方法</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">aa</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">b</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">bb</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">cc</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">d</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">dd</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">e</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">ee</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">f</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">ff</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">g</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">gg</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">h</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">hh</span><span class="p">]</span>
+
+<span class="err">使用</span><span class="n">Stream</span><span class="err">流</span><span class="n">map</span><span class="p">()</span><span class="err">方法</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">aa</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">b</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">bb</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">cc</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">d</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">dd</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">e</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">ee</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">f</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">ff</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">g</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">gg</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">h</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">hh</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">ii</span><span class="p">]</span>
+
+<span class="err">使用</span><span class="n">Stream</span><span class="err">流</span><span class="n">filter</span><span class="p">()</span><span class="err">方法</span>
+<span class="err">符合条件的总共：</span><span class="mi">2</span>
+
+<span class="err">使用</span><span class="n">Stream</span><span class="err">流</span><span class="n">sorted</span><span class="p">()</span><span class="err">方法</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">i</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">ii</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">h</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">hh</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">g</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">gg</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">f</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">ff</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">d</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">dd</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">cc</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">b</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">bb</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">a</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">aa</span><span class="p">]</span>
+<span class="n">People</span> <span class="p">[</span><span class="n">name</span><span class="o">=</span><span class="n">e</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">ee</span><span class="p">]</span>
+</code></pre></div></div>
+
+<h2 id="新特性之base64编码">新特性之Base64编码</h2>
+
+<h3 id="什么是base64编码">什么是Base64编码</h3>
+
+<p>  <code class="language-plaintext highlighter-rouge">java.util.Base64</code>是Java 8引入的对字符进行编码解码的类库。</p>
+
+<h3 id="为什么要base64编码">为什么要Base64编码</h3>
+
+<p>  对字符进行编码和解码，可以运用于字符串，URL，MIME中。</p>
+
+<h3 id="如何使用base64编码">如何使用Base64编码</h3>
+
+<h5 id="内嵌类">内嵌类</h5>
+
+<table>
+  <thead>
+    <tr>
+      <th>类</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>static class Base64.Decoder</strong></td>
+      <td>该类实现一个解码器用于，使用 Base64 编码来解码字节数据。</td>
+    </tr>
+    <tr>
+      <td><strong>static class Base64.Encoder</strong></td>
+      <td>该类实现一个编码器，使用 Base64 编码来编码字节数据。</td>
+    </tr>
+  </tbody>
+</table>
+
+<h5 id="方法">方法</h5>
+
+<table>
+  <thead>
+    <tr>
+      <th>方法</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>static Base64.Decoder getDecoder()</strong></td>
+      <td>返回一个 Base64.Decoder ，解码使用基本型 base64 编码方案。</td>
+    </tr>
+    <tr>
+      <td><strong>static Base64.Encoder getEncoder()</strong></td>
+      <td>返回一个 Base64.Encoder ，编码使用基本型 base64 编码方案。</td>
+    </tr>
+    <tr>
+      <td><strong>static Base64.Decoder getMimeDecoder()</strong></td>
+      <td>返回一个 Base64.Decoder ，解码使用 MIME 型 base64 编码方案。</td>
+    </tr>
+    <tr>
+      <td><strong>static Base64.Encoder getMimeEncoder()</strong></td>
+      <td>返回一个 Base64.Encoder ，编码使用 MIME 型 base64 编码方案。</td>
+    </tr>
+    <tr>
+      <td><strong>static Base64.Encoder getMimeEncoder(int lineLength, byte[] lineSeparator)</strong></td>
+      <td>返回一个 Base64.Encoder ，编码使用 MIME 型 base64 编码方案，可以通过参数指定每行的长度及行的分隔符。</td>
+    </tr>
+    <tr>
+      <td><strong>static Base64.Decoder getUrlDecoder()</strong></td>
+      <td>返回一个 Base64.Decoder ，解码使用 URL 和文件名安全型 base64 编码方案。</td>
+    </tr>
+    <tr>
+      <td><strong>static Base64.Encoder getUrlEncoder()</strong></td>
+      <td>返回一个 Base64.Encoder ，编码使用 URL 和文件名安全型 base64 编码方案。</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="实例-4">实例</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.nio.charset.StandardCharsets</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.util.Base64</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test12</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+		<span class="nc">String</span> <span class="n">s</span> <span class="o">=</span> <span class="s">"huangdayu.cn"</span><span class="o">;</span>
+		<span class="n">s</span> <span class="o">=</span> <span class="n">encoder</span><span class="o">(</span><span class="n">s</span><span class="o">);</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">s</span><span class="o">);</span>
+		<span class="n">s</span> <span class="o">=</span> <span class="n">decoder</span><span class="o">(</span><span class="n">s</span><span class="o">);</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">s</span><span class="o">);</span>
+	<span class="o">}</span>
+
+	<span class="cm">/***
+	 * 加密
+	 * @param s
+	 * @return
+	 */</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="nc">String</span> <span class="nf">encoder</span><span class="o">(</span><span class="nc">String</span> <span class="n">s</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="nc">Base64</span><span class="o">.</span><span class="na">getEncoder</span><span class="o">().</span><span class="na">encodeToString</span><span class="o">(</span><span class="n">s</span><span class="o">.</span><span class="na">getBytes</span><span class="o">(</span><span class="nc">StandardCharsets</span><span class="o">.</span><span class="na">UTF_8</span><span class="o">));</span>
+	<span class="o">}</span>
+
+	<span class="cm">/***
+	 * 解密
+	 * @param s
+	 * @return
+	 */</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="nc">String</span> <span class="nf">decoder</span><span class="o">(</span><span class="nc">String</span> <span class="n">s</span><span class="o">)</span> <span class="o">{</span>
+		<span class="k">return</span> <span class="k">new</span> <span class="nf">String</span><span class="o">(</span><span class="nc">Base64</span><span class="o">.</span><span class="na">getDecoder</span><span class="o">().</span><span class="na">decode</span><span class="o">(</span><span class="n">s</span><span class="o">),</span> <span class="nc">StandardCharsets</span><span class="o">.</span><span class="na">UTF_8</span><span class="o">);</span>
+	<span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="输出结果-3">输出结果</h4>
+
+<div class="language-verilog highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">aHVhbmdkYXl1LmNu</span>
+<span class="n">huangdayu</span><span class="p">.</span><span class="n">cn</span>
+</code></pre></div></div>
+
+<h2 id="新特性之timeapi">新特性之TimeAPI</h2>
+
+<h3 id="什么是timeapi">什么是TimeAPI</h3>
+
+<p>  <code class="language-plaintext highlighter-rouge">java.time.*</code>是Java 8引入的<strong>Date&amp;Time&amp;Zone</strong>类库，提供日期，时间，瞬间和持续时间的主要API。</p>
+
+<h3 id="为什么要timeapi">为什么要TimeAPI</h3>
+
+<p>  旧的<code class="language-plaintext highlighter-rouge"> java.util.Date</code>以及<code class="language-plaintext highlighter-rouge">java.util.Calendar</code>被开发者普遍吐槽，所以借鉴了 <a href="https://www.joda.org/joda-time/">Joda Time</a> 的优点，开发了新的API。</p>
+
+<p><strong>旧API的问题</strong></p>
+
+<ul>
+  <li>非线程安全  ：<code class="language-plaintext highlighter-rouge"> java.util.Date</code> 是非线程安全的，所有的日期类都是可变的，这是Java日期类最大的问题之一。</li>
+  <li>设计很差 ：Java的日期/时间类的定义并不一致，在<code class="language-plaintext highlighter-rouge">java.util</code>和<code class="language-plaintext highlighter-rouge">java.sql</code>的包中都有日期类，此外用于格式化和解析的类在<code class="language-plaintext highlighter-rouge">java.text</code>包中定义。<code class="language-plaintext highlighter-rouge">java.util.Date</code>同时包含日期和时间，而<code class="language-plaintext highlighter-rouge">java.sql.Date</code>仅包含日期，将其纳入<code class="language-plaintext highlighter-rouge">java.sql</code>包并不合理。另外这两个类都有相同的名字，这本身就是一个非常糟糕的设计。</li>
+  <li>时区处理麻烦 ： 日期类并不提供国际化，没有时区支持，因此Java引入了<code class="language-plaintext highlighter-rouge">java.util.Calendar</code>和<code class="language-plaintext highlighter-rouge">java.util.TimeZone</code>类，但他们同样存在上述所有的问题。</li>
+</ul>
+
+<p><strong>新API的优点</strong></p>
+
+<ul>
+  <li>Local(本地)  ： 简化了日期时间的处理，没有时区的问题。</li>
+  <li>Zoned(时区)  ： 通过制定的时区处理日期时间。</li>
+  <li>新的<code class="language-plaintext highlighter-rouge">java.time</code>包涵盖了所有处理日期，时间，日期/时间，时区，时刻（instants），过程（during）与时钟（clock）的操作。</li>
+</ul>
+
+<h3 id="如何使用timeapi">如何使用TimeAPI</h3>
+
+<h4 id="类说明">类说明</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>类</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="https://docs.oracle.com/javase/8/docs/api/java/time/Clock.html">Clock</a></td>
+      <td>一个时钟，使用时区提供对当前时刻，日期和时间的访问。</td>
+    </tr>
+    <tr>
+      <td><a href="https://docs.oracle.com/javase/8/docs/api/java/time/Duration.html">Duration</a></td>
+      <td>基于时间的时间量，例如’34.5秒’。</td>
+    </tr>
+    <tr>
+      <td><a href="https://docs.oracle.com/javase/8/docs/api/java/time/Instant.html">Instant</a></td>
+      <td>时间线上的瞬时点。</td>
+    </tr>
+    <tr>
+      <td><a href="https://docs.oracle.com/javase/8/docs/api/java/time/LocalDate.html">LocalDate</a></td>
+      <td>ISO-8601日历系统中没有时区的日期，例如2007-12-03。</td>
+    </tr>
+    <tr>
+      <td><a href="https://docs.oracle.com/javase/8/docs/api/java/time/LocalDateTime.html">LocalDateTime</a></td>
+      <td>ISO-8601日历系统中没有时区的日期时间，例如2007-12-03T10：15：30。</td>
+    </tr>
+    <tr>
+      <td><a href="https://docs.oracle.com/javase/8/docs/api/java/time/LocalTime.html">LocalTime</a></td>
+      <td>在ISO-8601日历系统中没有时区的时间，例如10:15:30。</td>
+    </tr>
+    <tr>
+      <td><a href="https://docs.oracle.com/javase/8/docs/api/java/time/MonthDay.html">MonthDay</a></td>
+      <td>ISO-8601日历系统中的一个月 - 例如 -  12-03。</td>
+    </tr>
+    <tr>
+      <td><a href="https://docs.oracle.com/javase/8/docs/api/java/time/OffsetDateTime.html">OffsetDateTime</a></td>
+      <td>在ISO-8601日历系统中与UTC / Greenwich偏移的日期时间，例如2007-12-03T10：15：30 + 01:00。</td>
+    </tr>
+    <tr>
+      <td><a href="https://docs.oracle.com/javase/8/docs/api/java/time/OffsetTime.html">OffsetTime</a></td>
+      <td>在ISO-8601日历系统中与UTC / Greenwich偏移的时间，例如10：15：30 + 01:00。</td>
+    </tr>
+    <tr>
+      <td><a href="https://docs.oracle.com/javase/8/docs/api/java/time/Period.html">Period</a></td>
+      <td>ISO-8601日历系统中基于日期的时间量，例如“2年，3个月和4天”。</td>
+    </tr>
+    <tr>
+      <td><a href="https://docs.oracle.com/javase/8/docs/api/java/time/Year.html">Year</a></td>
+      <td>ISO-8601日历系统中的一年，例如2007。</td>
+    </tr>
+    <tr>
+      <td><a href="https://docs.oracle.com/javase/8/docs/api/java/time/YearMonth.html">YearMonth</a></td>
+      <td>ISO-8601日历系统中的年度月份，例如2007-12。</td>
+    </tr>
+    <tr>
+      <td><a href="https://docs.oracle.com/javase/8/docs/api/java/time/ZonedDateTime.html">ZonedDateTime</a></td>
+      <td>ISO-8601日历系统中具有时区的日期时间，例如2007-12-03T10：15：30 + 01:00欧洲/巴黎。</td>
+    </tr>
+    <tr>
+      <td><a href="https://docs.oracle.com/javase/8/docs/api/java/time/ZoneId.html">ZoneId</a></td>
+      <td>时区ID，例如Europe / Paris。</td>
+    </tr>
+    <tr>
+      <td><a href="https://docs.oracle.com/javase/8/docs/api/java/time/ZoneOffset.html">ZoneOffset</a></td>
+      <td>与格林威治/ UTC的时区偏移，例如+02：00。</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="枚举类说明">枚举类说明</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>枚举类</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="https://docs.oracle.com/javase/8/docs/api/java/time/DayOfWeek.html">DayOfWeek</a></td>
+      <td>星期几，例如’星期二’。</td>
+    </tr>
+    <tr>
+      <td><a href="https://docs.oracle.com/javase/8/docs/api/java/time/Month.html">Month</a></td>
+      <td>一个月，例如’七月’。</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="异常">异常</h4>
+
+<table>
+  <thead>
+    <tr>
+      <th>异常</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><a href="https://docs.oracle.com/javase/8/docs/api/java/time/DateTimeException.html">DateTimeException</a></td>
+      <td>用于表示计算日期时间问题的异常。</td>
+    </tr>
+  </tbody>
+</table>
+
+<h4 id="实例-5">实例</h4>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">java.time.Clock</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.time.Duration</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.time.LocalDate</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.time.LocalDateTime</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.time.LocalTime</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.time.Month</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.time.ZoneId</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">java.time.ZonedDateTime</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test11</span> <span class="o">{</span>
+
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+		<span class="nc">Clock</span> <span class="n">clock</span> <span class="o">=</span> <span class="nc">Clock</span><span class="o">.</span><span class="na">systemUTC</span><span class="o">();</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">clock</span><span class="o">.</span><span class="na">instant</span><span class="o">());</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">clock</span><span class="o">.</span><span class="na">millis</span><span class="o">());</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">clock</span><span class="o">.</span><span class="na">getZone</span><span class="o">());</span>
+
+		<span class="c1">// 获取本地日期</span>
+		<span class="kd">final</span> <span class="nc">LocalDate</span> <span class="n">date</span> <span class="o">=</span> <span class="nc">LocalDate</span><span class="o">.</span><span class="na">now</span><span class="o">();</span>
+		<span class="kd">final</span> <span class="nc">LocalDate</span> <span class="n">dateFromClock</span> <span class="o">=</span> <span class="nc">LocalDate</span><span class="o">.</span><span class="na">now</span><span class="o">(</span><span class="n">clock</span><span class="o">);</span>
+
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">date</span><span class="o">);</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">dateFromClock</span><span class="o">);</span>
+
+		<span class="c1">// 获取本地时间</span>
+		<span class="kd">final</span> <span class="nc">LocalTime</span> <span class="n">time</span> <span class="o">=</span> <span class="nc">LocalTime</span><span class="o">.</span><span class="na">now</span><span class="o">();</span>
+		<span class="kd">final</span> <span class="nc">LocalTime</span> <span class="n">timeFromClock</span> <span class="o">=</span> <span class="nc">LocalTime</span><span class="o">.</span><span class="na">now</span><span class="o">(</span><span class="n">clock</span><span class="o">);</span>
+
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">time</span><span class="o">);</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">timeFromClock</span><span class="o">);</span>
+
+		<span class="c1">// 获取本地日期和本地时间，是LocalTime和LocalDate的集合</span>
+		<span class="kd">final</span> <span class="nc">LocalDateTime</span> <span class="n">datetime</span> <span class="o">=</span> <span class="nc">LocalDateTime</span><span class="o">.</span><span class="na">now</span><span class="o">();</span>
+		<span class="kd">final</span> <span class="nc">LocalDateTime</span> <span class="n">datetimeFromClock</span> <span class="o">=</span> <span class="nc">LocalDateTime</span><span class="o">.</span><span class="na">now</span><span class="o">(</span><span class="n">clock</span><span class="o">);</span>
+
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">datetime</span><span class="o">);</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">datetimeFromClock</span><span class="o">);</span>
+
+		<span class="c1">// 获取分区日期/时间</span>
+		<span class="kd">final</span> <span class="nc">ZonedDateTime</span> <span class="n">zonedDatetime</span> <span class="o">=</span> <span class="nc">ZonedDateTime</span><span class="o">.</span><span class="na">now</span><span class="o">();</span>
+		<span class="kd">final</span> <span class="nc">ZonedDateTime</span> <span class="n">zonedDatetimeFromClock</span> <span class="o">=</span> <span class="nc">ZonedDateTime</span><span class="o">.</span><span class="na">now</span><span class="o">(</span><span class="n">clock</span><span class="o">);</span>
+		<span class="kd">final</span> <span class="nc">ZonedDateTime</span> <span class="n">zonedDatetimeFromZone</span> <span class="o">=</span> <span class="nc">ZonedDateTime</span><span class="o">.</span><span class="na">now</span><span class="o">(</span><span class="nc">ZoneId</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="s">"America/Los_Angeles"</span><span class="o">));</span>
+
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">zonedDatetime</span><span class="o">);</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">zonedDatetimeFromClock</span><span class="o">);</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">zonedDatetimeFromZone</span><span class="o">);</span>
+
+		<span class="c1">// 获取两个日期之间的间隔时间</span>
+		<span class="kd">final</span> <span class="nc">LocalDateTime</span> <span class="n">from</span> <span class="o">=</span> <span class="nc">LocalDateTime</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">2014</span><span class="o">,</span> <span class="nc">Month</span><span class="o">.</span><span class="na">APRIL</span><span class="o">,</span> <span class="mi">16</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">,</span> <span class="mi">0</span><span class="o">);</span>
+		<span class="kd">final</span> <span class="nc">LocalDateTime</span> <span class="n">to</span> <span class="o">=</span> <span class="nc">LocalDateTime</span><span class="o">.</span><span class="na">of</span><span class="o">(</span><span class="mi">2015</span><span class="o">,</span> <span class="nc">Month</span><span class="o">.</span><span class="na">APRIL</span><span class="o">,</span> <span class="mi">16</span><span class="o">,</span> <span class="mi">23</span><span class="o">,</span> <span class="mi">59</span><span class="o">,</span> <span class="mi">59</span><span class="o">);</span>
+
+		<span class="kd">final</span> <span class="nc">Duration</span> <span class="n">duration</span> <span class="o">=</span> <span class="nc">Duration</span><span class="o">.</span><span class="na">between</span><span class="o">(</span><span class="n">from</span><span class="o">,</span> <span class="n">to</span><span class="o">);</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"间隔多少天: "</span> <span class="o">+</span> <span class="n">duration</span><span class="o">.</span><span class="na">toDays</span><span class="o">());</span>
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"间隔多少小时: "</span> <span class="o">+</span> <span class="n">duration</span><span class="o">.</span><span class="na">toHours</span><span class="o">());</span>
+	<span class="o">}</span>
+
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h4 id="输出结果-4">输出结果</h4>
+
+<div class="language-verilog highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="mi">2019</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">15</span><span class="n">T05</span><span class="o">:</span><span class="mi">54</span><span class="o">:</span><span class="mf">13.750</span><span class="n">Z</span>
+<span class="mi">1555307653835</span>
+<span class="n">Z</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">15</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">15</span>
+<span class="mi">13</span><span class="o">:</span><span class="mi">54</span><span class="o">:</span><span class="mf">13.850</span>
+<span class="mi">05</span><span class="o">:</span><span class="mi">54</span><span class="o">:</span><span class="mf">13.850</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">15</span><span class="n">T13</span><span class="o">:</span><span class="mi">54</span><span class="o">:</span><span class="mf">13.850</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">15</span><span class="n">T05</span><span class="o">:</span><span class="mi">54</span><span class="o">:</span><span class="mf">13.850</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">15</span><span class="n">T13</span><span class="o">:</span><span class="mi">54</span><span class="o">:</span><span class="mf">13.850</span><span class="o">+</span><span class="mi">08</span><span class="o">:</span><span class="mi">00</span><span class="p">[</span><span class="n">Asia</span><span class="o">/</span><span class="n">Shanghai</span><span class="p">]</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">15</span><span class="n">T05</span><span class="o">:</span><span class="mi">54</span><span class="o">:</span><span class="mf">13.850</span><span class="n">Z</span>
+<span class="mi">2019</span><span class="o">-</span><span class="mi">04</span><span class="o">-</span><span class="mi">14</span><span class="n">T22</span><span class="o">:</span><span class="mi">54</span><span class="o">:</span><span class="mf">13.850</span><span class="o">-</span><span class="mi">07</span><span class="o">:</span><span class="mi">00</span><span class="p">[</span><span class="n">America</span><span class="o">/</span><span class="n">Los_Angeles</span><span class="p">]</span>
+<span class="err">间隔多少天</span><span class="o">:</span> <span class="mi">365</span>
+<span class="err">间隔多少小时</span><span class="o">:</span> <span class="mi">8783</span>
+</code></pre></div></div>
+
+<h2 id="新特性之javascript引擎">新特性之JavaScript引擎</h2>
+
+<h3 id="什么是javascript引擎">什么是JavaScript引擎</h3>
+
+<p>  早在Java 6时就引入了JavaScript引擎<code class="language-plaintext highlighter-rouge">Rhino</code>，它支持ECMAScript 5.1规范，它使用JSR 292言特性。Java 7时引入了<code class="language-plaintext highlighter-rouge">invokedynamic</code>，将JavaScript编译成<code class="language-plaintext highlighter-rouge">Java字节码</code>。Java 8引入的新的JavaScript引擎<code class="language-plaintext highlighter-rouge">Nashorn</code>比<code class="language-plaintext highlighter-rouge">Rhino</code>性能提高多倍，<code class="language-plaintext highlighter-rouge">Nashorn</code>就是<code class="language-plaintext highlighter-rouge">javax.script.ScriptEngine</code>的另一种实现。</p>
+
+<h4 id="什么是jjs">什么是jjs</h4>
+
+<p>  <code class="language-plaintext highlighter-rouge">jjs</code>是个基于<code class="language-plaintext highlighter-rouge">Nashorn</code>引擎的命令行工具。它可以接受JavaScript源代码为参数，并且执行这些源代码。</p>
+
+<h3 id="为什么要javascript引擎">为什么要JavaScript引擎</h3>
+
+<p>  为了使<code class="language-plaintext highlighter-rouge">Java</code>和<code class="language-plaintext highlighter-rouge">JavaScript</code>两门语言在<code class="language-plaintext highlighter-rouge">JVM</code>环境下能相互调用。</p>
+
+<h3 id="如何使用javascript引擎">如何使用JavaScript引擎</h3>
+
+<h4 id="jjs命令行实例">jjs命令行实例</h4>
+
+<div class="language-verilog highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">C</span><span class="o">:</span><span class="err">\</span><span class="n">Users</span><span class="err">\</span><span class="n">Administrator</span><span class="err">\</span><span class="n">Desktop</span><span class="err">\</span><span class="n">back</span><span class="err">\</span><span class="k">new</span> 
+<span class="err">λ</span> <span class="n">touch</span> <span class="n">test</span><span class="p">.</span><span class="n">js</span>                         
+                                        
+<span class="nl">C:</span><span class="err">\</span><span class="n">Users</span><span class="err">\</span><span class="n">Administrator</span><span class="err">\</span><span class="n">Desktop</span><span class="err">\</span><span class="n">back</span><span class="err">\</span><span class="k">new</span> 
+<span class="err">λ</span> <span class="n">vim</span> <span class="n">test</span><span class="p">.</span><span class="n">js</span>                           
+                                        
+<span class="nl">C:</span><span class="err">\</span><span class="n">Users</span><span class="err">\</span><span class="n">Administrator</span><span class="err">\</span><span class="n">Desktop</span><span class="err">\</span><span class="n">back</span><span class="err">\</span><span class="k">new</span> 
+<span class="err">λ</span> <span class="n">cat</span> <span class="n">test</span><span class="p">.</span><span class="n">js</span>                           
+<span class="n">print</span><span class="p">(</span><span class="s">"This is JavaScript test code."</span><span class="p">);</span> 
+
+<span class="nl">C:</span><span class="err">\</span><span class="n">Users</span><span class="err">\</span><span class="n">Administrator</span><span class="err">\</span><span class="n">Desktop</span><span class="err">\</span><span class="n">back</span><span class="err">\</span><span class="k">new</span> 
+<span class="err">λ</span> <span class="n">jjs</span> <span class="n">test</span><span class="p">.</span><span class="n">js</span>                           
+<span class="n">This</span> <span class="n">is</span> <span class="n">JavaScript</span> <span class="n">test</span> <span class="n">code</span><span class="p">.</span>           
+
+<span class="p">#</span> <span class="err">交互式编程</span>
+
+<span class="nl">C:</span><span class="err">\</span><span class="n">Users</span><span class="err">\</span><span class="n">Administrator</span><span class="err">\</span><span class="n">Desktop</span><span class="err">\</span><span class="n">back</span><span class="err">\</span><span class="k">new</span>
+<span class="err">λ</span> <span class="n">jjs</span>
+<span class="n">jjs</span><span class="o">&gt;</span> <span class="n">print</span><span class="p">(</span><span class="s">"this is JavaScript test code"</span><span class="p">)</span>
+<span class="k">this</span> <span class="n">is</span> <span class="n">JavaScript</span> <span class="n">test</span> <span class="n">code</span>
+<span class="n">jjs</span><span class="o">&gt;</span>
+
+<span class="p">#</span> <span class="err">传递参数</span>
+
+<span class="nl">C:</span><span class="err">\</span><span class="n">Users</span><span class="err">\</span><span class="n">Administrator</span><span class="err">\</span><span class="n">Desktop</span><span class="err">\</span><span class="n">back</span><span class="err">\</span><span class="k">new</span>
+<span class="err">λ</span> <span class="n">jjs</span> <span class="o">--</span> <span class="n">a</span> <span class="n">b</span> <span class="n">c</span>
+<span class="n">jjs</span><span class="o">&gt;</span> <span class="n">print</span><span class="p">(</span><span class="s">"传递的参数："</span><span class="o">+</span><span class="n">arguments</span><span class="p">.</span><span class="k">join</span><span class="p">(</span><span class="s">","</span><span class="p">))</span>
+<span class="err">传递的参数：</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span>
+<span class="n">jjs</span><span class="o">&gt;</span>
+</code></pre></div></div>
+
+<h4 id="java调用javascript">Java调用JavaScript</h4>
+
+<h5 id="实例-6">实例</h5>
+
+<p><strong>Test.java</strong></p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">javax.script.ScriptEngine</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.script.ScriptEngineManager</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">javax.script.ScriptException</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Test13</span> <span class="o">{</span>
+	<span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+		<span class="n">java_JavaScript</span><span class="o">();</span>
+	<span class="o">}</span>
+	
+	<span class="kd">private</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">java_JavaScript</span><span class="o">()</span> <span class="o">{</span>
+		<span class="nc">ScriptEngineManager</span> <span class="n">scriptEngineManager</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ScriptEngineManager</span><span class="o">();</span>
+		<span class="nc">ScriptEngine</span> <span class="n">nashorn</span> <span class="o">=</span> <span class="n">scriptEngineManager</span><span class="o">.</span><span class="na">getEngineByName</span><span class="o">(</span><span class="s">"nashorn"</span><span class="o">);</span>
+
+		<span class="nc">String</span> <span class="n">name</span> <span class="o">=</span> <span class="s">"huangdayu.cn"</span><span class="o">;</span>
+		<span class="nc">Integer</span> <span class="n">result</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+
+		<span class="k">try</span> <span class="o">{</span>
+			<span class="n">nashorn</span><span class="o">.</span><span class="na">eval</span><span class="o">(</span><span class="s">"print('"</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s">"')"</span><span class="o">);</span>
+			<span class="n">result</span> <span class="o">=</span> <span class="o">(</span><span class="nc">Integer</span><span class="o">)</span> <span class="n">nashorn</span><span class="o">.</span><span class="na">eval</span><span class="o">(</span><span class="s">"10 + 2"</span><span class="o">);</span>
+
+		<span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">ScriptException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+			<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"执行脚本错误: "</span> <span class="o">+</span> <span class="n">e</span><span class="o">.</span><span class="na">getMessage</span><span class="o">());</span>
+		<span class="o">}</span>
+
+		<span class="nc">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="n">result</span><span class="o">.</span><span class="na">toString</span><span class="o">());</span>
+	<span class="o">}</span>
+	
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h5 id="输出结果-5">输出结果</h5>
+
+<div class="language-verilog highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">huangdayu</span><span class="p">.</span><span class="n">cn</span>
+<span class="mi">12</span>
+</code></pre></div></div>
+
+<h4 id="javascript调用java">JavaScript调用Java</h4>
+
+<h5 id="实例-7">实例</h5>
+
+<p><strong>test2.js</strong></p>
+
+<div class="language-js highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="nx">BigDecimal</span> <span class="o">=</span> <span class="nx">Java</span><span class="p">.</span><span class="nx">type</span><span class="p">(</span><span class="dl">'</span><span class="s1">java.math.BigDecimal</span><span class="dl">'</span><span class="p">);</span>
+
+<span class="kd">function</span> <span class="nx">calculate</span><span class="p">(</span><span class="nx">amount</span><span class="p">,</span> <span class="nx">percentage</span><span class="p">)</span> <span class="p">{</span>
+	<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">BigDecimal</span><span class="p">(</span><span class="nx">amount</span><span class="p">).</span><span class="nx">multiply</span><span class="p">(</span>
+    	<span class="k">new</span> <span class="nx">BigDecimal</span><span class="p">(</span><span class="nx">percentage</span><span class="p">)).</span><span class="nx">divide</span><span class="p">(</span><span class="k">new</span> <span class="nx">BigDecimal</span><span class="p">(</span><span class="dl">"</span><span class="s2">100</span><span class="dl">"</span><span class="p">),</span> <span class="mi">2</span><span class="p">,</span> <span class="nx">BigDecimal</span><span class="p">.</span><span class="nx">ROUND_HALF_EVEN</span><span class="p">);</span>
+    	<span class="k">return</span> <span class="nx">result</span><span class="p">.</span><span class="nx">toPlainString</span><span class="p">();</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="nx">calculate</span><span class="p">(</span><span class="mi">568000000000000000023</span><span class="p">,</span><span class="mf">13.9</span><span class="p">);</span>
+<span class="nx">print</span><span class="p">(</span><span class="nx">result</span><span class="p">);</span>
+</code></pre></div></div>
+
+<h5 id="输出结果-6">输出结果</h5>
+
+<div class="language-verilog highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">F</span><span class="o">:</span><span class="err">\</span><span class="n">Android</span><span class="err">\</span><span class="n">Java</span><span class="err">\</span><span class="n">Eclipse</span> <span class="n">Project</span> <span class="n">SSM</span><span class="err">\</span><span class="n">NewCharacteristic</span><span class="err">\</span><span class="n">js</span>
+<span class="err">λ</span> <span class="n">touch</span> <span class="n">test2</span><span class="p">.</span><span class="n">js</span>
+
+<span class="nl">F:</span><span class="err">\</span><span class="n">Android</span><span class="err">\</span><span class="n">Java</span><span class="err">\</span><span class="n">Eclipse</span> <span class="n">Project</span> <span class="n">SSM</span><span class="err">\</span><span class="n">NewCharacteristic</span><span class="err">\</span><span class="n">js</span>
+<span class="err">λ</span> <span class="n">jjs</span> <span class="n">test2</span><span class="p">.</span><span class="n">js</span>
+<span class="mf">78952000000000002017.94</span>
+</code></pre></div></div>
+
+<h1 id="参考文献">参考文献</h1>
+
+<ul>
+  <li><a href="https://docs.oracle.com/javase/8/docs/api/index.html">Java 8 官方文档</a></li>
+  <li><a href="http://www.runoob.com/java/java8-new-features.html">Java 8 新特性</a></li>
+  <li><a href="http://www.importnew.com/11908.html">Java 8 新特性终极指南</a></li>
+  <li><a href="https://www.hollischuang.com/archives/553">Java中 VO、 PO、DO、DTO、 BO、 QO、DAO、POJO的概念</a></li>
+  <li><a href="https://www.cnblogs.com/EasonJim/p/7967999.html">阿里巴巴Java开发手册中的DO、DTO、BO、AO、VO、POJO定义</a></li>
+  <li><a href="https://github.com/alibaba/p3c/blob/master/%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4Java%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%EF%BC%88%E8%AF%A6%E5%B0%BD%E7%89%88%EF%BC%89.pdf">阿里巴巴Java开发手册（详尽版)</a></li>
+  <li><a href="https://www.zhihu.com/question/31429113">知乎问答</a></li>
+  <li><a href="https://www.zhihu.com/question/20400700/answer/117464182">知乎问答</a></li>
+  <li><a href="https://blog.csdn.net/cancan8538/article/details/8057095">面向对象的三个基本特征 和 五种设计原则</a></li>
+  <li><a href="https://www.jianshu.com/p/32a71726db21">Java面向对象的三个特征与含义</a></li>
+  <li><a href="http://cyw3.github.io/YalesonChan/2016/Java-key.html">Java 关键字总结</a></li>
+</ul>
+
+<h1 id="脚注">脚注</h1>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:8" role="doc-endnote">
+      <p>2016-05-21 追加更新 <a href="#fnref:8" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:7" role="doc-endnote">
+      <p>2016-07-01 追加更新 <a href="#fnref:7" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:4" role="doc-endnote">
+      <p>2021-03-02 追加更新 <a href="#fnref:4" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:5" role="doc-endnote">
+      <p>2021-03-02 追加更新 <a href="#fnref:5" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:6" role="doc-endnote">
+      <p>2018-11-02 追加更新 <a href="#fnref:6" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:1" role="doc-endnote">
+      <p>2018-11-16 追加更新 <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:2" role="doc-endnote">
+      <p>2018-12-13 追加更新 <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:3" role="doc-endnote">
+      <p>2019-04-08 追加更新 <a href="#fnref:3" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+
+</article><br/>
+<br/>
+<p style="display: block;text-align:center;">©2012-2022 huangdayu.cn(大鱼叔叔的博客) 版权所有，未经授权，不得转载。</p>
+<br/>
+<a style="display: block;text-align:right;" href="/">Back</a>
+      </div>
+    </main>
+  </body>
+</html>

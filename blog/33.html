@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  
+  <script src="/assets/js/close_copy.js"></script>
+  
+
+  
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <title>物联网的连接与通信</title>
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/private/icons/huangdayu.png" />
+  <link rel="stylesheet" href="/assets/css/main.css" />
+</head><body a="light">
+    <main class="page-content" aria-label="Content">
+      <div class="w">
+        <a href="/">Back</a><article>
+  
+  <h1 class="post-header">物联网的连接与通信</h1>
+
+  <p class="post-meta">
+    <time datetime="2019-04-27 22:02:00 +0800">2019-04-27</time>
+  </p>
+  
+  <h1 id="前言">前言</h1>
+
+<p>  连接，传输，通信是物联网的基石。毫无疑问，端与云之间的传输肯定是基于TCP/IP，但是连接与通信呢？当然是不同的场景，不同的条件，不同的要求产生不同的方案。例如<strong>长连接，高可用，低功耗，低成本，广覆盖，高速率</strong>等等。本文旨在罗列连接与通信的不同方案，并进行简单比较，以便有一个全局认知。</p>
+
+<p><img src="http://assets.processon.com/chart_image/5f7bf40ae0b34d0711f4709b.png" alt="OSI-TCP/IP-IOT" /></p>
+
+<!-- more -->
+
+<h1 id="连接">连接</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>数据链路层&amp;物理层</th>
+      <th>应用场景</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>NFC/RFID/BLE</td>
+      <td>近距离通信</td>
+    </tr>
+    <tr>
+      <td>GSM/LTE/NB-IOT</td>
+      <td>远距离蜂窝通信</td>
+    </tr>
+    <tr>
+      <td>WIFI/ZigBee/LoRa</td>
+      <td>远距离非蜂窝通信</td>
+    </tr>
+    <tr>
+      <td>PLC/USB/RS232/RS485/Ethernet</td>
+      <td>有线通信/电力载波</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="通信">通信</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">应用层协议</th>
+      <th style="text-align: center">传输层协议</th>
+      <th style="text-align: center">安全加密</th>
+      <th style="text-align: center">编码</th>
+      <th style="text-align: center">传输</th>
+      <th style="text-align: center">实时</th>
+      <th style="text-align: center">特性</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">Http</td>
+      <td style="text-align: center">TCP</td>
+      <td style="text-align: center">TLS</td>
+      <td style="text-align: center">普通文本</td>
+      <td style="text-align: center">单工</td>
+      <td style="text-align: center">否</td>
+      <td style="text-align: center">耦合服务调用</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">WebSocket</td>
+      <td style="text-align: center">TCP</td>
+      <td style="text-align: center">SSL</td>
+      <td style="text-align: center">普通文本</td>
+      <td style="text-align: center">双工</td>
+      <td style="text-align: center">否</td>
+      <td style="text-align: center">接口长连接调用</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Socket</td>
+      <td style="text-align: center">TCP</td>
+      <td style="text-align: center">SSL</td>
+      <td style="text-align: center">二进制</td>
+      <td style="text-align: center">双工</td>
+      <td style="text-align: center">否</td>
+      <td style="text-align: center">原生IO连接</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">MQTT</td>
+      <td style="text-align: center">TCP</td>
+      <td style="text-align: center">SSL</td>
+      <td style="text-align: center">二进制</td>
+      <td style="text-align: center">双工</td>
+      <td style="text-align: center">否</td>
+      <td style="text-align: center">低带宽</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">CoAP</td>
+      <td style="text-align: center">UDP</td>
+      <td style="text-align: center">SSL</td>
+      <td style="text-align: center">二进制</td>
+      <td style="text-align: center">单工</td>
+      <td style="text-align: center">否</td>
+      <td style="text-align: center">简化HTTP</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">DDS</td>
+      <td style="text-align: center">UDP/TCP</td>
+      <td style="text-align: center">SSL/TLS</td>
+      <td style="text-align: center">二进制</td>
+      <td style="text-align: center">双工</td>
+      <td style="text-align: center">是</td>
+      <td style="text-align: center">高可靠性、实时</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="参考文献">参考文献</h1>
+
+<p><a href="https://developer.ibm.com/zh/technologies/iot/articles/iot-lp101-connectivity-network-protocols/">连接物联网中的所有事物</a><br />
+<a href="http://www.usr.cn/News/334.htm">物联网有哪七大通信协议</a><br />
+<a href="http://www.bewindoweb.com/244.html">MQTT Broker的需求和各大Broker对比</a><br />
+<a href="https://www.cnblogs.com/shaobojiao/p/7921643.html">物联网常见通信协议RFID、NFC、Bluetooth、ZigBee等梳理</a></p>
+
+
+</article><br/>
+<br/>
+<p style="display: block;text-align:center;">©2012-2022 huangdayu.cn(大鱼叔叔的博客) 版权所有，未经授权，不得转载。</p>
+<br/>
+<a style="display: block;text-align:right;" href="/">Back</a>
+      </div>
+    </main>
+  </body>
+</html>

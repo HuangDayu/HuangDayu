@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  
+  <script src="/assets/js/close_copy.js"></script>
+  
+
+  
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <title>SQL学习笔记</title>
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/private/icons/huangdayu.png" />
+  <link rel="stylesheet" href="/assets/css/main.css" />
+</head><body a="light">
+    <main class="page-content" aria-label="Content">
+      <div class="w">
+        <a href="/">Back</a><article>
+  
+  <h1 class="post-header">SQL学习笔记</h1>
+
+  <p class="post-meta">
+    <time datetime="2018-03-13 20:57:46 +0800">2018-03-13</time>
+  </p>
+  
+  <h1 id="查询重复数据">查询重复数据</h1>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="o">*</span>
+<span class="k">FROM</span> <span class="n">tableName</span>
+<span class="k">WHERE</span> <span class="n">user_name</span> <span class="k">IN</span> <span class="p">(</span>
+	<span class="k">SELECT</span> <span class="n">user_name</span>
+	<span class="k">FROM</span> <span class="n">tableName</span>
+	<span class="k">GROUP</span> <span class="k">BY</span> <span class="n">user_name</span>
+	<span class="k">HAVING</span> <span class="k">COUNT</span><span class="p">(</span><span class="n">user_name</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<!-- more -->
+
+<h1 id="统计数量和占比">统计数量和占比</h1>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span>
+	<span class="n">token</span><span class="p">.</span><span class="n">client_id</span> <span class="k">AS</span> <span class="s1">'clientId'</span><span class="p">,</span>
+	<span class="n">client</span><span class="p">.</span><span class="n">client_explain</span> <span class="k">AS</span> <span class="s1">'explain'</span><span class="p">,</span>
+	<span class="k">COUNT</span><span class="p">(</span><span class="n">token</span><span class="p">.</span><span class="n">client_id</span><span class="p">)</span> <span class="k">AS</span> <span class="s1">'sum'</span><span class="p">,</span>
+	<span class="n">CONCAT</span><span class="p">(</span>
+		<span class="k">CONVERT</span> <span class="p">(</span>
+			<span class="k">COUNT</span><span class="p">(</span><span class="n">token</span><span class="p">.</span><span class="n">client_id</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span> <span class="o">/</span> <span class="p">(</span>
+				<span class="k">SELECT</span>
+					<span class="k">COUNT</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+				<span class="k">FROM</span>
+					<span class="n">oauth_client_token</span>
+			<span class="p">),</span>
+			<span class="nb">DECIMAL</span> <span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+		<span class="p">),</span>
+		<span class="s1">'%'</span>
+	<span class="p">)</span> <span class="k">AS</span> <span class="s1">'proportion'</span>
+<span class="k">FROM</span>
+	<span class="n">oauth_client_token</span> <span class="k">AS</span> <span class="n">token</span>
+<span class="k">LEFT</span> <span class="k">JOIN</span> <span class="n">oauth_client_client</span> <span class="k">AS</span> <span class="n">client</span> <span class="k">ON</span> <span class="n">client</span><span class="p">.</span><span class="n">client_id</span> <span class="o">=</span> <span class="n">token</span><span class="p">.</span><span class="n">client_id</span>
+<span class="k">GROUP</span> <span class="k">BY</span>
+	<span class="n">token</span><span class="p">.</span><span class="n">client_id</span>
+<span class="k">ORDER</span> <span class="k">BY</span>
+	<span class="k">sum</span> <span class="k">DESC</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h1 id="删除表b中表a不存在的记录">删除表B中表A不存在的记录</h1>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">DELETE</span> <span class="k">FROM</span> <span class="n">tableB</span>
+<span class="k">WHERE</span> <span class="k">NOT</span> <span class="k">EXISTS</span> <span class="p">(</span>
+	<span class="k">SELECT</span> <span class="mi">1</span>
+	<span class="k">FROM</span> <span class="n">tableA</span> <span class="n">A</span>
+	<span class="k">WHERE</span> <span class="n">tableB</span><span class="p">.</span><span class="n">did</span> <span class="o">=</span> <span class="n">A</span><span class="p">.</span><span class="n">id</span>
+<span class="p">);</span>
+</code></pre></div></div>
+
+<h1 id="数据库事件状态查询">数据库事件状态查询</h1>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">show</span> <span class="n">variables</span> <span class="k">like</span> <span class="s1">'%scheduler%'</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h1 id="数据库事件开启执行">数据库事件开启执行</h1>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SET</span> <span class="k">GLOBAL</span> <span class="n">event_scheduler</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+</code></pre></div></div>
+
+
+</article><br/>
+<br/>
+<p style="display: block;text-align:center;">©2012-2022 huangdayu.cn(大鱼叔叔的博客) 版权所有，未经授权，不得转载。</p>
+<br/>
+<a style="display: block;text-align:right;" href="/">Back</a>
+      </div>
+    </main>
+  </body>
+</html>

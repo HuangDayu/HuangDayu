@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  
+  <script src="/assets/js/close_copy.js"></script>
+  
+
+  
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <title>Linux填坑记</title>
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/private/icons/huangdayu.png" />
+  <link rel="stylesheet" href="/assets/css/main.css" />
+</head><body a="light">
+    <main class="page-content" aria-label="Content">
+      <div class="w">
+        <a href="/">Back</a><article>
+  
+  <h1 class="post-header">Linux填坑记</h1>
+
+  <p class="post-meta">
+    <time datetime="2018-10-17 04:37:46 +0800">2018-10-17</time>
+  </p>
+  
+  <h1 id="系统安装失败">系统安装失败<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup></h1>
+
+<h2 id="问题呈现">问题呈现</h2>
+
+<p><span style="color:#ff0000;font-weight:bold;">starting dracut initqueue hook</span></p>
+
+<h2 id="问题原因">问题原因</h2>
+
+<p>不支持U盘格式</p>
+
+<h2 id="解决办法">解决办法</h2>
+
+<ol>
+  <li>选中 Install CentOS Linux 7 选项，然后按Tab 键；</li>
+  <li>
+    <p>修改屏幕下方的语句；</p>
+
+    <ol>
+      <li>修改前：linuxefi /images/pxeboot/vmlinuz inst.stage2=hd:LABEL=CentOS\x207\x20x86_64 xdriver=vesa nomodeset quiet</li>
+      <li>修改后：linuxefi /images/pxeboot/vmlinuz linux dd quiet</li>
+    </ol>
+  </li>
+  <li>保存修改：回车；</li>
+  <li>可以看到挂载的U盘 如：sdb4  （注意U盘格式：NTFs不行，vfat可以）；</li>
+  <li>重启；</li>
+  <li>重复第1，2步，修改之前那个语句；
+    <ol>
+      <li>修改后：linuxefi /images/pxeboot/vmlinuz inst.stage2=hd:/dev/sdb4 xdriver=vesa nomodeset quiet</li>
+    </ol>
+  </li>
+  <li>回车就可以开始安装。</li>
+</ol>
+
+<h2 id="小结">小结</h2>
+
+<p>  Linux系统和Windows系统的支持的盘符格式存在差异。</p>
+
+<h1 id="数据库不能建缓存表">数据库不能建缓存表<sup id="fnref:2" role="doc-noteref"><a href="#fn:2" class="footnote" rel="footnote">2</a></sup></h1>
+
+<h2 id="问题呈现-1">问题呈现</h2>
+
+<p>删除并清除缓存失败：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@izj6cfb1l7df1uw622j2czz ROOT]# <span class="nb">sudo rm</span> <span class="nt">-r</span> ./<span class="k">*</span>
+<span class="nb">sudo</span>: unable to <span class="nb">stat</span> /etc/sudoers: Permission denied
+<span class="nb">sudo</span>: no valid sudoers sources found, quitting
+<span class="nb">sudo</span>: unable to initialize policy plugin
+</code></pre></div></div>
+<p>对部分文件夹没有权限：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Mysql ERROR 1005 <span class="o">(</span>HY000<span class="o">)</span>: Can<span class="s1">'t create temporary table '</span>tmp<span class="s1">' (errno: 13)
+</span></code></pre></div></div>
+
+<p>  如mysql不能创建缓存表。</p>
+
+<h2 id="问题原因-1">问题原因</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">chmod </span>777 /<span class="k">*</span>
+</code></pre></div></div>
+
+<p>  因为在给文件夹赋值权限的时候，把路径输入错误了，本来是当前路径，却输入成了根路径。</p>
+
+<h2 id="解决办法-1">解决办法</h2>
+
+<p>  Linux系统文件的权限大都是 775 ，所以改回 775 就OK了。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>chomd 775 /<span class="k">*</span>
+</code></pre></div></div>
+
+<p>  这样改可能还不全面，比如原本 777 权限的文件夹就改成了775，这就引发了mysql不能创建混存表的问题。</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">chown</span> <span class="nt">-R</span> mysql:mysql /var/lib/mysql/database_name
+<span class="nb">chmod </span>0777 /tmp
+</code></pre></div></div>
+
+<p>  主要的还是赋予权限的问题，对用户以及用户组的更改似乎没能解决问题。</p>
+
+<h2 id="小结-1">小结</h2>
+
+<p>  众所周知，Linux对权限的管理非常严格，这个文件是哪个用户创建，归哪个用户所有，哪个用户阅读，哪个用户可以修改，这些都可以通过命令来规定。操作系统下的root用户是超级用户，拥有对普通用户的控制权。所以，当一个命令输入错误，没有及时发现，就成了翻车现场！</p>
+
+<h1 id="脚注">脚注</h1>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1" role="doc-endnote">
+      <p>2018-10-16更新，原文是：U盘安装CentOS填坑记，已删除 <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+    <li id="fn:2" role="doc-endnote">
+      <p>2019-06-29更新，原文是：一条错误Linux命令引发的惨案，已删除 <a href="#fnref:2" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+
+</article><br/>
+<br/>
+<p style="display: block;text-align:center;">©2012-2022 huangdayu.cn(大鱼叔叔的博客) 版权所有，未经授权，不得转载。</p>
+<br/>
+<a style="display: block;text-align:right;" href="/">Back</a>
+      </div>
+    </main>
+  </body>
+</html>

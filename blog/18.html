@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  
+  <script src="/assets/js/close_copy.js"></script>
+  
+
+  
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <title>Git学习笔记</title>
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/private/icons/huangdayu.png" />
+  <link rel="stylesheet" href="/assets/css/main.css" />
+</head><body a="light">
+    <main class="page-content" aria-label="Content">
+      <div class="w">
+        <a href="/">Back</a><article>
+  
+  <h1 class="post-header">Git学习笔记</h1>
+
+  <p class="post-meta">
+    <time datetime="2018-10-12 01:49:50 +0800">2018-10-12</time>
+  </p>
+  
+  <h1 id="git原理图">Git原理图</h1>
+
+<p><img src="https://www.huangdayu.cn/assets/private/images/image-49.png" alt="原理图" /></p>
+
+<ul>
+  <li>Workspace：工作区</li>
+  <li>Index / Stage：暂存区</li>
+  <li>Repository：仓库区（或本地仓库）</li>
+  <li>Remote：远程仓库</li>
+</ul>
+
+<!-- more -->
+
+<h1 id="什么是git">什么是Git？</h1>
+
+<p>Git是分布式版本控制系统</p>
+
+<h1 id="为什么需要git">为什么需要Git？</h1>
+
+<p>为了更好的管理项目源码，团队之间协同开发。</p>
+
+<h1 id="git采用的校验机制">Git采用的校验机制？</h1>
+
+<p>SHA-1散列由40个十六进制字符（0-9和a-f）所组成的字符串，这些字符串是根据文件内容和Git的目录结构计算所得</p>
+
+<h1 id="git的使用">Git的使用</h1>
+
+<h2 id="配置个人信息">配置个人信息</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git config <span class="nt">--global</span> user.name <span class="s2">"your user name"</span>
+git config <span class="nt">--global</span> user.email <span class="s2">"your email"</span>
+</code></pre></div></div>
+
+<h2 id="查看个人信息">查看个人信息</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git config <span class="nt">--list</span>
+</code></pre></div></div>
+
+<h2 id="本地仓库初始化">本地仓库初始化</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git init
+</code></pre></div></div>
+
+<h2 id="克隆远程仓库">克隆远程仓库</h2>
+
+<h3 id="https">HTTPS</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone https://github.com/HuangDayu/Almanac.git
+</code></pre></div></div>
+
+<h3 id="ssh">SSH</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git clone git@github.com:HuangDayu/Almanac.git
+</code></pre></div></div>
+
+<h2 id="查看文件状态">查看文件状态</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git status
+</code></pre></div></div>
+
+<ul>
+  <li>Changes to be committed：已暂存、可提交文件</li>
+  <li>Untracked files：未暂存文件</li>
+</ul>
+
+<h2 id="查看未缓存的文件的变更细节">查看未缓存的文件的变更细节</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git diff
+</code></pre></div></div>
+
+<h2 id="查看已缓存的文件的变更细节">查看已缓存的文件的变更细节</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git diff <span class="nt">--staged</span>
+</code></pre></div></div>
+
+<h2 id="添加文件的缓存区">添加文件的缓存区</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 指定文件</span>
+git add readme.md
+<span class="c"># 所有文件</span>
+git add <span class="nb">.</span>
+</code></pre></div></div>
+
+<h2 id="提交缓存区的文件到本地仓库">提交缓存区的文件到本地仓库</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git commit <span class="nt">-m</span> <span class="s2">"update"</span>
+</code></pre></div></div>
+
+<h2 id="提交非缓存区的文件提交到本地">提交非缓存区的文件提交到本地</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git commit <span class="nt">-a</span> <span class="nt">-m</span> <span class="s2">"update"</span>
+</code></pre></div></div>
+
+<h2 id="查看本地仓库提交历史">查看本地仓库提交历史</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git log
+</code></pre></div></div>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git log <span class="nt">--pretty</span><span class="o">=</span>oneline
+</code></pre></div></div>
+
+<h2 id="查看每次版本提交记录">查看每次版本提交记录</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git reflog
+</code></pre></div></div>
+
+<h2 id="回退到指定版本">回退到指定版本</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git reset <span class="nt">--hard</span> 1dabc4e
+</code></pre></div></div>
+
+<ul>
+  <li>1dabc4e 是commit id</li>
+</ul>
+
+<h2 id="查看文件修改历史">查看文件修改历史</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git diff HEAD <span class="nt">--</span> readme.md
+</code></pre></div></div>
+
+<h2 id="撤销文件修改">撤销文件修改</h2>
+
+<ul>
+  <li>修改操作：增删改查</li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git checkout <span class="nt">--</span> readme.md
+</code></pre></div></div>
+
+<h2 id="关联远程仓库">关联远程仓库</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git remote add origin git@github.com:HuangDayu/Almanac.git
+</code></pre></div></div>
+
+<h2 id="推送到远程仓库">推送到远程仓库</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git push <span class="nt">-u</span> origin master
+</code></pre></div></div>
+
+<h2 id="从远程仓库拉取数据到本地仓库">从远程仓库拉取数据到本地仓库</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git fetch origin
+</code></pre></div></div>
+<h2 id="合并远程仓库和本地仓库">合并远程仓库和本地仓库</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git merge origin
+</code></pre></div></div>
+
+<h2 id="从远程仓库拉取数据并直接合并到本地">从远程仓库拉取数据并直接合并到本地</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git pull origin master
+</code></pre></div></div>
+
+<h2 id="缓存本地更改">缓存本地更改</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git stash
+</code></pre></div></div>
+
+<h2 id="拉取远程仓库最近代码">拉取远程仓库最近代码</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git pull <span class="nt">--rebase</span>
+</code></pre></div></div>
+
+<h2 id="本地缓存更改和拉取的最近代码合并">本地缓存更改和拉取的最近代码合并</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git stash pop
+</code></pre></div></div>
+
+<h2 id="查看当前分支">查看当前分支</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git branch
+</code></pre></div></div>
+
+<h2 id="创建分支">创建分支</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git branch master1
+</code></pre></div></div>
+
+<h2 id="切换分支">切换分支</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git checkout master1
+</code></pre></div></div>
+
+<h2 id="创建并切换分支">创建并切换分支</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git checkout <span class="nt">-b</span> master1
+</code></pre></div></div>
+
+<h2 id="查看分支合并图">查看分支合并图</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git log <span class="nt">--graph</span> <span class="nt">--pretty</span><span class="o">=</span>oneline <span class="nt">--abbrev-commit</span>
+</code></pre></div></div>
+
+<h2 id="合并分支">合并分支</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git merge master1
+</code></pre></div></div>
+
+<h2 id="删除分支">删除分支</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git branch <span class="nt">-d</span> master1
+</code></pre></div></div>
+
+<h2 id="生成公钥">生成公钥</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh-keygen <span class="nt">-t</span> rsa <span class="nt">-C</span> <span class="s2">"your email"</span> <span class="nt">-f</span> ~/.ssh/github
+</code></pre></div></div>
+
+<h2 id="修改用户配置文件">修改用户配置文件</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vim ~/.ssh/config
+</code></pre></div></div>
+
+<div class="language-text highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Host github.com
+HostName github.com
+User git
+IdentityFile ~/.ssh/github
+</code></pre></div></div>
+
+<h2 id="测试配置文件">测试配置文件</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh <span class="nt">-T</span> git@github.com
+</code></pre></div></div>
+
+<h2 id="添加ssh-key代理">添加ssh-key代理</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh-add ~/.ssh/github
+</code></pre></div></div>
+
+<h2 id="查看ssh-key代理">查看ssh-key代理</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh-add <span class="nt">-l</span>
+</code></pre></div></div>
+
+<h2 id="删除ssh-key代理">删除ssh-key代理</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ssh-add <span class="nt">-D</span>
+</code></pre></div></div>
+
+<h1 id="参考文献">参考文献</h1>
+
+<p><a href="https://git-scm.com/book/zh/v2">Git 官方文档</a><br />
+<a href="http://www.ruanyifeng.com/blog/2015/12/git-cheat-sheet.html">阮一峰：常用 Git 命令清单</a><br />
+<a href="http://www.ruanyifeng.com/blog/2018/10/git-internals.html">阮一峰：Git 原理入门</a> <br />
+<a href="https://www.jianshu.com/p/6c32ee2688b0">看完不会Git命令行我跪搓板</a><br />
+<a href="https://www.cnblogs.com/ayseeing/p/4445194.html">生成多个git ssh密钥</a><br />
+<a href="https://gitee.com/all-about-git">Git大全</a></p>
+
+
+</article><br/>
+<br/>
+<p style="display: block;text-align:center;">©2012-2022 huangdayu.cn(大鱼叔叔的博客) 版权所有，未经授权，不得转载。</p>
+<br/>
+<a style="display: block;text-align:right;" href="/">Back</a>
+      </div>
+    </main>
+  </body>
+</html>

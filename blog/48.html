@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  
+  <script src="/assets/js/close_copy.js"></script>
+  
+
+  
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <title>Go学习笔记</title>
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/private/icons/huangdayu.png" />
+  <link rel="stylesheet" href="/assets/css/main.css" />
+</head><body a="light">
+    <main class="page-content" aria-label="Content">
+      <div class="w">
+        <a href="/">Back</a><article>
+  
+  <h1 class="post-header">Go学习笔记</h1>
+
+  <p class="post-meta">
+    <time datetime="2021-02-26 00:00:00 +0800">2021-02-26</time>
+  </p>
+  
+  <h2 id="前言">前言</h2>
+
+<p>  Go 语言是以二进制可执行文件实现跨平台的静态类型语言。</p>
+
+<!-- more -->
+
+<h2 id="关键字">关键字</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">关键字</th>
+      <th style="text-align: center">说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">var</code></strong></td>
+      <td style="text-align: center">声明一个变量</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">const</code></strong></td>
+      <td style="text-align: center">声明一个常量</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">type</code></strong></td>
+      <td style="text-align: center">声明一个类型</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">func</code></strong></td>
+      <td style="text-align: center">定义一个函数或者方法</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">return</code></strong></td>
+      <td style="text-align: center">函数返回值作用变量</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">package</code></strong></td>
+      <td style="text-align: center">声明一个程序包</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">import</code></strong></td>
+      <td style="text-align: center">用于引入代码包</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">interface</code></strong></td>
+      <td style="text-align: center">声明一个接口（方法集）</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">go</code></strong></td>
+      <td style="text-align: center">定义一个并行（协程）触发一个由<code class="language-plaintext highlighter-rouge">golang</code>运行时管理的<code class="language-plaintext highlighter-rouge">goroutine</code></td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">map</code></strong></td>
+      <td style="text-align: center">定义一个<code class="language-plaintext highlighter-rouge">map</code>集合（键值对的无序集合）类型</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">chan</code></strong></td>
+      <td style="text-align: center">用于定义通道，如<code class="language-plaintext highlighter-rouge">channel</code>通讯，允许并行</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">range</code></strong></td>
+      <td style="text-align: center">用于迭代列表，用于读取<code class="language-plaintext highlighter-rouge">slice</code>、<code class="language-plaintext highlighter-rouge">map</code>、<code class="language-plaintext highlighter-rouge">channel</code>数据</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">struct</code></strong></td>
+      <td style="text-align: center">用于定义抽象数据类型，字段的集合</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">if</code></strong></td>
+      <td style="text-align: center">用于条件判断，如果为真</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">else</code></strong></td>
+      <td style="text-align: center">用于条件判断，如果为假</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">for</code></strong></td>
+      <td style="text-align: center">开始一个<code class="language-plaintext highlighter-rouge">for</code>循环</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">switch</code></strong></td>
+      <td style="text-align: center">定义一个条件匹配器</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">case</code></strong></td>
+      <td style="text-align: center">用于<code class="language-plaintext highlighter-rouge">switch</code>构造用匹配条件</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">break</code></strong></td>
+      <td style="text-align: center">用于结束循环或条件匹配器，并继续执行代码块以下的代码逻辑</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">continue</code></strong></td>
+      <td style="text-align: center">用于跳过一次循环</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">default</code></strong></td>
+      <td style="text-align: center">用于<code class="language-plaintext highlighter-rouge">swtich</code>条件匹配器中非<code class="language-plaintext highlighter-rouge">case</code>选项的默认执行选项</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">fallthrough</code></strong></td>
+      <td style="text-align: center">用于<code class="language-plaintext highlighter-rouge">swtich</code>条件匹配器中输入下一种情况</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">goto</code></strong></td>
+      <td style="text-align: center">用于可无条件跳转至带标签的语句</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">defer</code></strong></td>
+      <td style="text-align: center">用于推迟执行功能，在函数退出之前执行</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><strong><code class="language-plaintext highlighter-rouge">select</code></strong></td>
+      <td style="text-align: center">使 <code class="language-plaintext highlighter-rouge">goroutine</code> 在同步通信操作期间等待。</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="标识符">标识符</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">标识符</th>
+      <th style="text-align: center">说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">int</code>、<code class="language-plaintext highlighter-rouge">int8</code>、<code class="language-plaintext highlighter-rouge">int16</code>、<code class="language-plaintext highlighter-rouge">int32</code>、<code class="language-plaintext highlighter-rouge">int64</code>、</td>
+      <td style="text-align: center">整型，默认值0，32位系统上占用32位（4字节），64位系统上占用64位（8字节）</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">uint</code>、<code class="language-plaintext highlighter-rouge">uint8</code>、<code class="language-plaintext highlighter-rouge">uint16</code>、<code class="language-plaintext highlighter-rouge">uint32</code>、<code class="language-plaintext highlighter-rouge">uint64</code></td>
+      <td style="text-align: center">无符号类型整型，占用的内存空间和整型是一样的</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">uintptr</code></td>
+      <td style="text-align: center">uintptr是一个整数类型，其大小足以容纳任何指针的位模式</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">float32</code>、<code class="language-plaintext highlighter-rouge">float64</code></td>
+      <td style="text-align: center">浮点型，默认值0.0，float32 精确到小数点后 7 位，<code class="language-plaintext highlighter-rouge">float64</code> 精确到小数点后 15 位</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">bool</code>、<code class="language-plaintext highlighter-rouge">true</code>、<code class="language-plaintext highlighter-rouge">false</code></td>
+      <td style="text-align: center">布尔类型</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">complex(x)</code>、<code class="language-plaintext highlighter-rouge">complex64</code>、<code class="language-plaintext highlighter-rouge">complex128</code></td>
+      <td style="text-align: center">复数（由实数和虚数组成，也会包括根号<code class="language-plaintext highlighter-rouge">i</code>），有32位和64位</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">real(x)</code></td>
+      <td style="text-align: center">一个函数，获得复数的实数部分</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">imag(x)</code></td>
+      <td style="text-align: center">一个函数，获得复数的虚数部分</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">iota</code></td>
+      <td style="text-align: center">一个预先声明的标识符，表示（通常带括号的）<code class="language-plaintext highlighter-rouge">const</code>声明中当前<code class="language-plaintext highlighter-rouge">const</code>规范的未类型化整数序号，第一个值是0。</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">string</code></td>
+      <td style="text-align: center">字符串类型</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">byte</code></td>
+      <td style="text-align: center">字节类型，跟nint8的长度一致，也就是ASCII码</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">print(x)</code>、<code class="language-plaintext highlighter-rouge">println(x)</code></td>
+      <td style="text-align: center">用于打印，换行与换行的却别，建议用fmt包</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">nil</code></td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">nil</code>是预先声明的标识符，表示a的零值，支持<code class="language-plaintext highlighter-rouge">pointer</code>, <code class="language-plaintext highlighter-rouge">channel</code>, <code class="language-plaintext highlighter-rouge">func</code>, <code class="language-plaintext highlighter-rouge">interface</code>, <code class="language-plaintext highlighter-rouge">map</code>, 或者 <code class="language-plaintext highlighter-rouge">slice</code> 类型</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">panic(x)</code>、<code class="language-plaintext highlighter-rouge">recover(x)</code></td>
+      <td style="text-align: center">两者均用于错误处理机制</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">copy(x)</code></td>
+      <td style="text-align: center">用于复制</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">append(x)</code></td>
+      <td style="text-align: center">用于切片连接</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">close(x)</code></td>
+      <td style="text-align: center">用于关闭管道channel通信</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">len(x)</code></td>
+      <td style="text-align: center">用于返回某个类型的长度或者数量</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">cap(x)</code></td>
+      <td style="text-align: center">容量的意思，用于返回某个类型的最大容量（只能用于切片和 map）</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">new(x)</code></td>
+      <td style="text-align: center">用于分配内存，用于值类型和用户定义的类型，如自定义结构，返回其指针地址</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">make(x)</code></td>
+      <td style="text-align: center">用于分配内存，用于内置引用类型（切片、<code class="language-plaintext highlighter-rouge">map</code> 和管道），返回初始化之后的值</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="运算符">运算符</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">符号</th>
+      <th style="text-align: center">说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">==</code>、<code class="language-plaintext highlighter-rouge">!=</code>、<code class="language-plaintext highlighter-rouge">&lt;</code>、<code class="language-plaintext highlighter-rouge">&lt;=</code>、<code class="language-plaintext highlighter-rouge">&gt;</code>、<code class="language-plaintext highlighter-rouge">&gt;=</code></td>
+      <td style="text-align: center">关系运算符</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">+</code>、 <code class="language-plaintext highlighter-rouge">-</code>、 <code class="language-plaintext highlighter-rouge">*</code>、 <code class="language-plaintext highlighter-rouge">/</code>、<code class="language-plaintext highlighter-rouge"> %</code>、<code class="language-plaintext highlighter-rouge">++</code>、 <code class="language-plaintext highlighter-rouge">--</code></td>
+      <td style="text-align: center">算数运算符</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">=</code>、 <code class="language-plaintext highlighter-rouge">+=</code>、 <code class="language-plaintext highlighter-rouge">-=</code>、<code class="language-plaintext highlighter-rouge">*=</code>、<code class="language-plaintext highlighter-rouge">/=</code>、<code class="language-plaintext highlighter-rouge">%=</code>、<code class="language-plaintext highlighter-rouge">&lt;&lt;=</code>、<code class="language-plaintext highlighter-rouge">&gt;&gt;=</code>、<code class="language-plaintext highlighter-rouge">&amp;=</code>、<code class="language-plaintext highlighter-rouge">^=</code>、<code class="language-plaintext highlighter-rouge">|=</code></td>
+      <td style="text-align: center">赋值运算符</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">&amp;&amp;</code>、<code class="language-plaintext highlighter-rouge">||</code>、<code class="language-plaintext highlighter-rouge">!</code></td>
+      <td style="text-align: center">逻辑运算符</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">&amp;</code>、<code class="language-plaintext highlighter-rouge">|</code>、<code class="language-plaintext highlighter-rouge">^</code>、<code class="language-plaintext highlighter-rouge">&lt;&lt;</code>、<code class="language-plaintext highlighter-rouge">&gt;&gt;</code></td>
+      <td style="text-align: center">位运算符</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="运算符的优先级">运算符的优先级</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">运算符</th>
+      <th style="text-align: center">优先级</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">^</code>、<code class="language-plaintext highlighter-rouge">!</code></td>
+      <td style="text-align: center">7（高）</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">*</code>、<code class="language-plaintext highlighter-rouge">/</code>、<code class="language-plaintext highlighter-rouge">%</code>、<code class="language-plaintext highlighter-rouge">&lt;&lt;</code>、<code class="language-plaintext highlighter-rouge">&gt;&gt;</code>、<code class="language-plaintext highlighter-rouge">&amp;</code>、<code class="language-plaintext highlighter-rouge">&amp;^</code></td>
+      <td style="text-align: center">6</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">+</code>、<code class="language-plaintext highlighter-rouge">-</code>、<code class="language-plaintext highlighter-rouge">|</code>、<code class="language-plaintext highlighter-rouge">^</code></td>
+      <td style="text-align: center">5</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">==</code>、<code class="language-plaintext highlighter-rouge">!=</code>、<code class="language-plaintext highlighter-rouge">&lt;</code>、<code class="language-plaintext highlighter-rouge">&lt;=</code>、<code class="language-plaintext highlighter-rouge">&gt;=</code>、<code class="language-plaintext highlighter-rouge">&gt;</code></td>
+      <td style="text-align: center">4</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">&lt;-</code></td>
+      <td style="text-align: center">3</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">&amp;&amp;</code></td>
+      <td style="text-align: center">2</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">||</code></td>
+      <td style="text-align: center">1（低）</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="特殊符号">特殊符号</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">符号</th>
+      <th style="text-align: center">说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">_</code></td>
+      <td style="text-align: center">下划线，单独使用时表示空白标识符，功能与 <code class="language-plaintext highlighter-rouge">/dev/null</code> 类似</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">.</code></td>
+      <td style="text-align: center">选择器，类型断言</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">...</code></td>
+      <td style="text-align: center">不定长度</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">:=</code></td>
+      <td style="text-align: center">短的变量声明，它是带有初始值设定项表达式但没有类型的常规变量声明的简写</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">()</code></td>
+      <td style="text-align: center">在import，const，var，type的声明或定义时使用表示因式分解</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">\</code></td>
+      <td style="text-align: center">反斜杠、可以在常量表达式中作为多行的连接符使用</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">&amp;</code></td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">&amp;a</code>将给出变量的实际地址。</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">*</code></td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">*a</code>是一个指针变量</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="位运算">位运算</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">符号</th>
+      <th style="text-align: center">类别</th>
+      <th style="text-align: center">说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">&amp;</code></td>
+      <td style="text-align: center">二元运算符</td>
+      <td style="text-align: center">按位与</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">|</code></td>
+      <td style="text-align: center">二元运算符</td>
+      <td style="text-align: center">按位或</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">^</code></td>
+      <td style="text-align: center">二元运算符</td>
+      <td style="text-align: center">按位异或</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">&amp;^</code></td>
+      <td style="text-align: center">二元运算符</td>
+      <td style="text-align: center">位清除，将指定位置上的值设置为 0</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">^</code></td>
+      <td style="text-align: center">一元运算符</td>
+      <td style="text-align: center">按位补足</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">&lt;&lt;</code></td>
+      <td style="text-align: center">一元运算符</td>
+      <td style="text-align: center">位左移</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">&gt;&gt;</code></td>
+      <td style="text-align: center">一元运算符</td>
+      <td style="text-align: center">位右移</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="格式化符">格式化符</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">符号</th>
+      <th style="text-align: center">说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">%d</code></td>
+      <td style="text-align: center">格式化整数</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">%x </code> 和 <code class="language-plaintext highlighter-rouge">%X</code></td>
+      <td style="text-align: center">格式化 16 进制表示的数字</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">%g</code></td>
+      <td style="text-align: center">格式化浮点型</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">%f</code></td>
+      <td style="text-align: center">输出浮点数</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">%e</code></td>
+      <td style="text-align: center">输出科学计数表示法</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">%0d</code></td>
+      <td style="text-align: center">用于规定输出定长的整数，其中开头的数字 0 是必须的</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">%n.mg</code></td>
+      <td style="text-align: center">用于表示数字 n 并精确到小数点后 m 位，除了使用 g 之外，还可以使用 e 或者 f</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">%v</code></td>
+      <td style="text-align: center">格式化复数</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">%b</code></td>
+      <td style="text-align: center">是用于表示位的格式化标识符</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="命名规则">命名规则</h2>
+
+<ol>
+  <li>Go是一门区分大小写的语言。</li>
+  <li>命名规则涉及变量、常量、全局函数、结构、接口、方法等的命名。</li>
+  <li>命名以<strong>大写字母</strong>开头，则表示是<code class="language-plaintext highlighter-rouge">public</code>的，否则是<code class="language-plaintext highlighter-rouge">private</code>（对包以外不可见）的。</li>
+  <li>包名必须是小写，所有的函数以包为单位，没有<code class="language-plaintext highlighter-rouge">类</code>这个概念。</li>
+</ol>
+
+<h2 id="第一行代码">第一行代码</h2>
+
+<blockquote>
+  <p>simple.go</p>
+</blockquote>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">simple</span>
+
+<span class="c">// book https://github.com/unknwon/the-way-to-go_ZH_CN/blob/master/eBook/directory.md</span>
+
+<span class="k">import</span> <span class="p">(</span>
+	<span class="n">fm</span> <span class="s">"fmt"</span>
+	<span class="s">"os"</span>
+<span class="p">)</span>
+
+<span class="k">func</span> <span class="n">Hello</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">str</span> <span class="o">:=</span> <span class="s">"Hello world , I am huangdayu"</span>
+	<span class="nb">println</span><span class="p">(</span><span class="n">str</span><span class="p">)</span>
+	<span class="n">fm</span><span class="o">.</span><span class="n">Printf</span><span class="p">(</span><span class="s">"%+v</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">str</span><span class="p">)</span> <span class="c">// 打印包括字段在内的实例的完整信息</span>
+	<span class="n">fm</span><span class="o">.</span><span class="n">Printf</span><span class="p">(</span><span class="s">"%#v</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">str</span><span class="p">)</span> <span class="c">// 打印包括字段和限定类型名称在内的实例的完整信息</span>
+	<span class="n">fm</span><span class="o">.</span><span class="n">Printf</span><span class="p">(</span><span class="s">"%T</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">str</span><span class="p">)</span>  <span class="c">// 打印某个类型的完整说明</span>
+	<span class="n">str1</span> <span class="o">:=</span> <span class="n">os</span><span class="o">.</span><span class="n">Args</span>
+	<span class="nb">println</span><span class="p">(</span><span class="s">"args[0]:</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="n">str1</span><span class="p">[</span><span class="m">0</span><span class="p">])</span>
+	<span class="n">printlnName</span><span class="p">()</span>
+	<span class="n">Pub_x</span> <span class="o">:=</span> <span class="s">"public"</span>
+	<span class="n">printlnValue</span><span class="p">(</span><span class="n">Pub_x</span><span class="p">,</span> <span class="s">"test1"</span><span class="p">)</span>
+	<span class="n">sum</span> <span class="o">:=</span> <span class="n">Sum</span><span class="p">(</span><span class="m">1000</span><span class="p">,</span> <span class="m">24</span><span class="p">)</span>
+	<span class="n">printInt</span><span class="p">(</span><span class="n">sum</span><span class="p">)</span>
+	<span class="n">printlnValue</span><span class="p">(</span><span class="s">"Καλημέρα κόσμε"</span><span class="p">,</span> <span class="s">"こんにちは 世界</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="k">const</span> <span class="n">name</span> <span class="o">=</span> <span class="s">"huangdayu"</span> <span class="c">// 常量</span>
+
+<span class="k">var</span> <span class="n">age</span> <span class="kt">int</span> <span class="o">=</span> <span class="m">24</span> <span class="c">// 变量</span>
+
+<span class="c">/**
+类型
+*/</span>
+<span class="k">type</span> <span class="n">Blog</span> <span class="k">struct</span> <span class="p">{</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">printlnName</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">fm</span><span class="o">.</span><span class="n">Printf</span><span class="p">(</span><span class="s">"HuangDayu"</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">printlnValue</span><span class="p">(</span><span class="n">a</span> <span class="kt">string</span><span class="p">,</span> <span class="n">b</span> <span class="kt">string</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">fm</span><span class="o">.</span><span class="n">Printf</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="s">"</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+	<span class="n">fm</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">printInt</span><span class="p">(</span><span class="n">i</span> <span class="kt">int</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">fm</span><span class="o">.</span><span class="n">Println</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="p">(</span><span class="n">blog</span> <span class="n">Blog</span><span class="p">)</span> <span class="n">Method1</span><span class="p">()</span> <span class="p">{</span>
+
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">Sum</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="kt">int</span><span class="p">)</span> <span class="kt">int</span> <span class="p">{</span> <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="p">}</span> <span class="c">// 公共方位的Sum方法返回int类型的值</span>
+
+</code></pre></div></div>
+
+<blockquote>
+  <p>web.go</p>
+</blockquote>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">web</span>
+
+<span class="k">import</span> <span class="p">(</span>
+	<span class="s">"log"</span>
+	<span class="s">"net/http"</span>
+<span class="p">)</span>
+
+<span class="k">func</span> <span class="n">hello</span><span class="p">(</span><span class="n">writer</span> <span class="n">http</span><span class="o">.</span><span class="n">ResponseWriter</span><span class="p">,</span> <span class="n">request</span> <span class="o">*</span><span class="n">http</span><span class="o">.</span><span class="n">Request</span><span class="p">)</span> <span class="p">{</span>
+	<span class="n">writer</span><span class="o">.</span><span class="n">Write</span><span class="p">([]</span><span class="kt">byte</span><span class="p">(</span><span class="s">"hello,goer,Let's learn Go programming together!"</span><span class="p">))</span>
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">StartWeb</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">http</span><span class="o">.</span><span class="n">HandleFunc</span><span class="p">(</span><span class="s">"/hello"</span><span class="p">,</span> <span class="n">hello</span><span class="p">)</span>
+	<span class="n">run</span> <span class="o">:=</span> <span class="n">http</span><span class="o">.</span><span class="n">ListenAndServe</span><span class="p">(</span><span class="s">":8080"</span><span class="p">,</span> <span class="no">nil</span><span class="p">);</span>
+	<span class="k">go</span> <span class="n">log</span><span class="o">.</span><span class="n">Fatal</span><span class="p">(</span><span class="n">run</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>main.go</p>
+</blockquote>
+
+<div class="language-go highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">package</span> <span class="n">main</span>
+
+<span class="k">import</span> <span class="p">(</span>
+	<span class="s">"go-learn/simple"</span>
+	<span class="s">"go-learn/web"</span>
+<span class="p">)</span>
+
+<span class="c">// mian启动之前，会先运行init方法</span>
+<span class="k">func</span> <span class="n">init</span><span class="p">()</span> <span class="p">{</span>
+
+<span class="p">}</span>
+
+<span class="k">func</span> <span class="n">main</span><span class="p">()</span> <span class="p">{</span>
+	<span class="n">simple</span><span class="o">.</span><span class="n">Hello</span><span class="p">()</span>
+	<span class="n">web</span><span class="o">.</span><span class="n">StartWeb</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="参考文献">参考文献</h2>
+
+<ul>
+  <li><a href="https://golang.org/ref/spec">Go编程语言规范</a></li>
+  <li><a href="https://learnku.com/docs/the-way-to-go">Go 入门指南</a></li>
+  <li><a href="https://www.cnblogs.com/rickiyang/p/11074174.html">Go中的命名规范</a></li>
+</ul>
+
+
+</article><br/>
+<br/>
+<p style="display: block;text-align:center;">©2012-2022 huangdayu.cn(大鱼叔叔的博客) 版权所有，未经授权，不得转载。</p>
+<br/>
+<a style="display: block;text-align:right;" href="/">Back</a>
+      </div>
+    </main>
+  </body>
+</html>

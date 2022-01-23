@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  
+  <script src="/assets/js/close_copy.js"></script>
+  
+
+  
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <title>Nginx学习笔记</title>
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/private/icons/huangdayu.png" />
+  <link rel="stylesheet" href="/assets/css/main.css" />
+</head><body a="light">
+    <main class="page-content" aria-label="Content">
+      <div class="w">
+        <a href="/">Back</a><article>
+  
+  <h1 class="post-header">Nginx学习笔记</h1>
+
+  <p class="post-meta">
+    <time datetime="2018-02-20 18:24:14 +0800">2018-02-20</time>
+  </p>
+  
+  <h2 id="前言">前言</h2>
+
+<p>  Nginx是一个高性能的正向代理和反向代理的服务器。</p>
+
+<!-- more -->
+
+<h2 id="安装最新版本">安装最新版本<sup id="fnref:1" role="doc-noteref"><a href="#fn:1" class="footnote" rel="footnote">1</a></sup></h2>
+
+<p>安装先决条件：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>yum <span class="nb">install </span>yum-utils
+</code></pre></div></div>
+
+<p>要设置yum存储库，请创建名为/etc/yum.repos.d/nginx.repo的文件，其内容如下：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="o">[</span>nginx-stable]
+ <span class="nv">name</span><span class="o">=</span>nginx stable repo
+ <span class="nv">baseurl</span><span class="o">=</span>http://nginx.org/packages/centos/<span class="nv">$releasever</span>/<span class="nv">$basearch</span>/
+ <span class="nv">gpgcheck</span><span class="o">=</span>1
+ <span class="nv">enabled</span><span class="o">=</span>1
+ <span class="nv">gpgkey</span><span class="o">=</span>https://nginx.org/keys/nginx_signing.key
+ <span class="nv">module_hotfixes</span><span class="o">=</span><span class="nb">true</span>
+ 
+ <span class="o">[</span>nginx-mainline]
+ <span class="nv">name</span><span class="o">=</span>nginx mainline repo
+ <span class="nv">baseurl</span><span class="o">=</span>http://nginx.org/packages/mainline/centos/<span class="nv">$releasever</span>/<span class="nv">$basearch</span>/
+ <span class="nv">gpgcheck</span><span class="o">=</span>1
+ <span class="nv">enabled</span><span class="o">=</span>0
+ <span class="nv">gpgkey</span><span class="o">=</span>https://nginx.org/keys/nginx_signing.key
+ <span class="nv">module_hotfixes</span><span class="o">=</span><span class="nb">true</span>
+</code></pre></div></div>
+
+<p>默认情况下，使用稳定的nginx软件包的存储库。如果要使用主线nginx软件包，请运行以下命令：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nb">sudo </span>yum-config-manager <span class="nt">--enable</span> nginx-mainline
+</code></pre></div></div>
+
+<p>要安装nginx，请运行以下命令：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nb">sudo </span>yum <span class="nb">install </span>nginx
+</code></pre></div></div>
+
+<p>查看安装结果：</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>nginx <span class="nt">-V</span>
+</code></pre></div></div>
+
+<h2 id="反向代理">反向代理</h2>
+
+<h3 id="配置文件路径">配置文件路径</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>vim /etc/nginx/nginx.conf
+<span class="nb">sudo </span>vim /usr/local/nginx/conf/nginx.conf
+</code></pre></div></div>
+
+<h3 id="反向代理tomcat">反向代理Tomcat</h3>
+
+<div class="language-ini highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">user</span> <span class="err">www</span> <span class="err">www</span><span class="c">;
+</span><span class="err">worker_processes</span> <span class="err">auto</span><span class="c">;
+</span>
+<span class="err">error_log</span> <span class="err">/data/wwwlogs/error_nginx.log</span> <span class="err">crit</span><span class="c">;
+</span><span class="err">pid</span> <span class="err">/var/run/nginx.pid</span><span class="c">;
+</span><span class="err">worker_rlimit_nofile</span> <span class="err">51200</span><span class="c">;
+</span>
+<span class="err">events</span> <span class="err">{</span>
+  <span class="err">use</span> <span class="err">epoll</span><span class="c">;
+</span>  <span class="err">worker_connections</span> <span class="err">51200</span><span class="c">;
+</span>  <span class="err">multi_accept</span> <span class="err">on</span><span class="c">;
+</span><span class="err">}</span>
+
+<span class="c">#tcp代理
+#http://nginx.org/en/docs/stream/ngx_stream_core_module.html
+</span><span class="err">stream</span> <span class="err">{</span>
+  
+    <span class="c">#limit_conn_zone $binary_remote_addr zone=addr:10m;
+</span>    <span class="c">#limit_conn addr 200;
+</span>
+    <span class="c">#http://nginx.org/en/docs/stream/ngx_stream_upstream_module.html
+</span>    <span class="err">upstream</span> <span class="err">stream_backend</span> <span class="err">{</span>
+        <span class="err">server</span> <span class="err">192.168.2.168:1883</span><span class="c">;
+</span>        <span class="err">least_conn</span><span class="c">;			#根据最小连接数进行负载均衡
+</span>        <span class="c">#server 192.168.2.168:1883 weight=5;
+</span>        <span class="c">#server 192.168.2.168:12345 max_fails=2 fail_timeout=30s;
+</span>        <span class="c">#server 192.168.2.168:12345 max_conns=3;
+</span>    <span class="err">}</span>
+
+    <span class="err">server</span> <span class="err">{</span>
+        <span class="err">listen</span>        <span class="err">1883</span> <span class="py">so_keepalive</span><span class="p">=</span><span class="s">on;</span>
+        <span class="err">proxy_pass</span>    <span class="err">stream_backend</span><span class="c">;
+</span>        <span class="err">proxy_buffer_size</span> <span class="err">1024k</span><span class="c">;        #消息容量
+</span>        <span class="err">proxy_timeout</span> <span class="err">1d</span><span class="c">;               #心跳超时
+</span>        <span class="err">proxy_connect_timeout</span> <span class="err">1m</span><span class="c">;       #连接超时
+</span>        <span class="err">tcp_nodelay</span> <span class="err">on</span><span class="c">;
+</span>    <span class="err">}</span>
+  
+<span class="err">}</span>
+
+<span class="c">#http 代理
+</span><span class="err">http</span> <span class="err">{</span>
+  <span class="err">include</span> <span class="err">mime.types</span><span class="c">;
+</span>  <span class="err">default_type</span> <span class="err">application/octet-stream</span><span class="c">;
+</span>  <span class="err">server_names_hash_bucket_size</span> <span class="err">128</span><span class="c">;
+</span>  <span class="err">client_header_buffer_size</span> <span class="err">32k</span><span class="c">;
+</span>  <span class="err">large_client_header_buffers</span> <span class="err">4</span> <span class="err">32k</span><span class="c">;
+</span>  <span class="err">client_max_body_size</span> <span class="err">1024m</span><span class="c">;
+</span>  <span class="err">client_body_buffer_size</span> <span class="err">10m</span><span class="c">;
+</span>  <span class="err">sendfile</span> <span class="err">on</span><span class="c">;
+</span>  <span class="err">tcp_nopush</span> <span class="err">on</span><span class="c">;
+</span>  <span class="err">keepalive_timeout</span> <span class="err">120</span><span class="c">;
+</span>  <span class="err">server_tokens</span> <span class="err">off</span><span class="c">;
+</span>  <span class="err">tcp_nodelay</span> <span class="err">on</span><span class="c">;
+</span>
+  <span class="err">fastcgi_connect_timeout</span> <span class="err">300</span><span class="c">;
+</span>  <span class="err">fastcgi_send_timeout</span> <span class="err">300</span><span class="c">;
+</span>  <span class="err">fastcgi_read_timeout</span> <span class="err">300</span><span class="c">;
+</span>  <span class="err">fastcgi_buffer_size</span> <span class="err">64k</span><span class="c">;
+</span>  <span class="err">fastcgi_buffers</span> <span class="err">4</span> <span class="err">64k</span><span class="c">;
+</span>  <span class="err">fastcgi_busy_buffers_size</span> <span class="err">128k</span><span class="c">;
+</span>  <span class="err">fastcgi_temp_file_write_size</span> <span class="err">128k</span><span class="c">;
+</span>  <span class="err">fastcgi_intercept_errors</span> <span class="err">on</span><span class="c">;
+</span>
+  <span class="c">#Gzip Compression
+</span>  <span class="err">gzip</span> <span class="err">on</span><span class="c">;
+</span>  <span class="err">gzip_buffers</span> <span class="err">16</span> <span class="err">8k</span><span class="c">;
+</span>  <span class="err">gzip_comp_level</span> <span class="err">6</span><span class="c">;
+</span>  <span class="err">gzip_http_version</span> <span class="err">1.1</span><span class="c">;
+</span>  <span class="err">gzip_min_length</span> <span class="err">256</span><span class="c">;
+</span>  <span class="err">gzip_proxied</span> <span class="err">any</span><span class="c">;
+</span>  <span class="err">gzip_vary</span> <span class="err">on</span><span class="c">;
+</span>  <span class="err">gzip_types</span>
+    <span class="err">text/xml</span> <span class="err">application/xml</span> <span class="err">application/atom+xml</span> <span class="err">application/rss+xml</span> <span class="err">application/xhtml+xml</span> <span class="err">image/svg+xml</span>
+    <span class="err">text/javascript</span> <span class="err">application/javascript</span> <span class="err">application/x-javascript</span>
+    <span class="err">text/x-json</span> <span class="err">application/json</span> <span class="err">application/x-web-app-manifest+json</span>
+    <span class="err">text/css</span> <span class="err">text/plain</span> <span class="err">text/x-component</span>
+    <span class="err">font/opentype</span> <span class="err">application/x-font-ttf</span> <span class="err">application/vnd.ms-fontobject</span>
+    <span class="err">image/x-icon</span><span class="c">;
+</span>  <span class="err">gzip_disable</span> <span class="err">"MSIE</span> <span class="nn">[1-6]</span><span class="err">\.(?!.*SV1)"</span><span class="c">;
+</span>
+  <span class="c">##Brotli Compression
+</span>  <span class="c">#brotli on;
+</span>  <span class="c">#brotli_comp_level 6;
+</span>  <span class="c">#brotli_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript application/javascript image/svg+xml;
+</span>
+  <span class="c">##If you have a lot of static files to serve through Nginx then caching of the files' metadata (not the actual files' contents) can save some latency.
+</span>  <span class="c">#open_file_cache max=1000 inactive=20s;
+</span>  <span class="c">#open_file_cache_valid 30s;
+</span>  <span class="c">#open_file_cache_min_uses 2;
+</span>  <span class="c">#open_file_cache_errors on;
+</span>
+  <span class="err">log_format</span> <span class="err">me</span> <span class="err">'$remote_addr</span> <span class="err">-</span> <span class="nn">[$time_iso8601]</span> <span class="err">request:"$request"</span> <span class="err">request_length:$request_length</span> <span class="err">status_code:$status</span> <span class="err">handler_time:$request_time</span> <span class="err">response_length:$body_bytes_sent'</span><span class="c">;
+</span>  <span class="c">#log_format debug '$remote_addr - [$time_iso8601] request:"$uri" args:"$args" dm:"$request_body" handler_time:$request_time response_length:$bytes_sent';
+</span>  <span class="err">log_format</span> <span class="err">debug</span> <span class="py">escape</span><span class="p">=</span><span class="s">json '{ "@timestamp": "$time_iso8601", '</span>
+                       <span class="err">'"remote_addr":</span> <span class="err">"$remote_addr",'</span>
+                       <span class="err">'"uri":</span> <span class="err">"$uri",'</span>
+                       <span class="err">'"request_time":</span> <span class="err">"$request_time",'</span>
+                       <span class="err">'"upstream_response_time":</span> <span class="err">"$upstream_response_time",'</span>
+                       <span class="err">'"status":</span> <span class="err">$status,'</span>
+                       <span class="err">'"request":</span> <span class="err">"$request",'</span>
+                       <span class="err">'"bytes":$body_bytes_sent,'</span>
+                       <span class="err">'"dm":$request_body</span> <span class="err">}'</span><span class="c">;
+</span>
+
+  <span class="err">upstream</span> <span class="err">cloud-gateway</span> <span class="err">{</span>
+    <span class="err">server</span> <span class="err">localhost:8022</span><span class="c">;
+</span>  <span class="err">}</span>
+
+  <span class="err">upstream</span> <span class="err">service-auth</span> <span class="err">{</span>
+    <span class="err">server</span> <span class="err">localhost:8023</span><span class="c">;
+</span>  <span class="err">}</span>
+
+
+<span class="c">#######################default############################
+</span>  <span class="err">server</span> <span class="err">{</span>
+    <span class="err">listen</span> <span class="err">80</span><span class="c">;
+</span>    <span class="err">listen</span> <span class="err">443</span> <span class="err">ssl</span><span class="c">;
+</span>    
+    <span class="err">server_name</span> <span class="err">_</span><span class="c">;
+</span>
+    <span class="c">#ssl证书地址
+</span>    <span class="err">ssl_certificate</span>     <span class="err">/usr/local/nginx/cert/xxxxxx.pem</span><span class="c">;  #pem文件的路径
+</span>    <span class="err">ssl_certificate_key</span>  <span class="err">/usr/local/nginx/cert/xxxxxx.key</span><span class="c">; #key文件的路径
+</span>
+    <span class="c">#ssl验证相关配置
+</span>    <span class="err">ssl_session_timeout</span>  <span class="err">5m</span><span class="c">;    #缓存有效期
+</span>    <span class="err">ssl_ciphers</span> <span class="err">ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4</span><span class="c">;    #加密算法
+</span>    <span class="err">ssl_protocols</span> <span class="err">TLSv1</span> <span class="err">TLSv1.1</span> <span class="err">TLSv1.2</span><span class="c">;    #安全链接可选的加密协议
+</span>    <span class="err">ssl_prefer_server_ciphers</span> <span class="err">on</span><span class="c">;   #使用服务器端的首选算法
+</span>
+
+    <span class="c">#ssl on;
+</span>
+    <span class="c">#access_log /data/wwwlogs/access_nginx.log me;
+</span>    <span class="err">access_log</span> <span class="err">/data/wwwlogs/access_nginx.log</span> <span class="err">debug</span><span class="c">;
+</span>    <span class="c">#root /data/wwwroot/default;
+</span>    <span class="err">root</span> <span class="err">/404.html</span><span class="c">;
+</span>    <span class="err">index</span> <span class="err">index.html</span> <span class="err">index.htm</span> <span class="err">index.jsp</span><span class="c">;
+</span>    <span class="c">#error_page 404 /404.html;
+</span>    <span class="c">#error_page 502 /502.html;
+</span>
+    <span class="err">location</span> <span class="err">/</span> <span class="err">{</span>
+        <span class="err">root</span>   <span class="err">html</span><span class="c">;
+</span>        <span class="err">index</span>  <span class="err">index.html</span> <span class="err">index.htm</span><span class="c">;
+</span>    <span class="err">}</span>
+    
+    <span class="err">location</span> <span class="err">/v1/</span> <span class="err">{</span>
+      <span class="err">chunked_transfer_encoding</span> <span class="err">off</span><span class="c">;
+</span>      <span class="err">autoindex</span> <span class="err">on</span><span class="c">; #当设置为on的时候表示打开目录浏览功能
+</span>      <span class="err">autoindex_exact_size</span> <span class="err">on</span><span class="c">; #显示文件大小
+</span>      <span class="err">autoindex_localtime</span> <span class="err">on</span><span class="c">; #显示文件时间
+</span>      <span class="err">proxy_pass</span> <span class="err">http://cloud-gateway/v1/</span><span class="c">;
+</span>      <span class="err">proxy_set_header</span> <span class="err">X-Forwarded-Proto</span> <span class="err">$scheme</span><span class="c">;              
+</span>      <span class="err">proxy_set_header</span> <span class="err">X-Forwarded-Port</span> <span class="err">$server_port</span><span class="c">;
+</span>      <span class="err">proxy_set_header</span> <span class="err">X-Real-IP</span> <span class="err">$remote_addr</span><span class="c">;
+</span>      <span class="err">proxy_set_header</span> <span class="err">X-Forwarded-For</span> <span class="err">$proxy_add_x_forwarded_for</span><span class="c">;
+</span>      <span class="err">proxy_set_header</span> <span class="err">Host</span> <span class="err">$http_host</span><span class="c">;
+</span>      <span class="err">proxy_set_header</span> <span class="err">X-NginX-Proxy</span> <span class="err">true</span><span class="c">;
+</span>      <span class="err">proxy_redirect</span> <span class="err">off</span><span class="c">;
+</span>    <span class="err">}</span>
+
+    <span class="err">location</span> <span class="err">/oauth/</span> <span class="err">{</span>
+      <span class="err">chunked_transfer_encoding</span> <span class="err">off</span><span class="c">;
+</span>      <span class="err">autoindex</span> <span class="err">on</span><span class="c">; #当设置为on的时候表示打开目录浏览功能
+</span>      <span class="err">autoindex_exact_size</span> <span class="err">on</span><span class="c">; #显示文件大小
+</span>      <span class="err">autoindex_localtime</span> <span class="err">on</span><span class="c">; #显示文件时间
+</span>      <span class="err">proxy_pass</span> <span class="err">http://service-auth/oauth/</span><span class="c">;
+</span>      <span class="err">proxy_set_header</span> <span class="err">X-Forwarded-Proto</span> <span class="err">$scheme</span><span class="c">;
+</span>      <span class="err">proxy_set_header</span> <span class="err">X-Forwarded-Port</span> <span class="err">$server_port</span><span class="c">;
+</span>      <span class="err">proxy_set_header</span> <span class="err">X-Real-IP</span> <span class="err">$remote_addr</span><span class="c">;
+</span>      <span class="err">proxy_set_header</span> <span class="err">X-Forwarded-For</span> <span class="err">$proxy_add_x_forwarded_for</span><span class="c">;
+</span>      <span class="err">proxy_set_header</span> <span class="err">Host</span> <span class="err">$http_host</span><span class="c">;
+</span>      <span class="err">proxy_set_header</span> <span class="err">X-NginX-Proxy</span> <span class="err">true</span><span class="c">;
+</span>      <span class="err">proxy_redirect</span> <span class="err">off</span><span class="c">;
+</span>      <span class="err">add_header</span> <span class="err">Access-Control-Allow-Origin</span> <span class="err">*</span><span class="c">;
+</span>      <span class="err">add_header</span> <span class="err">Access-Control-Allow-Methods</span> <span class="err">'GET,POST,OPTIONS,PUT,DELETE'</span><span class="c">;
+</span>      <span class="err">add_header</span> <span class="err">Access-Control-Allow-Headers</span> <span class="err">'DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization'</span><span class="c">;
+</span>    <span class="err">}</span>
+
+    <span class="err">location</span> <span class="err">/nacos/</span> <span class="err">{</span>
+      <span class="err">proxy_pass</span> <span class="err">http://localhost:8848/nacos/</span><span class="c">;
+</span>      <span class="err">proxy_set_header</span> <span class="err">X-Forwarded-Proto</span> <span class="err">$scheme</span><span class="c">;
+</span>      <span class="err">proxy_set_header</span> <span class="err">X-Forwarded-Port</span> <span class="err">$server_port</span><span class="c">;
+</span>      <span class="err">proxy_set_header</span> <span class="err">X-Real-IP</span> <span class="err">$remote_addr</span><span class="c">;
+</span>      <span class="err">proxy_set_header</span> <span class="err">X-Forwarded-For</span> <span class="err">$proxy_add_x_forwarded_for</span><span class="c">;
+</span>    <span class="err">}</span>
+
+    <span class="err">location</span> <span class="err">/files</span> <span class="err">{</span>
+      <span class="err">alias</span> <span class="err">/home/upload/files</span><span class="c">;
+</span>      <span class="err">autoindex</span> <span class="err">on</span><span class="c">; #当设置为on的时候表示打开目录浏览功能
+</span>      <span class="err">autoindex_exact_size</span> <span class="err">on</span><span class="c">; #显示文件大小
+</span>      <span class="err">autoindex_localtime</span> <span class="err">on</span><span class="c">; #显示文件时间
+</span>    <span class="err">}</span>
+
+    <span class="err">location</span> <span class="err">/web/</span> <span class="err">{</span>
+      <span class="err">alias</span> <span class="err">/home/web/</span><span class="c">;
+</span>      <span class="err">autoindex_exact_size</span> <span class="err">on</span><span class="c">; #显示文件大小
+</span>      <span class="err">autoindex_localtime</span> <span class="err">on</span><span class="c">; #显示文件时间
+</span>    <span class="err">}</span>
+
+    <span class="c">#location /nginx_status {
+</span>    <span class="c">#stub_status on;
+</span>    <span class="c">#access_log off;
+</span>    <span class="c">#allow 127.0.0.1;
+</span>    <span class="c">#deny all;
+</span>    <span class="c">#}
+</span>    <span class="c">#location ~ .*\.(gif|jpg|jpeg|png|bmp|swf|flv|mp4|ico)$ {
+</span>    <span class="c">#expires 30d;
+</span>    <span class="c">#access_log off;
+</span>    <span class="c">#}
+</span>    <span class="c">#location ~ .*\.(js|css)?$ {
+</span>    <span class="c">#expires 7d;
+</span>    <span class="c">#access_log off;
+</span>    <span class="c">#}
+</span>    <span class="c">#location ~ {
+</span>    <span class="c">#proxy_pass http://127.0.0.1:8080;
+</span>    <span class="c">#include proxy.conf;
+</span>    <span class="c">#}
+</span>    <span class="c">#location ~ ^/(\.user.ini|\.ht|\.git|\.svn|\.project|LICENSE|README.md) {
+</span>    <span class="c">#deny all;
+</span>    <span class="c">#}
+</span>  <span class="err">}</span>
+<span class="c">##########################vhost#############################
+</span>  <span class="err">include</span> <span class="err">vhost/*.conf</span><span class="c">;
+</span><span class="err">}</span>
+</code></pre></div></div>
+
+<h3 id="反向代理thinkphp">反向代理thinkphp</h3>
+
+<div class="language-ini highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">#http://wiki.nginx.org/Pitfalls
+#http://wiki.nginx.org/QuickStart
+#http://wiki.nginx.org/Configuration
+</span>
+<span class="err">server</span> <span class="err">{</span>
+	<span class="err">listen</span> <span class="err">80</span> <span class="err">default_server</span><span class="c">;
+</span>	<span class="err">listen</span> <span class="nn">[::]</span><span class="err">:80</span> <span class="err">default_server</span><span class="c">;
+</span>
+	<span class="err">root</span> <span class="err">/var/www/html</span><span class="c">;
+</span>
+	<span class="err">index</span> <span class="err">index.php</span> <span class="err">index.html</span> <span class="err">index.htm</span> <span class="err">index.nginx-debian.html</span><span class="c">;
+</span>
+	<span class="err">server_name</span> <span class="err">_</span><span class="c">;
+</span>	<span class="err">location</span> <span class="err">/</span> <span class="err">{</span>
+        <span class="err">if</span> <span class="err">(!-e</span> <span class="err">$request_filename)</span> <span class="err">{</span>
+	        <span class="err">rewrite</span> <span class="err">^/index.php(.*)$</span> <span class="err">/index.php?</span><span class="py">s</span><span class="p">=</span><span class="s">$1 last;</span>
+	        <span class="err">rewrite</span> <span class="err">^(.*)$</span> <span class="err">/index.php?</span><span class="py">s</span><span class="p">=</span><span class="s">$1 last;</span>
+        	<span class="err">break</span><span class="c">;
+</span>	    <span class="err">}</span>
+	<span class="err">}</span>
+	<span class="err">sendfile</span> <span class="err">off</span><span class="c">;
+</span>	<span class="err">client_max_body_size</span> <span class="err">100m</span><span class="c">;
+</span>
+	<span class="err">location</span> <span class="err">~</span> <span class="err">\.php$</span> <span class="err">{</span>
+		<span class="err">root</span>    <span class="err">/var/www/html/</span><span class="c">;                           #php文件所在的根目录
+</span>		<span class="err">index</span> <span class="err">index.html</span> <span class="err">index.htm</span> <span class="err">index.php</span><span class="c">;
+</span>        <span class="err">fastcgi_pass</span> <span class="err">127.0.0.1:9000</span><span class="c">;                      #fpm监听的IP和端口
+</span>        <span class="err">fastcgi_index</span> <span class="err">index.php</span><span class="c">;
+</span>        <span class="err">fastcgi_param</span> <span class="err">SCRIPT_FILENAME</span> <span class="err">$document_root$fastcgi_script_name</span><span class="c">;
+</span>        <span class="err">include</span> <span class="err">fastcgi_params</span><span class="c">;
+</span>
+	<span class="err">}</span>
+	<span class="err">location</span> <span class="err">~</span> <span class="err">.*\.(gif|jpg|jpeg|png)$</span> <span class="err">{</span>  
+	    <span class="err">expires</span> <span class="err">24h</span><span class="c">;  
+</span>	<span class="err">}</span>
+
+<span class="err">}</span>
+</code></pre></div></div>
+
+<h2 id="参考文献">参考文献</h2>
+
+<ul>
+  <li><a href="http://nginx.org/en/linux_packages.html#RHEL-CentOS">nginx linux package</a></li>
+  <li><a href="http://nginx.org/en/docs/">Nginx 官方文档</a></li>
+</ul>
+
+<h2 id="脚注">脚注</h2>
+
+<div class="footnotes" role="doc-endnotes">
+  <ol>
+    <li id="fn:1" role="doc-endnote">
+      <p>2021-03-03 更新 <a href="#fnref:1" class="reversefootnote" role="doc-backlink">&#8617;</a></p>
+    </li>
+  </ol>
+</div>
+
+
+</article><br/>
+<br/>
+<p style="display: block;text-align:center;">©2012-2022 huangdayu.cn(大鱼叔叔的博客) 版权所有，未经授权，不得转载。</p>
+<br/>
+<a style="display: block;text-align:right;" href="/">Back</a>
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  
+  <script src="/assets/js/close_copy.js"></script>
+  
+
+  
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <title>领域驱动设计学习笔记</title>
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/private/icons/huangdayu.png" />
+  <link rel="stylesheet" href="/assets/css/main.css" />
+</head><body a="light">
+    <main class="page-content" aria-label="Content">
+      <div class="w">
+        <a href="/">Back</a><article>
+  
+  <h1 class="post-header">领域驱动设计学习笔记</h1>
+
+  <p class="post-meta">
+    <time datetime="2021-10-23 00:00:00 +0800">2021-10-23</time>
+  </p>
+  
+  <h2 id="前言">前言</h2>
+
+<p>DDD是为解决复杂软件难以设计，理解，开发，维护，演进，边界模糊等问题而生的，通过事件风暴使用通用语言对业务进行建模，对领域上下文进行限界的一种设计设计思想。</p>
+
+<h2 id="基本概念">基本概念</h2>
+
+<p><img src="https://domain-driven-design.org/zh/ddd-concept-reference/concept-map-hd.png" alt="" title="DDD基本概念" /></p>
+
+<p><img src="..\resources\images\2021-09-27-ddd-composition.jpg" alt="" /></p>
+
+<p><img src="..\resources\images\2021-09-27-ddd-structure.jpg" alt="" /></p>
+
+<h2 id="核心概念描述">核心概念描述</h2>
+
+<blockquote>
+  <p><strong>限界上下文（Bounded Context）</strong></p>
+
+  <p>领域指的是业务领域，而限界上下文指的是业务的语义和语境上的边界。</p>
+</blockquote>
+
+<blockquote>
+  <p><strong>问题空间（Problem Space）</strong></p>
+
+  <p>给定项目的约束条件下进行高级战略分析与设计的各个步骤的地方。</p>
+</blockquote>
+
+<blockquote>
+  <p><strong>解决方案空间（Solution Space）</strong></p>
+
+  <p>就是真正实施解决方案的地方，这些解决方案在问题空间讨论中被识别为核心域（<code class="language-plaintext highlighter-rouge">Core Domain</code>）</p>
+</blockquote>
+
+<blockquote>
+  <p><strong>通用语言（Ubiquitous Language）</strong></p>
+
+  <p>指特定领域的专用概念和需求术语。</p>
+</blockquote>
+
+<blockquote>
+  <p><strong>子域（Sub Domain）</strong></p>
+
+  <p>子域是整个业务领域的一部分，它可以代表一个单一的，有逻辑的领域模型，它也可以是一个明确的业务领域，它为核心领域提供解决方案。</p>
+</blockquote>
+
+<blockquote>
+  <p><strong>上下文映射（Context Map）</strong></p>
+
+  <p>核心域与其他子域之间进行集成，他们的集成关系称为上下文映射。通常使用上下文映射图来展示它们的关系。</p>
+</blockquote>
+
+<blockquote>
+  <p><strong>实体（Entity）</strong></p>
+
+  <p>一个实体模型就是一个独立的事物。当一个对象由其唯一标识（而不是属性）区分时，这种对象称为实体（Entity），例如公民身份证，中央银行发行的数字人民币。</p>
+</blockquote>
+
+<blockquote>
+  <p><strong>值对象（Value Object）</strong></p>
+
+  <p>值对象是对一个不变的概念整体所建立的模型。当一个对象用于对事务进行描述而没有唯一标识时，它被称为值对象（<code class="language-plaintext highlighter-rouge">Value Object</code> ），或称为数据传输对象（<code class="language-plaintext highlighter-rouge">Data Transfer Object</code>）。它是贫血模型，它只是数据容器。</p>
+</blockquote>
+
+<blockquote>
+  <p><strong>聚合（Aggregate ）</strong></p>
+
+  <p>聚合由一个或多个实体组成，其中最核心的实体称为聚合根，聚合中还包括值对象。聚合是高内聚的，每一个聚合都会形成保证事务一致性的边界。它可以是运行时一致性，也可以是最终一致性。聚合在一定程度上与存储器中的数据持久化对象（<code class="language-plaintext highlighter-rouge">Persistent Object</code>）是相对应的。</p>
+</blockquote>
+
+<blockquote>
+  <p><strong>聚合根（Aggregate Root）</strong></p>
+
+  <p>Aggregate(聚合）是一组相关对象的集合，作为一个整体被外界访问，聚合根是这个聚合的根节点。</p>
+</blockquote>
+
+<blockquote>
+  <p><strong>领域模型（Domain Model）</strong></p>
+
+  <p>它是对业务领域的建模，以提供服务的对象，或称为领域模型（<code class="language-plaintext highlighter-rouge">Domain Object</code>）。它是充血模型，它是不仅有数据，还有行为，它是服务提供方。 领域模型的表现形式有服务（<code class="language-plaintext highlighter-rouge">Service</code>），值对象（<code class="language-plaintext highlighter-rouge">Value Object</code>），实体（<code class="language-plaintext highlighter-rouge">Entity</code>），模块（<code class="language-plaintext highlighter-rouge">Modules</code>）。</p>
+</blockquote>
+
+<blockquote>
+  <p><strong>领域服务（Domain Service）</strong></p>
+
+  <p>一些重要的领域行为或操作，可以归类为领域服务。它既不是实体，也不是值对象的范畴。</p>
+</blockquote>
+
+<blockquote>
+  <p><strong>领域事件（Domain Event）</strong></p>
+
+  <p>领域事件是一条记录，记录着在限界上下文中发生的对业务产生重要影响的事情。领域事件是对领域内发生的活动进行的建模。</p>
+</blockquote>
+
+<blockquote>
+  <p><strong>事件溯源（Event Sourcing）</strong></p>
+
+  <p>事件溯源可以理解为对所有发生在聚合实例上的领域事件进行有序持久化，并把它们当作对聚合实例变化的记录。</p>
+</blockquote>
+
+<blockquote>
+  <p><strong>事件风暴（Event storming）</strong></p>
+
+  <p>开发人员和业务人员定义在开发过程中使用的单一（普遍存在的）语言的重要事件。事件风暴是一种 “自底向上” 的设计方法，先关注具体的业务细节，然后通过归纳、聚合、抽象的方法获得整体层面的认知和设计。</p>
+</blockquote>
+
+<blockquote>
+  <p><strong>资源库（Repository）</strong></p>
+
+  <p>资源库用于保存和获取聚合对象，在这一点上，资源库与DAO多少有些相似之处。但是，资源库和DAO是存在显著区别的。DAO只是对数据库的一层很薄的封装，而资源库则更加具有领域特征。另外，所有的实体都可以有相应的DAO，但并不是所有的实体都有资源库，只有聚合才有相应的资源库。</p>
+</blockquote>
+
+<blockquote>
+  <p><strong>基础设施（Infrastructure）</strong></p>
+
+  <p>跟整洁架构和六边形架构中的基础设施是一样的定义，代指出业务领域代码之外的实现细节，比如Web框架，IOC框架，AOP框架和ORM框架。</p>
+</blockquote>
+
+<h2 id="建模原理">建模原理</h2>
+
+<p><img src="https://domain-driven-design.org/zh/ddd-design-workshop-guide/process.png" alt="" title="DDD建模原理" /></p>
+
+<h2 id="领域类型">领域类型</h2>
+
+<ol>
+  <li>核心域（可扩展性，可迭代性）</li>
+  <li>通用子域（可兼容性，稳定性）</li>
+  <li>支撑子域（可替代性，可复用性）</li>
+</ol>
+
+<h2 id="领域上下文">领域上下文</h2>
+
+<ol>
+  <li>领域对象（Entity &amp; DO）</li>
+  <li>领域上下文（Context）</li>
+  <li>领域聚合根（Aggregate Root）</li>
+  <li>领域服务（Use Case / Service）</li>
+  <li>领域事件（Domain Event）</li>
+  <li>领域存储库与持久化对象（Repository / DAO &amp; PO）</li>
+  <li>领域接口防腐层和传输对象（Interface &amp; DTO）</li>
+  <li>领域集成上下文映射（Context Mapping）</li>
+</ol>
+
+<h2 id="数据流转">数据流转</h2>
+
+<pre><code class="language-flow">e0=&gt;operation: DTO
+e1=&gt;operation: DO
+e2=&gt;operation: PO
+
+e0(right)-&gt;e1(right)-&gt;e2
+</code></pre>
+
+<h2 id="领域服务与应用服务的区别">领域服务与应用服务的区别</h2>
+
+<p>领域服务处理特定领域的核心业务，而应用服务则处理软件系统的特定应用场景，或者叫用例（<code class="language-plaintext highlighter-rouge">UserCase</code>）。应用服务处理侧重于系统的横切面需求，如事物，安全等，也会通过限界上下文映射调用多个领域服务以满足应用场景的需要。领域服务是提供者，也应用服务是消费者。</p>
+
+<h2 id="战略设计与战术设计的区别">战略设计与战术设计的区别</h2>
+
+<p>战略设计主要从高层“俯视”我们的软件系统，帮助我们精准地划分领域以及处理各个领域之间的关系；而战术设计则将战略设计进行具体化和细节化，从技术实现的层面教会我们如何具体地实施DDD。</p>
+
+<h2 id="实体和值对象的区别">实体和值对象的区别</h2>
+
+<p>实体表示那些具有生命周期并且会在其生命周期中发生改变的东西；而值对象则表示起描述性作用的并且可以相互替换的概念。多数领域概念都可以建模成值对象，而非实体。值对象就像软件系统中的过客一样，具有“创建后不管”的特征，因此，我们不需要像关心实体那样去关心诸如生命周期和持久化等问题。</p>
+
+<h2 id="事务一致性与最终一致性的区别">事务一致性与最终一致性的区别</h2>
+
+<p>使用聚合的首要原则为在一次事务中，最多只能更改一个聚合的状态。如果一次业务操作涉及到了对多个聚合状态的更改，那么应该采用发布领域事件的方式通知相应的聚合。此时的数据一致性便从事务一致（Transactional Consistency）性变成了最终一致性（Eventual Consistency）。</p>
+
+<h2 id="领域限界上下文之间的关系">领域限界上下文之间的关系</h2>
+
+<ol>
+  <li>合作关系：彼此相互紧密关联，相互依赖；</li>
+  <li>共享内核：两个上下文之间共享者一个小规模但通用的模型，他们存在交集；</li>
+  <li>客户与供应商关系：供应商属于上游服务，而客户端属于下游服务，供应商满足客户端的需求；</li>
+  <li>跟随着：与上一种关系相似，但是上游服务不会满足客户端的需求，而是客户端适配上游服务的模型；</li>
+  <li>防腐层：下游服务在其模型与上游服务的模型之间创建了适配层，隔离了两者之间的变更；</li>
+  <li>开放主机服务：定义一套协议或接口，让限界上下文可以被当成一组领域服务访问；</li>
+  <li>已发布的语言：将领域服务的开放接口以一种丰富文档的语言进行发布，共消费者使用；</li>
+  <li>各行其道：各领域服务相互独立，提供自己的解决方案；</li>
+  <li>大泥球：各种领域上下文相互集成，相互耦合，形成紧密的单体。</li>
+</ol>
+
+<h2 id="ddd总结">DDD总结</h2>
+
+<ul>
+  <li>对象承载数据</li>
+  <li>实体包含规则</li>
+  <li>接口隔离实现</li>
+  <li>命令创造事件</li>
+  <li>事件驱动聚合</li>
+  <li>聚合封装模型</li>
+  <li>聚合操作存储</li>
+  <li>聚合实现业务</li>
+  <li>聚合事务独立</li>
+  <li>聚合最终一致</li>
+  <li>聚合职责单一</li>
+  <li>聚合相互独立</li>
+  <li>工厂构造聚合</li>
+  <li>模块封装聚合</li>
+  <li>服务交互聚合</li>
+  <li>聚合组成领域</li>
+  <li>服务开放领域</li>
+  <li>领域划分边界</li>
+  <li>映射关联领域</li>
+  <li>领域彼此限界</li>
+  <li>子域通用支撑</li>
+  <li>核域强调重心</li>
+  <li>应用消费领域</li>
+</ul>
+
+<h2 id="参考文献">参考文献</h2>
+
+<ul>
+  <li><a href="https://insights.thoughtworks.cn/ddd-in-distributed-system/">在分布式系统中使用 DDD</a></li>
+  <li><a href="https://insights.thoughtworks.cn/ddd-split-microservices/">用DDD指导微服务拆分</a></li>
+  <li><a href="https://www.jianshu.com/p/a775836c7e25">DDD分层架构的三种模式</a></li>
+  <li><a href="https://tech.meituan.com/2017/12/22/ddd-in-practice.html">领域驱动设计在互联网业务开发中的实践</a></li>
+  <li><a href="https://www.processon.com/view/5e55d17ee4b069f82a120d06">DDD 思维导图</a></li>
+  <li><a href="https://domain-driven-design.org/zh/ddd-concept-reference.html">DDD 概念参考</a></li>
+  <li><a href="https://domain-driven-design.org/zh/ddd-design-workshop-guide.html">DDD 建模工作坊指南</a></li>
+  <li><a href="https://insights.thoughtworks.cn/path-to-ddd/">DDD实现之路</a></li>
+</ul>
+
+<h2 id="版本记录">版本记录</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">时间</th>
+      <th style="text-align: center">说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">2021-10-23</td>
+      <td style="text-align: center">初稿</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2022-01-23</td>
+      <td style="text-align: center">发布</td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+</article><br/>
+<br/>
+<p style="display: block;text-align:center;">©2012-2022 huangdayu.cn(大鱼叔叔的博客) 版权所有，未经授权，不得转载。</p>
+<br/>
+<a style="display: block;text-align:right;" href="/">Back</a>
+      </div>
+    </main>
+  </body>
+</html>

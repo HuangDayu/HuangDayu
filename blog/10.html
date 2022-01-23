@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  
+  <script src="/assets/js/close_copy.js"></script>
+  
+
+  
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <title>VIM学习笔记</title>
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/private/icons/huangdayu.png" />
+  <link rel="stylesheet" href="/assets/css/main.css" />
+</head><body a="light">
+    <main class="page-content" aria-label="Content">
+      <div class="w">
+        <a href="/">Back</a><article>
+  
+  <h1 class="post-header">VIM学习笔记</h1>
+
+  <p class="post-meta">
+    <time datetime="2017-04-17 18:22:22 +0800">2017-04-17</time>
+  </p>
+  
+  <h3 id="vim的三种模式">Vim的三种模式：</h3>
+<ul>
+  <li>命令模式：可以移动光标、删除字符等（ESC）</li>
+  <li>编辑模式：在此模式下可以输入字符，按ESC将回到命令模式（（光标左边插入）i/s（删除光标当前字符并插入）/a(光标右边插入)）</li>
+  <li>末行模式：可以保存文件、退出vi、设置vi、查找等功能(低行模式也可以看作是命令模式里的)（:wq/:x/:q!）</li>
+</ul>
+
+<!-- more -->
+
+<h3 id="重装vim">重装vim</h3>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get remove vim-common
+<span class="nb">sudo </span>apt-get <span class="nb">install </span>vim
+</code></pre></div></div>
+
+<h3 id="配置vim">配置vim</h3>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vim /etc/vim/vimrc
+<span class="c"># 显示行号</span>
+<span class="nb">set </span>nu  
+<span class="c"># 语法高亮</span>
+syntax on  
+<span class="c"># tab退四格</span>
+<span class="nb">set </span><span class="nv">tabstop</span><span class="o">=</span>4  
+<span class="c"># 取消显示行号</span>
+<span class="nb">set </span>nonu 
+</code></pre></div></div>
+
+<blockquote>
+  <p>打开文件、保存、关闭文件(vi命令模式下使用)</p>
+  <ul>
+    <li>vi filename     //打开filename文件</li>
+    <li>:w              //保存文件</li>
+    <li>:q              //退出编辑器，如果文件已修改请使用下面的命令</li>
+    <li>:q!             //退出编辑器，且不保存</li>
+    <li>:wq             //退出编辑器，且保存文件
+插入文本或行(vi命令模式下使用，执行下面命令后将进入插入模式，按ESC键可退出插入模式)</li>
+    <li>a     //在当前光标位置的右边添加文本</li>
+    <li>i     //在当前光标位置的左边添加文本</li>
+    <li>A     //在当前行的末尾位置添加文本</li>
+    <li>I     //在当前行的开始处添加文本(非空字符的行首)</li>
+    <li>o     //在当前行的下面新建一行</li>
+    <li>O     //在当前行的上面新建一行</li>
+    <li>r     //替换当前字符</li>
+    <li>R     //替换(覆盖)当前光标位置及后面的若干文本</li>
+    <li>J     //合并光标所在行及下一行为一行(依然在命令模式)
+删除、恢复字符或行(vi命令模式下使用)</li>
+    <li>x      //删除光标当前字符</li>
+    <li>X      //删除光标前一个字符</li>
+    <li>nx     //删除从光标开始的n个字符</li>
+    <li>dd     //删除当前行</li>
+    <li>D/dw   //删除光标后的本行内容</li>
+    <li>d0     //删除光标前的本行内容</li>
+    <li>ndd    //向下删除当前行在内的n行（n表示行数）</li>
+    <li>u      //撤销上一步操作</li>
+    <li>U      //撤销对当前行的所有操作</li>
+    <li>Ctrl+r //反撤销</li>
+    <li>.     //重复执行上一条操作指令</li>
+    <li>”»”   //文本向右移动4个空格（1个tab）</li>
+    <li>”«”   //文本向左移动4个空格（1个tab）
+复制、粘贴(vi命令模式下使用)</li>
+    <li>yy     //将当前行复制到缓存区</li>
+    <li>nyy    //将当前行向下n行复制到缓冲区</li>
+    <li>yw     //复制从光标开始到词尾的字符</li>
+    <li>nyw    //复制从光标开始的n个单词</li>
+    <li>y^     //复制从光标到行首的内容</li>
+    <li>y$     //复制从光标到行尾的内容</li>
+    <li>p      //粘贴剪切板里的内容在光标后</li>
+    <li>P（大写）   //粘贴剪切板里的内容在光标前</li>
+    <li>dd        //剪切（如果不使用p剪切就表示删除）</li>
+    <li>v         //按字符移动，多行选中(使用上下左右)</li>
+    <li>V         //按行移动
+查找功能</li>
+    <li>/          //查找</li>
+    <li>n          //下一个</li>
+    <li>N          //上一个
+替换动能(末行模式下)：s///g 原则</li>
+    <li>替换内容区域 / 被替换内容 / 替换内容 /g</li>
+    <li>
+      <ul>
+        <li>例如：替换整个文件中的print替换成print()</li>
+      </ul>
+    </li>
+    <li>
+      <ul>
+        <li>:%s/print/print()/g</li>
+      </ul>
+    </li>
+    <li>
+      <ul>
+        <li>%：表示整篇文档中的内容，可以换成指定行数之间更改</li>
+      </ul>
+    </li>
+    <li>
+      <ul>
+        <li>例如：把10行到20行中的所有的a换成A</li>
+      </ul>
+    </li>
+    <li>:10,20s/a/A/g</li>
+    <li>代码缩进（末行模式下） 起始行,截止行&gt;(一个&gt;表示一个tab)</li>
+    <li>
+      <ul>
+        <li>例如：</li>
+      </ul>
+    </li>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li>:10,20&gt;</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li>:21,25»»&gt;</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <ul>
+        <li>
+          <ul>
+            <li>:20,25«&lt;</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li>vim编辑器下执行shell命令(末行模式下)</li>
+    <li>:!sudo apt-get install gedit</li>
+    <li>命令模式下上下左右移动光标：</li>
+    <li>
+      <ul>
+        <li>k:上</li>
+      </ul>
+    </li>
+    <li>
+      <ul>
+        <li>j:下</li>
+      </ul>
+    </li>
+    <li>
+      <ul>
+        <li>h:左</li>
+      </ul>
+    </li>
+    <li>
+      <ul>
+        <li>l:右</li>
+      </ul>
+    </li>
+    <li>快速定位到某一行：</li>
+    <li>
+      <ul>
+        <li>命令模式下）行号+G</li>
+      </ul>
+    </li>
+  </ul>
+</blockquote>
+
+
+</article><br/>
+<br/>
+<p style="display: block;text-align:center;">©2012-2022 huangdayu.cn(大鱼叔叔的博客) 版权所有，未经授权，不得转载。</p>
+<br/>
+<a style="display: block;text-align:right;" href="/">Back</a>
+      </div>
+    </main>
+  </body>
+</html>

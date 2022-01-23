@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  
+  <script src="/assets/js/close_copy.js"></script>
+  
+
+  
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <title>MySQL学习笔记</title>
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/private/icons/huangdayu.png" />
+  <link rel="stylesheet" href="/assets/css/main.css" />
+</head><body a="light">
+    <main class="page-content" aria-label="Content">
+      <div class="w">
+        <a href="/">Back</a><article>
+  
+  <h1 class="post-header">MySQL学习笔记</h1>
+
+  <p class="post-meta">
+    <time datetime="2017-03-17 04:22:22 +0800">2017-03-17</time>
+  </p>
+  
+  <h1 id="ubuntu--mysql">Ubuntu &amp; MySQL</h1>
+
+<hr />
+
+<h2 id="install">Install</h2>
+
+<h3 id="使用命令安装">使用命令安装</h3>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt <span class="nb">install </span>mysql-server mysql-common
+</code></pre></div></div>
+
+<h3 id="修改配置文件">修改配置文件</h3>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vim /etc/mysql/my.cnf
+</code></pre></div></div>
+
+<h3 id="开启服务">开启服务</h3>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>systemctl start mysql
+<span class="c"># 或者</span>
+<span class="nb">sudo </span>service mysql start
+</code></pre></div></div>
+
+<h3 id="关闭服务">关闭服务</h3>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>systemctl stop mysql
+<span class="c"># 或者</span>
+<span class="nb">sudo </span>service mysql stop
+</code></pre></div></div>
+
+<h3 id="本地登录mysql">本地登录MySQL</h3>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql <span class="nt">-u</span> root <span class="nt">-p</span> passwd
+</code></pre></div></div>
+
+<blockquote>
+  <p>dpkg: error processing mysql-server (–configure) 问题的解决办法是完整卸载重新安装</p>
+</blockquote>
+
+<h2 id="remove">Remove</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>apt-get remove <span class="nt">-y</span> mysql-server
+<span class="nb">sudo </span>apt-get autoremove <span class="nt">-y</span> mysql-server
+<span class="nb">sudo </span>apt-get remove <span class="nt">-y</span> mysql-common
+<span class="nb">sudo rm</span> /var/lib/mysql/ <span class="nt">-R</span>
+<span class="nb">sudo rm</span> /etc/mysql/ <span class="nt">-R</span>
+<span class="nb">sudo </span>apt-get autoremove <span class="nt">-y</span> mysql<span class="k">*</span> <span class="nt">--purge</span>
+<span class="nb">sudo </span>apt-get remove <span class="nt">-y</span> apparmor
+<span class="nb">sudo </span>apt-get dist-upgrade
+<span class="nb">sudo </span>reboot
+</code></pre></div></div>
+
+<h3 id="查看是否运行">查看是否运行</h3>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>netstat <span class="nt">-tap</span> | <span class="nb">grep </span>mysql
+<span class="c">#或者</span>
+netstat <span class="nt">-anp</span> | <span class="nb">grep </span>3306
+</code></pre></div></div>
+
+<h3 id="远程失败解决">远程失败解决</h3>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vim /etc/mysql/mysql.conf.d/mysqld.cnf
+<span class="c">#注释掉下面这个配置项</span>
+<span class="c">#bind-address           = 127.0.0.1</span>
+</code></pre></div></div>
+
+<h1 id="centos--mysql">CentOS &amp; MySQL</h1>
+
+<hr />
+
+<h2 id="install-1">Install</h2>
+
+<h3 id="切换源">切换源</h3>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>wget https://dev.mysql.com/get/mysql57-community-release-el7-11.noarch.rpm
+rpm <span class="nt">-ivh</span> mysql57-community-release-el7-11.noarch.rpm
+</code></pre></div></div>
+
+<h3 id="使用命令安装-1">使用命令安装</h3>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum <span class="nb">install</span> <span class="nt">-y</span> mysql-server
+</code></pre></div></div>
+
+<h3 id="开启服务-1">开启服务</h3>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>systemctl start mysqld
+<span class="c"># 或者</span>
+<span class="nb">sudo </span>service mysqld start
+<span class="c"># 或者</span>
+systemctl start mysqld.service
+</code></pre></div></div>
+
+<h3 id="重启服务">重启服务</h3>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>systemctl restart mysqld
+<span class="c"># 或者</span>
+<span class="nb">sudo </span>service mysqld restart
+<span class="c"># 或者</span>
+systemctl restart mysqld.service
+</code></pre></div></div>
+
+<h3 id="关闭服务-1">关闭服务</h3>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>systemctl stop mysqld
+<span class="c"># 或者</span>
+<span class="nb">sudo </span>service mysqld stop
+<span class="c"># 或者</span>
+systemctl stop mysqld.service
+</code></pre></div></div>
+
+<h3 id="查看是否成功启动服务">查看是否成功启动服务</h3>
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>ps aux|grep mysqld
+</code></pre></div></div>
+
+<h3 id="设置开机启动">设置开机启动</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># 添加开机启动</span>
+chkconfig <span class="nt">--add</span> mysqld
+<span class="c"># 开机启动：</span>
+chkconfig mysqld on
+<span class="c"># 查看开机启动设置是否成功</span>
+chkconfig <span class="nt">--list</span> | <span class="nb">grep </span>mysql<span class="k">*</span> mysqld 
+<span class="c"># 0:关闭 1:关闭 2:启用 3:启用 4:启用 5:启用 6:关闭停止</span>
+
+<span class="c"># 开机自启动 </span>
+chkconfig mysqld on
+<span class="c"># 或者 </span>
+systemctl <span class="nb">enable </span>mysqld.service
+<span class="c"># 取消开机自启动 </span>
+chkconfig mysqld off
+<span class="c"># 或者 </span>
+systemctl disable mysqld.service
+</code></pre></div></div>
+
+<h2 id="remove-1">Remove</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>rpm <span class="nt">-qa</span> | <span class="nb">grep </span>mysql<span class="k">*</span>
+<span class="nb">sudo </span>yum <span class="nt">-y</span> remove mysql<span class="k">*</span>
+<span class="nb">sudo rm</span> <span class="nt">-rf</span> /var/lib/mysql/<span class="k">*</span>
+</code></pre></div></div>
+
+<h1 id="mariadb">Mariadb</h1>
+
+<h2 id="install-2">Install</h2>
+
+<h3 id="换国内源">换国内源</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">touch</span> /etc/yum.repos.d/MariaDB.repo <span class="o">&amp;&amp;</span> vim /etc/yum.repos.d/MariaDB.repo
+</code></pre></div></div>
+
+<pre><code class="language-repo">[mariadb]
+name = MariaDB
+baseurl = http://mirrors.ustc.edu.cn/mariadb/yum/10.2/centos7-amd64/
+gpgkey=http://mirrors.ustc.edu.cn/mariadb/yum/RPM-GPG-KEY-MariaDB
+gpgcheck=1
+</code></pre>
+
+<h1 id="安装">安装</h1>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>yum <span class="nb">install </span>MariaDB-server MariaDB-client
+</code></pre></div></div>
+
+<h3 id="进程管理">进程管理</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>systemctl start mariadb
+<span class="nb">sudo </span>systemctl status mariadb
+<span class="nb">sudo </span>systemctl stop mariadb
+<span class="nb">sudo </span>systemctl restart mariadb
+<span class="c"># 开启自启动</span>
+<span class="nb">sudo </span>systemctl <span class="nb">enable </span>mariadb
+<span class="c"># 关闭自启动</span>
+<span class="nb">sudo </span>systemctl disable mariadb
+</code></pre></div></div>
+
+<h3 id="远程连接">远程连接</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql <span class="nt">-uroot</span> <span class="nt">-hhostname</span>.com <span class="nt">-psqlpassword</span>
+</code></pre></div></div>
+
+<h2 id="remove-2">Remove</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>rpm <span class="nt">-qa</span> | <span class="nb">grep </span>maria<span class="k">*</span>
+<span class="nb">sudo </span>yum <span class="nt">-y</span> remove maria<span class="k">*</span>
+<span class="nb">sudo rm</span> <span class="nt">-rf</span> /var/lib/mysql/<span class="k">*</span>
+</code></pre></div></div>
+
+<h1 id="导出">导出</h1>
+
+<hr />
+
+<h2 id="导出数据和表结构">导出数据和表结构</h2>
+
+<ul>
+  <li>MySQL 命令目录</li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">cd</span> /usr/local/mysql/bin/
+</code></pre></div></div>
+
+<blockquote>
+  <p>mysqldump -u 用户名 -p 密码 数据库名 &gt; 数据库名.sql</p>
+</blockquote>
+
+<ul>
+  <li>shell</li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysqldump <span class="nt">-u</span> root <span class="nt">-p</span> password abc <span class="o">&gt;</span> abc.sql
+</code></pre></div></div>
+
+<ul>
+  <li>sql</li>
+</ul>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">abc</span> <span class="o">&gt;</span> <span class="n">abc</span><span class="p">.</span><span class="k">sql</span>
+</code></pre></div></div>
+
+<!-- more -->
+
+<h2 id="只导出表结构---d">只导出表结构  -d</h2>
+
+<blockquote>
+  <p>mysqldump -u 用户名 -p 密码 -d 数据库名 &gt; 数据库名.sql</p>
+</blockquote>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysqldump <span class="nt">-u</span> root <span class="nt">-p</span> password <span class="nt">-d</span> abc <span class="o">&gt;</span> abc.sql
+</code></pre></div></div>
+
+<ul>
+  <li>sql</li>
+</ul>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">-</span><span class="n">d</span> <span class="n">abc</span> <span class="o">&gt;</span> <span class="n">abc</span><span class="p">.</span><span class="k">sql</span>
+</code></pre></div></div>
+
+<h1 id="导入">导入</h1>
+
+<hr />
+
+<h2 id="方法一">方法一</h2>
+
+<h3 id="创建新的空的数据库">创建新的空的数据库</h3>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">create</span> <span class="k">database</span> <span class="n">dbName</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="选择数据库">选择数据库</h3>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">use</span> <span class="n">daName</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="设置数据库编码-utf-8">设置数据库编码 UTF-8</h3>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">set</span> <span class="n">dbName</span> <span class="n">utf8mb4</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h3 id="导入数据">导入数据</h3>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">source</span> <span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">dbName</span><span class="p">.</span><span class="k">sql</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h2 id="方法二">方法二</h2>
+
+<blockquote>
+  <p>mysql -u 用户名 -p 密码 数据库名 &lt; 数据库名.sql</p>
+</blockquote>
+
+<ul>
+  <li>shell</li>
+</ul>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql <span class="nt">-u</span> root <span class="nt">-p</span> password dbName &lt; dbName.sql
+</code></pre></div></div>
+
+<ul>
+  <li>sql</li>
+</ul>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">dbName</span> <span class="o">&lt;</span> <span class="n">dbName</span><span class="p">.</span><span class="k">sql</span><span class="p">;</span>
+</code></pre></div></div>
+
+<h1 id="填坑">填坑</h1>
+
+<h2 id="填坑一">填坑一</h2>
+
+<p><span style="color:#ff0000;font-weight:bold;">ERROR 1045 (28000): Access denied for user ‘root’@’192.168.1.249’ (using password: NO)</span></p>
+
+<p><code class="language-plaintext highlighter-rouge">原因</code>：密码错误!</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>vim my.ini
+</code></pre></div></div>
+
+<p>添加 <code class="language-plaintext highlighter-rouge">skip-grant-tables</code>，然后重启；</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql <span class="nt">-u</span> root <span class="nt">-p</span>
+</code></pre></div></div>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">use</span> <span class="n">mysql</span><span class="p">;</span>
+<span class="k">update</span> <span class="k">user</span> <span class="k">set</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">(</span><span class="nv">"newpassword"</span><span class="p">)</span> <span class="k">where</span> <span class="k">user</span><span class="o">=</span><span class="nv">"root"</span><span class="p">;</span>
+<span class="n">flush</span> <span class="k">privileges</span><span class="p">;</span>
+<span class="n">quit</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>第二种办法</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysqld_safe <span class="nt">--user</span><span class="o">=</span>mysql <span class="nt">--skip-grant-tables</span> <span class="nt">--skip-networking</span> &amp;
+mysql <span class="nt">-u</span> root mysql
+MariaDB <span class="o">[</span>mysql]&gt; UPDATE user SET <span class="nv">PASSWORD</span><span class="o">=</span>PASSWORD<span class="o">(</span><span class="s1">'newpassword'</span><span class="o">)</span> where <span class="nv">USER</span><span class="o">=</span><span class="s1">'root'</span><span class="p">;</span>
+MariaDB <span class="o">[</span>mysql]&gt; FLUSH PRIVILEGES<span class="p">;</span>
+MariaDB <span class="o">[</span>mysql]&gt; QUIT<span class="p">;</span>
+</code></pre></div></div>
+
+<h2 id="填坑二">填坑二</h2>
+
+<p><span style="color:#ff0000;font-weight:bold;">ERROR 1045 (28000): Access denied for user ‘root’@’192.168.1.249’ (using password: YES)</span></p>
+
+<p><code class="language-plaintext highlighter-rouge">原因</code>：密码正确，但是禁止远程连接!</p>
+
+<div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">GRANT</span> <span class="k">ALL</span> <span class="k">PRIVILEGES</span> <span class="k">ON</span> <span class="o">*</span><span class="p">.</span><span class="o">*</span> <span class="k">TO</span> <span class="s1">'root'</span><span class="o">@</span><span class="s1">'%'</span> <span class="n">IDENTIFIED</span> <span class="k">BY</span> <span class="s1">'newpassword'</span> <span class="k">WITH</span> <span class="k">GRANT</span> <span class="k">OPTION</span><span class="p">;</span>
+<span class="n">FLUSH</span> <span class="k">PRIVILEGES</span><span class="p">;</span>
+<span class="n">QUIT</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>GRANT ALL PRIVILEGES ON <em>.</em> TO ‘用户名’@’要指定的IP地址’ IDENTIFIED BY ‘设置的密码’ WITH GRANT OPTION;</p>
+
+<h2 id="填坑三">填坑三</h2>
+
+<p><span style="color:#ff0000;font-weight:bold;">ERROR 1045 (28000): Access denied for user ‘root’@’localhost’ (using password: YES)</span></p>
+
+<p><code class="language-plaintext highlighter-rouge">原因</code>：密码正确，但是禁止本地登录！</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@izwz951e3fbtauq6d7ez9gz mariadb]# systemctl stop mariadb
+<span class="o">[</span>root@izwz951e3fbtauq6d7ez9gz mariadb]# mysqld_safe <span class="nt">--user</span><span class="o">=</span>mysql <span class="nt">--skip-grant-tables</span> <span class="nt">--skip-networking</span> &amp;
+<span class="c"># 命令行键入</span>
+mysql <span class="nt">-u</span> root mysql
+
+MariaDB <span class="o">[</span>mysql]&gt; use mysql<span class="p">;</span>
+MariaDB <span class="o">[</span>mysql]&gt; UPDATE user SET <span class="nv">Password</span><span class="o">=</span>PASSWORD<span class="o">(</span><span class="s1">'newpassword'</span><span class="o">)</span> where <span class="nv">USER</span><span class="o">=</span><span class="s1">'root'</span> and <span class="nv">host</span><span class="o">=</span><span class="s1">'root'</span> or <span class="nv">host</span><span class="o">=</span><span class="s1">'localhost'</span><span class="p">;</span>
+MariaDB <span class="o">[</span>mysql]&gt; flush privileges<span class="p">;</span>
+MariaDB <span class="o">[</span>mysql]&gt; quit<span class="p">;</span>
+<span class="nb">sudo </span>reboot
+</code></pre></div></div>
+
+<h2 id="填坑四">填坑四</h2>
+
+<p><span style="color:#ff0000;font-weight:bold;">ERROR 2002 (HY000): Can’t connect to local MySQL server through socket ‘/var/run/mysqld/mysqld.sock’ (2 “No such file or directory”)</span></p>
+
+<p><code class="language-plaintext highlighter-rouge">原因</code>：找不到socket连接文件!</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>root@izwz951e3fbtauq6d7ez9gz ~]# find / <span class="nt">-name</span> <span class="s2">"*.sock"</span>
+/var/lib/mysql/mysql.sock
+mysql <span class="nt">--socket</span><span class="o">=</span>/var/lib/mysql/mysql.sock
+</code></pre></div></div>
+
+<p>或者使用如下命令进行远程连接</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>mysql <span class="nt">-uroot</span> <span class="nt">-hhostname</span>.com <span class="nt">-psqlpassword</span>
+</code></pre></div></div>
+
+<h1 id="参考文献">参考文献</h1>
+
+<p><a href="https://blog.csdn.net/p__csdn/article/details/72675840">yum安装MariaDB（使用国内镜像快速安装，三分钟安装完毕）</a><br />
+<a href="https://www.sojson.com/blog/197.html">sojson</a></p>
+
+
+</article><br/>
+<br/>
+<p style="display: block;text-align:center;">©2012-2022 huangdayu.cn(大鱼叔叔的博客) 版权所有，未经授权，不得转载。</p>
+<br/>
+<a style="display: block;text-align:right;" href="/">Back</a>
+      </div>
+    </main>
+  </body>
+</html>

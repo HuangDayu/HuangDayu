@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  
+  <script src="/assets/js/close_copy.js"></script>
+  
+
+  
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <title>Http学习笔记</title>
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/private/icons/huangdayu.png" />
+  <link rel="stylesheet" href="/assets/css/main.css" />
+</head><body a="light">
+    <main class="page-content" aria-label="Content">
+      <div class="w">
+        <a href="/">Back</a><article>
+  
+  <h1 class="post-header">Http学习笔记</h1>
+
+  <p class="post-meta">
+    <time datetime="2018-05-20 03:26:41 +0800">2018-05-20</time>
+  </p>
+  
+  <h1 id="状态码">状态码</h1>
+
+<hr />
+
+<p>服务器返回的  <strong>响应报文</strong>  中第一行为状态行，包含了状态码以及原因短语，用来告知客户端请求的结果。</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">状态码</th>
+      <th style="text-align: center">类别</th>
+      <th style="text-align: center">原因短语</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">1XX</td>
+      <td style="text-align: center">Informational（信息性状态码）</td>
+      <td style="text-align: center">接收的请求正在处理</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2XX</td>
+      <td style="text-align: center">Success（成功状态码）</td>
+      <td style="text-align: center">请求正常处理完毕</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">3XX</td>
+      <td style="text-align: center">Redirection（重定向状态码）</td>
+      <td style="text-align: center">需要进行附加操作以完成请求</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">4XX</td>
+      <td style="text-align: center">Client Error（客户端错误状态码）</td>
+      <td style="text-align: center">服务器无法处理请求</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">5XX</td>
+      <td style="text-align: center">Server Error（服务器错误状态码）</td>
+      <td style="text-align: center">服务器处理请求出错</td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- more -->
+
+<table>
+  <thead>
+    <tr>
+      <th>名称</th>
+      <th>状态码</th>
+      <th>说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Accepted</td>
+      <td>202</td>
+      <td>Accepted 指示请求已被接受进行进一步处理。</td>
+    </tr>
+    <tr>
+      <td>Ambiguous</td>
+      <td>300</td>
+      <td>Ambiguous 指示所需的信息有多种表示形式。 默认操作是将此状态视为一个重定向，并按照与此响应关联的位置标头的内容。</td>
+    </tr>
+    <tr>
+      <td>BadGateway</td>
+      <td>502</td>
+      <td>BadGateway 指示中间代理服务器从另一个代理或原始服务器接收到错误响应。</td>
+    </tr>
+    <tr>
+      <td>BadRequest</td>
+      <td>400</td>
+      <td>BadRequest 指示无法由服务器理解此请求。 BadRequest 如果没有其他错误适用，或者如果具体的错误是未知的或不具有其自己的错误代码发送。</td>
+    </tr>
+    <tr>
+      <td>Conflict</td>
+      <td>409</td>
+      <td>Conflict 指示该请求可能不会执行由于在服务器上发生冲突。</td>
+    </tr>
+    <tr>
+      <td>Continue</td>
+      <td>100</td>
+      <td>Continue 指示客户端可以继续其请求。</td>
+    </tr>
+    <tr>
+      <td>Created</td>
+      <td>201</td>
+      <td>Created 指示请求导致已发送响应之前创建一个新的资源。</td>
+    </tr>
+    <tr>
+      <td>ExpectationFailed</td>
+      <td>417</td>
+      <td>ExpectationFailed 指示无法由服务器满足 Expect 标头中给定。</td>
+    </tr>
+    <tr>
+      <td>Forbidden</td>
+      <td>403</td>
+      <td>Forbidden 指示服务器拒绝无法完成请求。</td>
+    </tr>
+    <tr>
+      <td>Found</td>
+      <td>302</td>
+      <td>Found 指示所需的信息位于的位置标头中指定的 URI。 当收到此状态时的默认操作是遵循与响应关联的位置标头。 当原始请求方法是 POST 时，重定向的请求将使用 GET 方法。</td>
+    </tr>
+    <tr>
+      <td>GatewayTimeout</td>
+      <td>504</td>
+      <td>GatewayTimeout 指示中间代理服务器在等待来自另一个代理或原始服务器的响应时已超时。</td>
+    </tr>
+    <tr>
+      <td>Gone</td>
+      <td>410</td>
+      <td>Gone 指示所请求的资源不再可用。</td>
+    </tr>
+    <tr>
+      <td>HttpVersionNotSupported</td>
+      <td>505</td>
+      <td>HttpVersionNotSupported 指示服务器不支持请求的 HTTP 版本。</td>
+    </tr>
+    <tr>
+      <td>InternalServerError</td>
+      <td>500</td>
+      <td>InternalServerError 表示在服务器上发生一般性错误。</td>
+    </tr>
+    <tr>
+      <td>LengthRequired</td>
+      <td>411</td>
+      <td>LengthRequired 指示缺少必需的内容长度标头。</td>
+    </tr>
+    <tr>
+      <td>MethodNotAllowed</td>
+      <td>405</td>
+      <td>MethodNotAllowed 指示请求方法 （POST 或 GET） 不允许对所请求的资源。</td>
+    </tr>
+    <tr>
+      <td>Moved</td>
+      <td>301</td>
+      <td>Moved 指示已将所需的信息移动到的位置标头中指定的 URI。 当收到此状态时的默认操作是遵循与响应关联的位置标头。 当原始请求方法是 POST 时，重定向的请求将使用 GET 方法。</td>
+    </tr>
+    <tr>
+      <td>MovedPermanently</td>
+      <td>301</td>
+      <td>MovedPermanently 指示已将所需的信息移动到的位置标头中指定的 URI。 当收到此状态时的默认操作是遵循与响应关联的位置标头。</td>
+    </tr>
+    <tr>
+      <td>MultipleChoices</td>
+      <td>300</td>
+      <td>MultipleChoices 指示所需的信息有多种表示形式。 默认操作是将此状态视为一个重定向，并按照与此响应关联的位置标头的内容。</td>
+    </tr>
+    <tr>
+      <td>NoContent</td>
+      <td>204</td>
+      <td>NoContent 指示已成功处理请求和响应是有意留为空白。</td>
+    </tr>
+    <tr>
+      <td>NonAuthoritativeInformation</td>
+      <td>203</td>
+      <td>NonAuthoritativeInformation 指示返回的元信息来自而不是原始服务器的缓存副本，因此可能不正确。</td>
+    </tr>
+    <tr>
+      <td>NotAcceptable</td>
+      <td>406</td>
+      <td>NotAcceptable 表示客户端已指定使用 Accept 标头，它将不接受任何可用的资源表示。</td>
+    </tr>
+    <tr>
+      <td>NotFound</td>
+      <td>404</td>
+      <td>NotFound 指示所请求的资源不存在的服务器上。</td>
+    </tr>
+    <tr>
+      <td>NotImplemented</td>
+      <td>501</td>
+      <td>NotImplemented 指示服务器不支持所请求的功能。</td>
+    </tr>
+    <tr>
+      <td>NotModified</td>
+      <td>304</td>
+      <td>NotModified 指示客户端的缓存的副本是最新。 不会传输资源的内容。</td>
+    </tr>
+    <tr>
+      <td>OK</td>
+      <td>200</td>
+      <td>OK 指示请求成功，且请求的信息包含在响应中。 这是要接收的最常见状态代码。</td>
+    </tr>
+    <tr>
+      <td>PartialContent</td>
+      <td>206</td>
+      <td>PartialContent 指示根据包括字节范围的 GET 请求的请求的响应是部分响应。</td>
+    </tr>
+    <tr>
+      <td>PaymentRequired</td>
+      <td>402</td>
+      <td>PaymentRequired 已保留供将来使用。</td>
+    </tr>
+    <tr>
+      <td>PreconditionFailed</td>
+      <td>412</td>
+      <td>PreconditionFailed 表示失败，此请求的设置的条件，无法执行请求。 使用条件请求标头，如果匹配项，如设置条件无-If-match，或如果-修改-自从。</td>
+    </tr>
+    <tr>
+      <td>ProxyAuthenticationRequired</td>
+      <td>407</td>
+      <td>ProxyAuthenticationRequired 指示请求的代理要求身份验证。 代理服务器进行身份验证标头包含如何执行身份验证的详细信息。</td>
+    </tr>
+    <tr>
+      <td>Redirect</td>
+      <td>302</td>
+      <td>Redirect 指示所需的信息位于的位置标头中指定的 URI。 当收到此状态时的默认操作是遵循与响应关联的位置标头。 当原始请求方法是 POST 时，重定向的请求将使用 GET 方法。</td>
+    </tr>
+    <tr>
+      <td>RedirectKeepVerb</td>
+      <td>307</td>
+      <td>RedirectKeepVerb 指示请求信息位于的位置标头中指定的 URI。 当收到此状态时的默认操作是遵循与响应关联的位置标头。 当原始请求方法是 POST 时，重定向的请求还将使用 POST 方法。</td>
+    </tr>
+    <tr>
+      <td>RedirectMethod</td>
+      <td>303</td>
+      <td>RedirectMethod 自动将客户端重定向到的位置标头中指定作为公告的结果的 URI。 对指定的位置标头的资源的请求将会执行与 GET。</td>
+    </tr>
+    <tr>
+      <td>RequestedRangeNotSatisfiable</td>
+      <td>416</td>
+      <td>RequestedRangeNotSatisfiable 指示从资源请求的数据范围不能返回，或者因为范围的开始处，然后该资源的开头或范围的末尾后在资源的结尾。</td>
+    </tr>
+    <tr>
+      <td>RequestEntityTooLarge</td>
+      <td>413</td>
+      <td>RequestEntityTooLarge 指示请求来说太大的服务器能够处理。</td>
+    </tr>
+    <tr>
+      <td>RequestTimeout</td>
+      <td>408</td>
+      <td>RequestTimeout 指示客户端的服务器预期请求的时间内没有未发送请求。</td>
+    </tr>
+    <tr>
+      <td>RequestUriTooLong</td>
+      <td>414</td>
+      <td>RequestUriTooLong 指示 URI 太长。</td>
+    </tr>
+    <tr>
+      <td>ResetContent</td>
+      <td>205</td>
+      <td>ResetContent 指示客户端应重置 （而不是重新加载） 的当前资源。</td>
+    </tr>
+    <tr>
+      <td>SeeOther</td>
+      <td>303</td>
+      <td>SeeOther 自动将客户端重定向到的位置标头中指定作为公告的结果的 URI。 对指定的位置标头的资源的请求将会执行与 GET。</td>
+    </tr>
+    <tr>
+      <td>ServiceUnavailable</td>
+      <td>503</td>
+      <td>ServiceUnavailable 指示将服务器暂时不可用，通常是由于高负载或维护。</td>
+    </tr>
+    <tr>
+      <td>SwitchingProtocols</td>
+      <td>101</td>
+      <td>SwitchingProtocols 指示正在更改的协议版本或协议。</td>
+    </tr>
+    <tr>
+      <td>TemporaryRedirect</td>
+      <td>307</td>
+      <td>TemporaryRedirect 指示请求信息位于的位置标头中指定的 URI。 当收到此状态时的默认操作是遵循与响应关联的位置标头。 当原始请求方法是 POST 时，重定向的请求还将使用 POST 方法。</td>
+    </tr>
+    <tr>
+      <td>Unauthorized</td>
+      <td>401</td>
+      <td>Unauthorized 指示所请求的资源需要身份验证。 Www-authenticate 标头包含如何执行身份验证的详细信息。</td>
+    </tr>
+    <tr>
+      <td>UnsupportedMediaType</td>
+      <td>415</td>
+      <td>UnsupportedMediaType 指示该请求是不受支持的类型。</td>
+    </tr>
+    <tr>
+      <td>Unused</td>
+      <td>306</td>
+      <td>Unused 是对未完全指定的 HTTP/1.1 规范建议的扩展。</td>
+    </tr>
+    <tr>
+      <td>UpgradeRequired</td>
+      <td>426</td>
+      <td>UpgradeRequired 指示客户端应切换到不同的协议，例如 TLS/1.0。</td>
+    </tr>
+    <tr>
+      <td>UseProxy</td>
+      <td>305</td>
+      <td>UseProxy 指示该请求应使用的位置标头中指定的 uri 的代理服务器。</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="消息头">消息头</h1>
+
+<hr />
+
+<h2 id="http-request">Http Request</h2>
+
+<style>
+table th:nth-of-type(3) {
+    width: 400px;
+}
+</style>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Header</th>
+      <th style="text-align: center">解释</th>
+      <th style="text-align: center">示例</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">Accept</td>
+      <td style="text-align: center">指定客户端能够接收的内容类型</td>
+      <td style="text-align: center">Accept:text/plain,text/html</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Accept-Charset</td>
+      <td style="text-align: center">浏览器可以接受的字符编码集。</td>
+      <td style="text-align: center">Accept-Charset:iso-8859-5</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Accept-Encoding</td>
+      <td style="text-align: center">指定浏览器可以支持的web服务器返回内容压缩编码类型。</td>
+      <td style="text-align: center">Accept-Encoding:compress,gzip</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Accept-Language</td>
+      <td style="text-align: center">浏览器可接受的语言</td>
+      <td style="text-align: center">Accept-Language:en,zh</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Accept-Ranges</td>
+      <td style="text-align: center">可以请求网页实体的一个或者多个子范围字段</td>
+      <td style="text-align: center">Accept-Ranges:bytes</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Authorization</td>
+      <td style="text-align: center">HTTP授权的授权证书</td>
+      <td style="text-align: center">Authorization:BasicQWxhZGRpbjpvcGVuIHNlc2FtZQ==</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Cache-Control</td>
+      <td style="text-align: center">指定请求和响应遵循的缓存机制</td>
+      <td style="text-align: center">Cache-Control:no-cache</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Connection</td>
+      <td style="text-align: center">表示是否需要持久连接。（HTTP1.1默认进行持久连接）</td>
+      <td style="text-align: center">Connection:close</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Cookie</td>
+      <td style="text-align: center">HTTP请求发送时，会把保存在该请求域名下的所有cookie值一起发送给web服务器。</td>
+      <td style="text-align: center">Cookie:$Version=1;Skin=new;</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Content-Length</td>
+      <td style="text-align: center">请求的内容长度</td>
+      <td style="text-align: center">Content-Length:348</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Content-Type</td>
+      <td style="text-align: center">请求的与实体对应的MIME信息</td>
+      <td style="text-align: center">Content-Type:application/x-www-form-urlencoded</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Date</td>
+      <td style="text-align: center">请求发送的日期和时间</td>
+      <td style="text-align: center">Date:Tue,15Nov201008:12:31GMT</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Expect</td>
+      <td style="text-align: center">请求的特定的服务器行为</td>
+      <td style="text-align: center">Expect:100-continue</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">From</td>
+      <td style="text-align: center">发出请求的用户的Email</td>
+      <td style="text-align: center">From:user@email.com</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Host</td>
+      <td style="text-align: center">指定请求的服务器的域名和端口号</td>
+      <td style="text-align: center">Host:www.huangdayu.cn</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">If-Match</td>
+      <td style="text-align: center">只有请求内容与实体相匹配才有效</td>
+      <td style="text-align: center">If-Match:“737060cd8c284d8af7ad3082f209582d”</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">If-Modified-Since</td>
+      <td style="text-align: center">如果请求的部分在指定时间之后被修改则请求成功，未被修改则返回304代码</td>
+      <td style="text-align: center">If-Modified-Since:Sat,29Oct201019:43:31GMT</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">If-None-Match</td>
+      <td style="text-align: center">如果内容未改变返回304代码，参数为服务器先前发送的Etag，与服务器回应的Etag比较判断是否改变</td>
+      <td style="text-align: center">If-None-Match:“737060cd8c284d8af7ad3082f209582d”</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">If-Range</td>
+      <td style="text-align: center">如果实体未改变，服务器发送客户端丢失的部分，否则发送整个实体。参数也为Etag</td>
+      <td style="text-align: center">If-Range:“737060cd8c284d8af7ad3082f209582d”</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">If-Unmodified-Since</td>
+      <td style="text-align: center">只在实体在指定时间之后未被修改才请求成功</td>
+      <td style="text-align: center">If-Unmodified-Since:Sat,29Oct201019:43:31GMT</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Max-Forwards</td>
+      <td style="text-align: center">限制信息通过代理和网关传送的时间</td>
+      <td style="text-align: center">Max-Forwards:10</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Pragma</td>
+      <td style="text-align: center">用来包含实现特定的指令</td>
+      <td style="text-align: center">Pragma:no-cache</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Proxy-Authorization</td>
+      <td style="text-align: center">连接到代理的授权证书</td>
+      <td style="text-align: center">Proxy-Authorization:BasicQWxhZGRpbjpvcGVuIHNlc2FtZQ==</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Range</td>
+      <td style="text-align: center">只请求实体的一部分，指定范围</td>
+      <td style="text-align: center">Range:bytes=500-999</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Referer</td>
+      <td style="text-align: center">先前网页的地址，当前请求网页紧随其后,即来路</td>
+      <td style="text-align: center">Referer:https://www.huangdayu.cn/</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">TE</td>
+      <td style="text-align: center">客户端愿意接受的传输编码，并通知服务器接受接受尾加头信息</td>
+      <td style="text-align: center">TE:trailers,deflate;q=0.5</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Upgrade</td>
+      <td style="text-align: center">向服务器指定某种传输协议以便服务器进行转换（如果支持）</td>
+      <td style="text-align: center">Upgrade:HTTP/2.0,SHTTP/1.3,IRC/6.9,RTA/x11</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">User-Agent</td>
+      <td style="text-align: center">User-Agent的内容包含发出请求的用户信息</td>
+      <td style="text-align: center">User-Agent:Mozilla/5.0(Linux;X11)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Via</td>
+      <td style="text-align: center">通知中间网关或代理服务器地址，通信协议</td>
+      <td style="text-align: center">Via:1.0fred,1.1nowhere.com(Apache/1.1)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Warning</td>
+      <td style="text-align: center">关于消息实体的警告信息</td>
+      <td style="text-align: center">Warn:199Miscellaneouswarning</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="http-response">Http Response</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Header</th>
+      <th style="text-align: left">解释</th>
+      <th style="text-align: center">示例</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">Accept-Ranges</td>
+      <td style="text-align: left">表明服务器是否支持指定范围请求及哪种类型的分段请求</td>
+      <td style="text-align: center">Accept-Ranges:bytes</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Age</td>
+      <td style="text-align: left">从原始服务器到代理缓存形成的估算时间（以秒计，非负）</td>
+      <td style="text-align: center">Age:12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Allow</td>
+      <td style="text-align: left">对某网络资源的有效的请求行为，不允许则返回405</td>
+      <td style="text-align: center">Allow:GET,HEAD</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Cache-Control</td>
+      <td style="text-align: left">告诉所有的缓存机制是否可以缓存及哪种类型</td>
+      <td style="text-align: center">Cache-Control:no-cache</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Content-Encoding</td>
+      <td style="text-align: left">web服务器支持的返回内容压缩编码类型。</td>
+      <td style="text-align: center">Content-Encoding:gzip</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Content-Language</td>
+      <td style="text-align: left">响应体的语言</td>
+      <td style="text-align: center">Content-Language:en,zh</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Content-Length</td>
+      <td style="text-align: left">响应体的长度</td>
+      <td style="text-align: center">Content-Length:348</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Content-Location</td>
+      <td style="text-align: left">请求资源可替代的备用的另一地址</td>
+      <td style="text-align: center">Content-Location:/index.htm</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Content-MD5</td>
+      <td style="text-align: left">返回资源的MD5校验值</td>
+      <td style="text-align: center">Content-MD5:Q2hlY2sgSW50ZWdyaXR5IQ==</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Content-Range</td>
+      <td style="text-align: left">在整个返回体中本部分的字节位置</td>
+      <td style="text-align: center">Content-Range:bytes21010-47021/47022</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Content-Type</td>
+      <td style="text-align: left">返回内容的MIME类型</td>
+      <td style="text-align: center">Content-Type:text/html;charset=utf-8</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Date</td>
+      <td style="text-align: left">原始服务器消息发出的时间</td>
+      <td style="text-align: center">Date:Tue,15Nov201008:12:31GMT</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">ETag</td>
+      <td style="text-align: left">请求变量的实体标签的当前值</td>
+      <td style="text-align: center">ETag:“737060cd8c284d8af7ad3082f209582d”</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Expires</td>
+      <td style="text-align: left">响应过期的日期和时间</td>
+      <td style="text-align: center">Expires:Thu,01Dec201016:00:00GMT</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Last-Modified</td>
+      <td style="text-align: left">请求资源的最后修改时间</td>
+      <td style="text-align: center">Last-Modified:Tue,15Nov201012:45:26GMT</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Location</td>
+      <td style="text-align: left">用来重定向接收方到非请求URL的位置来完成请求或标识新的资源</td>
+      <td style="text-align: center">Location:https://www.huangdayu.cn</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Pragma</td>
+      <td style="text-align: left">包括实现特定的指令，它可应用到响应链上的任何接收方</td>
+      <td style="text-align: center">Pragma:no-cache</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Proxy-Authenticate</td>
+      <td style="text-align: left">它指出认证方案和可应用到代理的该URL上的参数</td>
+      <td style="text-align: center">Proxy-Authenticate:Basic</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">refresh</td>
+      <td style="text-align: left">应用于重定向或一个新的资源被创造，在5秒之后重定向（由网景提出，被大部分浏览器支持）</td>
+      <td style="text-align: center">Refresh:5;url=https://www.huangdayu.cn</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Retry-After</td>
+      <td style="text-align: left">如果实体暂时不可取，通知客户端在指定时间之后再次尝试</td>
+      <td style="text-align: center">Retry-After:120</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Server</td>
+      <td style="text-align: left">web服务器软件名称</td>
+      <td style="text-align: center">Server:Apache/1.3.27(Unix)(Red-Hat/Linux)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Set-Cookie</td>
+      <td style="text-align: left">设置HttpCookie</td>
+      <td style="text-align: center">Set-Cookie:UserID=JohnDoe;Max-Age=3600;Version=1</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Trailer</td>
+      <td style="text-align: left">指出头域在分块传输编码的尾部存在</td>
+      <td style="text-align: center">Trailer:Max-Forwards</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Transfer-Encoding</td>
+      <td style="text-align: left">文件传输编码</td>
+      <td style="text-align: center">Transfer-Encoding:chunked</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Vary</td>
+      <td style="text-align: left">告诉下游代理是使用缓存响应还是从原始服务器请求</td>
+      <td style="text-align: center">Vary:*</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Via</td>
+      <td style="text-align: left">告知代理客户端响应是通过哪里发送的</td>
+      <td style="text-align: center">Via:1.0fred,1.1nowhere.com(Apache/1.1)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Warning</td>
+      <td style="text-align: left">警告实体可能存在的问题</td>
+      <td style="text-align: center">Warning:199Miscellaneouswarning</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">WWW-Authenticate</td>
+      <td style="text-align: left">表明客户端请求实体应该使用的授权方案</td>
+      <td style="text-align: center">WWW-Authenticate:Basic</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1 id="转发与重定向">转发与重定向</h1>
+
+<h2 id="redirect">redirect</h2>
+
+<p><strong>透明式间接转发，两次请求，两次处理，两次响应 。</strong></p>
+
+<h2 id="forward">forward</h2>
+
+<p><strong>隐身式直接转发，一次请求，两次处理，一次响应。</strong></p>
+
+<h2 id="重定向示例">重定向示例</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// URLDecoder.decode 解码url</span>
+<span class="c1">// URLEncoder.encode 编码url</span>
+<span class="nc">String</span> <span class="n">reUrl</span> <span class="o">=</span> <span class="nc">URLDecoder</span><span class="o">.</span><span class="na">decode</span><span class="o">(</span><span class="n">redirect_uri</span><span class="o">,</span> <span class="s">"utf-8"</span><span class="o">)</span> <span class="o">+</span> <span class="o">(</span><span class="n">redirect_uri</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="s">"?"</span><span class="o">)</span> <span class="o">?</span> <span class="s">"&amp;"</span> <span class="o">:</span> <span class="s">"?"</span><span class="o">)</span> <span class="o">+</span> <span class="s">"code="</span> <span class="o">+</span> <span class="n">code</span> <span class="o">+</span> <span class="s">"&amp;state="</span> <span class="o">+</span> <span class="n">state</span><span class="o">;</span>
+</code></pre></div></div>
+
+<h3 id="示例一">示例一</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">return</span> <span class="s">"redirect:"</span> <span class="o">+</span> <span class="n">reUrl</span><span class="o">;</span>
+</code></pre></div></div>
+
+<h3 id="示例二推荐">示例二（推荐）</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nc">Object</span> <span class="nf">red</span><span class="o">(){</span>
+	<span class="nc">ModelAndView</span> <span class="n">modelAndView</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ModelAndView</span><span class="o">(</span><span class="s">"redirect:"</span><span class="o">+</span><span class="nc">URLDecoder</span><span class="o">.</span><span class="na">decode</span><span class="o">(</span><span class="n">redirect_uri</span><span class="o">,</span> <span class="s">"utf-8"</span><span class="o">));</span>
+	<span class="n">modelAndView</span><span class="o">.</span><span class="na">addObject</span><span class="o">(</span><span class="s">"code"</span><span class="o">,</span> <span class="n">code</span><span class="o">);</span><span class="c1">//追加参数（有效）</span>
+	<span class="n">modelAndView</span><span class="o">.</span><span class="na">addObject</span><span class="o">(</span><span class="s">"state"</span><span class="o">,</span> <span class="n">state</span><span class="o">);</span>
+	<span class="k">return</span> <span class="n">modelAndView</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="示例三推荐">示例三（推荐）</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nc">Object</span> <span class="nf">red</span><span class="o">(){</span>
+	<span class="nc">RedirectView</span> <span class="n">redirectView</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">RedirectView</span><span class="o">(</span><span class="nc">URLDecoder</span><span class="o">.</span><span class="na">decode</span><span class="o">(</span><span class="n">redirect_uri</span><span class="o">,</span> <span class="s">"utf-8"</span><span class="o">));</span>		
+	<span class="n">redirectView</span><span class="o">.</span><span class="na">addStaticAttribute</span><span class="o">(</span><span class="s">"code"</span><span class="o">,</span> <span class="n">code</span><span class="o">);</span><span class="c1">//追加参数（有效）</span>
+	<span class="n">redirectView</span><span class="o">.</span><span class="na">addStaticAttribute</span><span class="o">(</span><span class="s">"state"</span><span class="o">,</span> <span class="n">state</span><span class="o">);</span>
+	<span class="n">redirectView</span><span class="o">.</span><span class="na">addStaticAttribute</span><span class="o">(</span><span class="s">"type"</span><span class="o">,</span> <span class="n">state</span><span class="o">);</span>
+	<span class="k">return</span> <span class="n">redirectView</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="示例四">示例四</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nc">Object</span> <span class="nf">red</span><span class="o">(</span><span class="nc">HttpServletRequest</span> <span class="n">request</span><span class="o">){</span>
+	<span class="nc">HttpHeaders</span> <span class="n">httpHeaders</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HttpHeaders</span><span class="o">();</span>
+	<span class="n">httpHeaders</span><span class="o">.</span><span class="na">setLocation</span><span class="o">(</span><span class="k">new</span> <span class="no">URI</span><span class="o">(</span><span class="n">reUrl</span><span class="o">));</span>
+	<span class="n">request</span><span class="o">.</span><span class="na">setAttribute</span><span class="o">(</span><span class="s">"code"</span><span class="o">,</span> <span class="n">code</span><span class="o">);</span><span class="c1">//追加参数(无效)</span>
+	<span class="n">request</span><span class="o">.</span><span class="na">setAttribute</span><span class="o">(</span><span class="s">"state"</span><span class="o">,</span> <span class="n">state</span><span class="o">);</span>
+	<span class="k">return</span> <span class="k">new</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">&gt;(</span><span class="n">httpHeaders</span><span class="o">,</span> <span class="nc">HttpStatus</span><span class="o">.</span><span class="na">FOUND</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="示例五">示例五</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nc">Object</span> <span class="nf">red</span><span class="o">(</span><span class="nc">RedirectAttributes</span> <span class="n">redirectAttributes</span><span class="o">){</span>
+	<span class="nc">HttpHeaders</span> <span class="n">httpHeaders</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HttpHeaders</span><span class="o">();</span>
+	<span class="n">httpHeaders</span><span class="o">.</span><span class="na">setLocation</span><span class="o">(</span><span class="k">new</span> <span class="no">URI</span><span class="o">(</span><span class="n">reUrl</span><span class="o">));</span>
+	<span class="n">redirectAttributes</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"code"</span><span class="o">,</span> <span class="n">code</span><span class="o">);</span><span class="c1">//追加参数（无效）</span>
+	<span class="n">redirectAttributes</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"state"</span><span class="o">,</span> <span class="n">state</span><span class="o">);</span>
+	<span class="k">return</span> <span class="k">new</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">&gt;(</span><span class="n">httpHeaders</span><span class="o">,</span> <span class="nc">HttpStatus</span><span class="o">.</span><span class="na">FOUND</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="示例六">示例六</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">response</span><span class="o">.</span><span class="na">sendRedirect</span><span class="o">(</span><span class="n">reUrl</span><span class="o">);</span>
+</code></pre></div></div>
+
+<h3 id="示例七">示例七</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nc">Object</span> <span class="nf">red</span><span class="o">(</span><span class="nc">RedirectAttributes</span> <span class="n">redirectAttributes</span><span class="o">){</span>
+	<span class="n">redirectAttributes</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"code"</span><span class="o">,</span> <span class="n">code</span><span class="o">);</span><span class="c1">//追加参数（有效）</span>
+	<span class="n">redirectAttributes</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"state"</span><span class="o">,</span> <span class="n">state</span><span class="o">);</span>
+	<span class="k">return</span> <span class="k">new</span> <span class="nf">ModelAndView</span><span class="o">(</span><span class="s">"redirect:"</span><span class="o">+</span><span class="n">reUrl</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="示例八">示例八</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nc">Object</span> <span class="nf">red</span><span class="o">(</span><span class="nc">Model</span> <span class="n">model</span><span class="o">){</span>
+	<span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"code"</span><span class="o">,</span> <span class="n">code</span><span class="o">);</span><span class="c1">//追加参数(无效)</span>
+	<span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"state"</span><span class="o">,</span> <span class="n">state</span><span class="o">);</span>
+	<span class="n">model</span><span class="o">.</span><span class="na">addAttribute</span><span class="o">(</span><span class="s">"type"</span><span class="o">,</span> <span class="n">state</span><span class="o">);</span>
+	<span class="k">return</span> <span class="s">"redirect:"</span><span class="o">+</span><span class="nc">URLDecoder</span><span class="o">.</span><span class="na">decode</span><span class="o">(</span><span class="n">redirect_uri</span><span class="o">,</span> <span class="s">"utf-8"</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="示例九推荐">示例九（推荐）</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nc">Object</span> <span class="nf">red</span><span class="o">(</span><span class="nc">Model</span> <span class="n">model</span><span class="o">){</span>
+	<span class="nc">RedirectView</span> <span class="n">redirectView</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">RedirectView</span><span class="o">();</span>
+	<span class="n">redirectView</span><span class="o">.</span><span class="na">setUrl</span><span class="o">(</span><span class="nc">URLDecoder</span><span class="o">.</span><span class="na">decode</span><span class="o">(</span><span class="n">codeUrl</span><span class="o">,</span> <span class="s">"utf-8"</span><span class="o">));</span>
+	<span class="n">redirectView</span><span class="o">.</span><span class="na">setContentType</span><span class="o">(</span><span class="nc">MediaType</span><span class="o">.</span><span class="na">APPLICATION_FORM_URLENCODED_VALUE</span><span class="o">);</span>
+	<span class="n">redirectView</span><span class="o">.</span><span class="na">setStatusCode</span><span class="o">(</span><span class="nc">HttpStatus</span><span class="o">.</span><span class="na">FOUND</span><span class="o">);</span>
+	<span class="n">redirectView</span><span class="o">.</span><span class="na">addStaticAttribute</span><span class="o">(</span><span class="s">"client_id"</span><span class="o">,</span> <span class="n">clientId1</span><span class="o">);</span>
+	<span class="n">redirectView</span><span class="o">.</span><span class="na">addStaticAttribute</span><span class="o">(</span><span class="s">"response_type"</span><span class="o">,</span> <span class="s">"code"</span><span class="o">);</span>
+	<span class="n">redirectView</span><span class="o">.</span><span class="na">addStaticAttribute</span><span class="o">(</span><span class="s">"redirect_uri"</span><span class="o">,</span> <span class="n">redirectUri</span><span class="o">);</span>
+	<span class="n">redirectView</span><span class="o">.</span><span class="na">addStaticAttribute</span><span class="o">(</span><span class="s">"scope"</span><span class="o">,</span> <span class="n">scope</span><span class="o">);</span>
+	<span class="n">redirectView</span><span class="o">.</span><span class="na">addStaticAttribute</span><span class="o">(</span><span class="s">"state"</span><span class="o">,</span> <span class="n">state</span><span class="o">);</span>
+	<span class="k">return</span> <span class="n">redirectView</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h3 id="示例十推荐">示例十（推荐）</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="nc">Object</span> <span class="nf">red</span><span class="o">(</span><span class="nc">Model</span> <span class="n">model</span><span class="o">){</span>
+	<span class="nc">Map</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;</span> <span class="n">clientMap</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HashMap</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;();</span>
+	<span class="n">clientMap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"client_id"</span><span class="o">,</span> <span class="n">clientId1</span><span class="o">);</span>
+	<span class="n">clientMap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"response_type"</span><span class="o">,</span> <span class="s">"code"</span><span class="o">);</span>
+	<span class="n">clientMap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"redirect_uri"</span><span class="o">,</span> <span class="n">redirectUri</span><span class="o">);</span>
+	<span class="n">clientMap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"scope"</span><span class="o">,</span> <span class="n">scope</span><span class="o">);</span>
+	<span class="n">clientMap</span><span class="o">.</span><span class="na">put</span><span class="o">(</span><span class="s">"state"</span><span class="o">,</span> <span class="n">state</span><span class="o">);</span>
+	<span class="nc">String</span> <span class="n">reUrl</span> <span class="o">=</span> <span class="nc">URLDecoder</span><span class="o">.</span><span class="na">decode</span><span class="o">(</span><span class="n">redirectUri</span><span class="o">,</span> <span class="s">"utf-8"</span><span class="o">);</span>
+	<span class="k">if</span> <span class="o">(</span><span class="nc">MapUtil</span><span class="o">.</span><span class="na">isNotEmpty</span><span class="o">(</span><span class="n">clientMap</span><span class="o">))</span> <span class="o">{</span>
+		<span class="k">for</span> <span class="o">(</span><span class="nc">Map</span><span class="o">.</span><span class="na">Entry</span><span class="o">&lt;</span><span class="nc">String</span><span class="o">,</span> <span class="nc">Object</span><span class="o">&gt;</span> <span class="n">entry</span> <span class="o">:</span> <span class="n">clientMap</span><span class="o">.</span><span class="na">entrySet</span><span class="o">())</span> <span class="o">{</span>
+			<span class="n">reUrl</span> <span class="o">=</span> <span class="n">reUrl</span> <span class="o">+</span> <span class="o">(</span><span class="n">reUrl</span><span class="o">.</span><span class="na">contains</span><span class="o">(</span><span class="s">"?"</span><span class="o">)</span> <span class="o">?</span> <span class="s">"&amp;"</span> <span class="o">:</span> <span class="s">"?"</span><span class="o">)</span> <span class="o">+</span> <span class="n">entry</span><span class="o">.</span><span class="na">getKey</span><span class="o">()</span> <span class="o">+</span> <span class="s">"="</span> <span class="o">+</span> <span class="n">entry</span><span class="o">.</span><span class="na">getValue</span><span class="o">();</span>
+		<span class="o">}</span>
+	<span class="o">}</span>
+	<span class="nc">HttpHeaders</span> <span class="n">httpHeaders</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">HttpHeaders</span><span class="o">();</span>
+	<span class="n">httpHeaders</span><span class="o">.</span><span class="na">setContentType</span><span class="o">(</span><span class="nc">MediaType</span><span class="o">.</span><span class="na">APPLICATION_FORM_URLENCODED</span><span class="o">);</span>
+	<span class="n">httpHeaders</span><span class="o">.</span><span class="na">setLocation</span><span class="o">(</span><span class="k">new</span> <span class="no">URI</span><span class="o">(</span><span class="n">reUrl</span><span class="o">));</span>
+	<span class="k">return</span> <span class="k">new</span> <span class="nc">ResponseEntity</span><span class="o">&lt;</span><span class="nc">Object</span><span class="o">&gt;(</span><span class="n">httpHeaders</span><span class="o">,</span> <span class="nc">HttpStatus</span><span class="o">.</span><span class="na">FOUND</span><span class="o">);</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<h2 id="转发示例">转发示例</h2>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">String</span> <span class="n">foUrl</span> <span class="o">=</span> <span class="s">"/oauth.html"</span><span class="o">;</span>
+</code></pre></div></div>
+
+<h3 id="示例一-1">示例一</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">return</span> <span class="s">"forward:"</span><span class="o">+</span><span class="n">foUrl</span><span class="o">;</span>
+</code></pre></div></div>
+
+<h3 id="示例二推荐-1">示例二（推荐）</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">return</span> <span class="k">new</span> <span class="nc">ModelAndView</span><span class="o">(</span><span class="s">"forward:"</span><span class="o">+</span><span class="n">foUrl</span><span class="o">);</span>
+</code></pre></div></div>
+
+<h3 id="示例三">示例三</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">RequestDispatcher</span> <span class="n">requestDispatcher</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="na">getRequestDispatcher</span><span class="o">(</span><span class="n">forUrl</span><span class="o">);</span>
+<span class="n">requestDispatcher</span><span class="o">.</span><span class="na">forward</span><span class="o">(</span><span class="n">request</span><span class="o">,</span> <span class="n">response</span><span class="o">);</span>
+</code></pre></div></div>
+
+<h3 id="示例四-1">示例四</h3>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">servletContext</span><span class="o">.</span><span class="na">getRequestDispatcher</span><span class="o">(</span><span class="n">foUrl</span><span class="o">).</span><span class="na">forward</span><span class="o">(</span><span class="n">request</span><span class="o">,</span><span class="n">response</span><span class="o">);</span>
+</code></pre></div></div>
+
+<h1 id="参考文献">参考文献</h1>
+
+<p><a href="http://www.runoob.com/http/http-status-codes.html">菜鸟教程（<strong>推荐</strong>）</a><br />
+<a href="http://www.ruanyifeng.com/blog/2018/10/restful-api-best-practices.html">RESTful API 最佳实践</a><br />
+<a href="https://zh.wikipedia.org/wiki/HTTP%E7%8A%B6%E6%80%81%E7%A0%81">HTTP状态码</a><br />
+<a href="https://msdn.microsoft.com/zh-cn/library/system.net.httpstatuscode(v=vs.110).aspx">文档来源</a></p>
+
+
+</article><br/>
+<br/>
+<p style="display: block;text-align:center;">©2012-2022 huangdayu.cn(大鱼叔叔的博客) 版权所有，未经授权，不得转载。</p>
+<br/>
+<a style="display: block;text-align:right;" href="/">Back</a>
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  
+  <script src="/assets/js/close_copy.js"></script>
+  
+
+  
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <title>服务架构之演变与进化</title>
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/private/icons/huangdayu.png" />
+  <link rel="stylesheet" href="/assets/css/main.css" />
+</head><body a="light">
+    <main class="page-content" aria-label="Content">
+      <div class="w">
+        <a href="/">Back</a><article>
+  
+  <h1 class="post-header">服务架构之演变与进化</h1>
+
+  <p class="post-meta">
+    <time datetime="2018-11-13 16:00:00 +0800">2018-11-13</time>
+  </p>
+  
+  <h1 id="为何架构演进">为何架构演进</h1>
+
+<ul>
+  <li>业务功能越来越多，越来越复杂</li>
+  <li>物联网时代数据量越来越大</li>
+  <li>请求量越来越大</li>
+  <li>更高的用户体验要求</li>
+  <li>业务快速迭代</li>
+  <li>持续交付的能力</li>
+</ul>
+
+<h1 id="架构如何演进">架构如何演进</h1>
+
+<ol>
+  <li>单体架构（Monoliths）</li>
+  <li>水平分层架构（Horizontal layered）</li>
+  <li>面向服务架构 (SOA)（垂直分层架构）</li>
+  <li>微服务架构（MicroServices）</li>
+  <li>服务网格架构（Service Mesh）</li>
+</ol>
+
+<!-- more -->
+
+<h1 id="体系架构设计原则">体系架构设计原则</h1>
+
+<ul>
+  <li>服务封装</li>
+  <li>服务松耦合(Loosely coupled) - 服务之间的关系最小化，只是互相知道。</li>
+  <li>服务契约 - 服务按照服务描述文档所定义的服务契约行事。</li>
+  <li>服务抽象 - 除了服务契约中所描述的内容，服务将对外部隐藏逻辑。</li>
+  <li>服务的重用性 - 将逻辑分布在不同的服务中，以提高服务的重用性。</li>
+  <li>服务的可组合性 - 一组服务可以协调工作并组合起来形成一个组合服务。</li>
+  <li>服务自治 – 服务对所封装的逻辑具有控制权</li>
+  <li>服务无状态 – 服务将一个活动所需保存的信息最小化。</li>
+  <li>服务的可被发现性 – 服务需要对外部提供描述信息，这样可以通过现有的发现机制发现并访问这些服务。</li>
+</ul>
+
+<h1 id="架构模式">架构模式</h1>
+
+<ul>
+  <li>分层</li>
+  <li>冗余</li>
+  <li>分隔</li>
+  <li>异步</li>
+  <li>分布式</li>
+  <li>安全</li>
+  <li>自动化</li>
+  <li>集群</li>
+  <li>缓存</li>
+</ul>
+
+<h1 id="单体架构">单体架构</h1>
+
+<h2 id="架构图">架构图</h2>
+
+<p><img src="https://www.huangdayu.cn/assets/private/images/image-67.png" alt="单体架构" /></p>
+
+<h2 id="适用场景">适用场景</h2>
+
+<ul>
+  <li>业务场景简单</li>
+  <li>功能不复杂</li>
+  <li>开发人员较少</li>
+  <li>创业公司初期</li>
+  <li>性能要求极其苛刻</li>
+</ul>
+
+<h2 id="定义">定义</h2>
+
+<ul>
+  <li>一个进程完成业务</li>
+  <li>打包成war包</li>
+  <li>依赖Servlet容器</li>
+</ul>
+
+<h2 id="优点">优点</h2>
+
+<ul>
+  <li>避免多次网络交互</li>
+  <li>请求响应延迟低</li>
+  <li>部署和运维成本低</li>
+</ul>
+
+<h2 id="缺点">缺点</h2>
+
+<ul>
+  <li>系统耦合性高</li>
+  <li>可扩展性差</li>
+  <li>技术选型单一</li>
+  <li>架构粒度过粗</li>
+</ul>
+
+<h1 id="水平划分架构">水平划分架构</h1>
+
+<h2 id="架构图-1">架构图</h2>
+
+<h3 id="同步架构">同步架构</h3>
+
+<p><img src="https://www.huangdayu.cn/assets/private/images/image-68.png" alt="水平划分之同步架构" /></p>
+
+<h3 id="异步架构">异步架构</h3>
+
+<p><img src="https://www.huangdayu.cn/assets/private/images/image-69.png" alt="水平划分之异步架构" /></p>
+
+<h2 id="解决问题">解决问题</h2>
+
+<ul>
+  <li>高耦合问题</li>
+  <li>低扩展问题</li>
+</ul>
+
+<h2 id="定义-1">定义</h2>
+
+<ul>
+  <li>一个进程或多个进程</li>
+  <li>分层思想明确</li>
+  <li>MVC架构（Model层、View层、Control层）</li>
+</ul>
+
+<h2 id="网关层">网关层</h2>
+
+<ul>
+  <li>请求鉴权</li>
+  <li>数据完整性检查</li>
+  <li>协议转换</li>
+  <li>路由转发</li>
+  <li>服务治理（限流，熔断等）</li>
+</ul>
+
+<h2 id="业务逻辑层">业务逻辑层</h2>
+
+<ul>
+  <li>业务逻辑判断和处理</li>
+</ul>
+
+<h2 id="数据访问层">数据访问层</h2>
+
+<ul>
+  <li>CRUD（增删改查）</li>
+  <li>ORM（对象关系映射 如MyBatis）</li>
+  <li>Sharding（分库分表）</li>
+  <li>屏蔽底层存储差异性</li>
+</ul>
+
+<h2 id="异步架构优点">异步架构优点</h2>
+
+<ul>
+  <li>提高系统吞吐量</li>
+</ul>
+
+<h2 id="异步架构缺点">异步架构缺点</h2>
+
+<ul>
+  <li>数据处理延迟</li>
+</ul>
+
+<h2 id="异步架构适合的场景">异步架构适合的场景</h2>
+
+<ul>
+  <li>适合高并发场景</li>
+  <li>对数据一致性要求不高</li>
+</ul>
+
+<h2 id="水平划分的优点">水平划分的优点</h2>
+
+<ul>
+  <li>低耦合</li>
+  <li>可扩展</li>
+</ul>
+
+<h2 id="水平划分的缺点">水平划分的缺点</h2>
+
+<ul>
+  <li>请求路径变长</li>
+  <li>响应延迟变高</li>
+  <li>定位问题变得复杂化</li>
+  <li>运维成本增加</li>
+</ul>
+
+<h1 id="面向服务架构">面向服务架构</h1>
+
+<h2 id="架构图-2">架构图</h2>
+
+<p><img src="https://www.huangdayu.cn/assets/private/images/image-70.png" alt="面向服务架构" /></p>
+
+<h2 id="soa的设计原则">SOA的设计原则</h2>
+
+<ul>
+  <li>可重复使用, 粒度, 模块性, 可组合型, 对象化原件, 构件化以及具交互操作性</li>
+  <li>匹配开放标准(通用的或行业的)</li>
+  <li>服务的识别和分类，提供和发布，监控和跟踪。</li>
+</ul>
+
+<h2 id="优点-1">优点</h2>
+
+<ul>
+  <li>简单化系统的开发</li>
+  <li>面向企业商业流程</li>
+  <li>更好的适应性和扩展性</li>
+  <li>互用性</li>
+  <li>对系统的升级，分布，和维护有个更多的优化</li>
+  <li>简化了提供，寻找和使用服务的过程</li>
+  <li>通过共同资源的利用，减少了开支</li>
+</ul>
+
+<h2 id="缺点-1">缺点</h2>
+
+<ul>
+  <li>每一个服务依然是单体架构</li>
+  <li>对ESB严重依赖</li>
+  <li>减低了系统的性能</li>
+  <li>在向标准化过度的转换过程，增加了简介费用</li>
+  <li>很多没有太多意义的文件型信息</li>
+  <li>对商业流程的计划要求甚高</li>
+</ul>
+
+<h1 id="微服务架构">微服务架构</h1>
+
+<h2 id="架构图-3">架构图</h2>
+
+<p><img src="https://www.huangdayu.cn/assets/private/images/image-71.png" alt="微服务架构图" /></p>
+
+<h2 id="定义-2">定义</h2>
+
+<ul>
+  <li>小型服务套件</li>
+  <li>在自己的进程中运行</li>
+  <li>围绕业务能力</li>
+  <li>独立展开</li>
+  <li>集中管理</li>
+  <li>面向业务架构</li>
+  <li>水平分层架构和面向服务架构的整合</li>
+</ul>
+
+<h2 id="目的">目的</h2>
+
+<ul>
+  <li>项目快速迭代</li>
+  <li>项目持续交付</li>
+</ul>
+
+<h2 id="服务组件">服务组件</h2>
+
+<ul>
+  <li>服务注册中心</li>
+  <li>服务调用方式</li>
+  <li>服务网关</li>
+  <li>断路器</li>
+  <li>分布式链路监控</li>
+  <li>分布式配置</li>
+  <li>分布式锁</li>
+  <li>分布式消息</li>
+  <li>消息队列</li>
+  <li>服务跟踪</li>
+  <li>消息总线</li>
+  <li>集群选主</li>
+  <li>数据流</li>
+  <li>批量任务</li>
+  <li>服务发现</li>
+  <li>服务通讯</li>
+  <li>负载均衡</li>
+  <li>服务熔断</li>
+  <li>请求超时重试</li>
+  <li>服务容错</li>
+  <li>异步处理</li>
+  <li>安全控制</li>
+  <li>命令行工具</li>
+</ul>
+
+<h2 id="优点-2">优点</h2>
+
+<ul>
+  <li>逻辑清晰</li>
+  <li>简化部署</li>
+  <li>可扩展</li>
+  <li>灵活组合</li>
+  <li>技术异构</li>
+  <li>高可靠</li>
+</ul>
+
+<h2 id="缺点-2">缺点</h2>
+
+<ul>
+  <li>复杂度高</li>
+  <li>运维复杂</li>
+  <li>影响性能</li>
+</ul>
+
+<h1 id="服务网格架构">服务网格架构</h1>
+
+<h2 id="定义-3">定义</h2>
+
+<p>服务网格（Service Mesh）这个术语通常用于描述构成这些应用程序的微服务网络以及应用之间的交互。也就是解决系统架构微服务化后的服务间通信和治理问题。</p>
+
+<ul>
+  <li>是一个基础设施</li>
+  <li>轻量级网络代理，应用程序间通讯的中间层</li>
+  <li>应用程序无感知，对应用程序透明无侵入</li>
+  <li>解耦应用程序的重试/超时、监控、追踪和服务发现等控制层面的东西</li>
+</ul>
+
+<h2 id="功能">功能</h2>
+
+<ul>
+  <li>流量管理</li>
+  <li>安全</li>
+  <li>可观察性</li>
+  <li>平台支持</li>
+  <li>集成和定制</li>
+  <li>健康检查</li>
+  <li>负载均衡</li>
+  <li>追踪</li>
+  <li>访问日志</li>
+  <li>熔断</li>
+  <li>重试策略</li>
+  <li>超时配置</li>
+  <li>限速</li>
+  <li>流量迁移</li>
+  <li>通过发现服务来动态调整配置（XDS）</li>
+</ul>
+
+<h1 id="参考文献">参考文献</h1>
+
+<p><a href="https://mp.weixin.qq.com/s/lGRadMbSebo3AJzWkjMqYg">互联网架构究竟如何演进？</a><br />
+<a href="https://zh.wikipedia.org/wiki/%E9%9D%A2%E5%90%91%E6%9C%8D%E5%8A%A1%E7%9A%84%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84">面向服务的体系结构</a><br />
+<a href="http://dubbo.apache.org/zh-cn/docs/user/preface/background.html">Dubbo官方文档</a> <br />
+<a href="http://www.voidcn.com/article/p-ojmvdtsw-bc.html">论SOA架构的几种主要开发方式</a><br />
+<a href="https://zhuanlan.zhihu.com/p/42115757">互联网架构演进之路</a><br />
+<a href="http://www.ruanyifeng.com/blog/2016/09/software-architecture.html">软件架构入门</a><br />
+<a href="http://www.ruanyifeng.com/blog/2016/09/how_amazon_take_soa.html">亚马逊如何变成 SOA（面向服务的架构）？</a><br />
+<a href="https://www.jianshu.com/p/6fe0795c782d">架构设计漫步：从单体架构、SOA到微服务</a><br />
+<a href="http://dockone.io/article/1646">微服务与SOA架构</a><br />
+<a href="http://www.servicemesher.com/blog/why-is-service-mesh/">为什么要选择Service Mesh？</a><br />
+<a href="https://istio.io/zh/docs/concepts/what-is-istio/">Istio 官方文档</a><br />
+<a href="http://www.servicemesher.com">Service Mesh 社区</a><br />
+<a href="https://github.com/servicemesher">servicemesher</a><br />
+<a href="https://jimmysong.io/">jimmysong.io</a><br />
+<a href="http://www.importnew.com/28798.html">Service Mesh 及其主流开源实现解析</a><br />
+<a href="https://conduit.io/">conduit.io</a><br />
+<a href="https://istio.io/">istio.io</a><br />
+<a href="https://www.jianshu.com/p/c77a9303b0bb">蚂蚁金服大规模微服务架构下的Service Mesh探索之路</a>  <br />
+<a href="https://microservices.io/patterns/cn/microservices.html">模式: 微服务架构</a><br />
+<a href="https://microservices.io/patterns/cn/monolithic.html">模式: 单体架构</a></p>
+
+
+</article><br/>
+<br/>
+<p style="display: block;text-align:center;">©2012-2022 huangdayu.cn(大鱼叔叔的博客) 版权所有，未经授权，不得转载。</p>
+<br/>
+<a style="display: block;text-align:right;" href="/">Back</a>
+      </div>
+    </main>
+  </body>
+</html>

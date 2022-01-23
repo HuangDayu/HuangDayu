@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  
+  <script src="/assets/js/close_copy.js"></script>
+  
+
+  
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <title>Maven学习笔记</title>
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/private/icons/huangdayu.png" />
+  <link rel="stylesheet" href="/assets/css/main.css" />
+</head><body a="light">
+    <main class="page-content" aria-label="Content">
+      <div class="w">
+        <a href="/">Back</a><article>
+  
+  <h1 class="post-header">Maven学习笔记</h1>
+
+  <p class="post-meta">
+    <time datetime="2018-10-28 00:16:46 +0800">2018-10-28</time>
+  </p>
+  
+  <h1 id="检索冲突的依赖">检索冲突的依赖</h1>
+
+<p>比如 log4j-over-slf4j 和 slf4j-log4j12 冲突</p>
+
+<ul>
+  <li>slf4j-log4j12的groupId是org.slf4j</li>
+  <li>slf4j-log4j12的artifactId是slf4j-log4j12</li>
+</ul>
+
+<pre><code class="language-sehll">mvn dependency:tree -Dverbose -Dincludes=org.slf4j:slf4j-log4j12
+</code></pre>
+
+<p>解决</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;dependency&gt;</span> 
+  <span class="nt">&lt;groupId&gt;</span>org.apache.zookeeper<span class="nt">&lt;/groupId&gt;</span>  
+  <span class="nt">&lt;artifactId&gt;</span>zookeeper<span class="nt">&lt;/artifactId&gt;</span>  
+  <span class="nt">&lt;version&gt;</span>3.4.8<span class="nt">&lt;/version&gt;</span>  
+  <span class="nt">&lt;exclusions&gt;</span> 
+    <span class="nt">&lt;exclusion&gt;</span> 
+      <span class="nt">&lt;groupId&gt;</span>org.slf4j<span class="nt">&lt;/groupId&gt;</span>  
+      <span class="nt">&lt;artifactId&gt;</span>slf4j-log4j12<span class="nt">&lt;/artifactId&gt;</span> 
+    <span class="nt">&lt;/exclusion&gt;</span>  
+    <span class="nt">&lt;exclusion&gt;</span> 
+      <span class="nt">&lt;groupId&gt;</span>log4j<span class="nt">&lt;/groupId&gt;</span>  
+      <span class="nt">&lt;artifactId&gt;</span>log4j<span class="nt">&lt;/artifactId&gt;</span> 
+    <span class="nt">&lt;/exclusion&gt;</span> 
+  <span class="nt">&lt;/exclusions&gt;</span> 
+<span class="nt">&lt;/dependency&gt;</span>
+</code></pre></div></div>
+
+<h1 id="打包成可运行jar">打包成可运行jar</h1>
+
+<p>Main.java</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">package</span> <span class="nn">cn.huangdayu.falsework.provider.main</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.slf4j.Logger</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.slf4j.LoggerFactory</span><span class="o">;</span>
+<span class="kn">import</span> <span class="nn">org.springframework.context.support.ClassPathXmlApplicationContext</span><span class="o">;</span>
+
+<span class="kd">public</span> <span class="kd">class</span> <span class="nc">Main</span> <span class="o">{</span>
+	
+	<span class="kd">private</span> <span class="kd">static</span> <span class="nc">Logger</span> <span class="n">logger</span> <span class="o">=</span> <span class="nc">LoggerFactory</span><span class="o">.</span><span class="na">getLogger</span><span class="o">(</span><span class="nc">Main</span><span class="o">.</span><span class="na">class</span><span class="o">);</span>
+    
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="o">(</span><span class="nc">String</span><span class="o">[]</span> <span class="n">args</span><span class="o">)</span> <span class="o">{</span>
+        <span class="k">try</span> <span class="o">{</span>
+        	<span class="nc">ClassPathXmlApplicationContext</span> <span class="n">context</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">ClassPathXmlApplicationContext</span><span class="o">(</span><span class="s">"classpath:spring/applicationContext.xml"</span><span class="o">);</span>
+            <span class="n">context</span><span class="o">.</span><span class="na">start</span><span class="o">();</span>
+            <span class="nc">System</span><span class="o">.</span><span class="na">in</span><span class="o">.</span><span class="na">read</span><span class="o">();</span>
+        <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">Exception</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+        	<span class="n">logger</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">" Dubbo provider context start error:"</span><span class="o">,</span><span class="n">e</span><span class="o">.</span><span class="na">getMessage</span><span class="o">());</span>
+        <span class="o">}</span>
+        <span class="kd">synchronized</span> <span class="o">(</span><span class="nc">Main</span><span class="o">.</span><span class="na">class</span><span class="o">)</span> <span class="o">{</span>
+            <span class="k">while</span> <span class="o">(</span><span class="kc">true</span><span class="o">)</span> <span class="o">{</span>
+                <span class="k">try</span> <span class="o">{</span>
+                	<span class="nc">Main</span><span class="o">.</span><span class="na">class</span><span class="o">.</span><span class="na">wait</span><span class="o">();</span>
+                <span class="o">}</span> <span class="k">catch</span> <span class="o">(</span><span class="nc">InterruptedException</span> <span class="n">e</span><span class="o">)</span> <span class="o">{</span>
+                	<span class="n">logger</span><span class="o">.</span><span class="na">error</span><span class="o">(</span><span class="s">"synchronized error:"</span><span class="o">,</span><span class="n">e</span><span class="o">.</span><span class="na">getMessage</span><span class="o">());</span>
+                <span class="o">}</span>
+            <span class="o">}</span>
+        <span class="o">}</span>
+    <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<!-- more -->
+
+<p>pom.xml</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;build&gt;</span> 
+  <span class="nt">&lt;finalName&gt;</span>falsework-provider<span class="nt">&lt;/finalName&gt;</span>  
+  <span class="nt">&lt;plugins&gt;</span> 
+    <span class="nt">&lt;plugin&gt;</span> 
+      <span class="nt">&lt;groupId&gt;</span>org.apache.maven.plugins<span class="nt">&lt;/groupId&gt;</span>  
+      <span class="nt">&lt;artifactId&gt;</span>maven-shade-plugin<span class="nt">&lt;/artifactId&gt;</span>  
+      <span class="nt">&lt;version&gt;</span>1.7<span class="nt">&lt;/version&gt;</span>  
+      <span class="nt">&lt;executions&gt;</span> 
+        <span class="nt">&lt;execution&gt;</span> 
+          <span class="nt">&lt;phase&gt;</span>package<span class="nt">&lt;/phase&gt;</span>  
+          <span class="nt">&lt;goals&gt;</span> 
+            <span class="nt">&lt;goal&gt;</span>shade<span class="nt">&lt;/goal&gt;</span> 
+          <span class="nt">&lt;/goals&gt;</span>  
+          <span class="nt">&lt;configuration&gt;</span> 
+            <span class="nt">&lt;finalName&gt;</span>falsework-provider-app<span class="nt">&lt;/finalName&gt;</span>  
+            <span class="nt">&lt;shadedArtifactAttached&gt;</span>true<span class="nt">&lt;/shadedArtifactAttached&gt;</span>  
+            <span class="nt">&lt;shadedClassifierName&gt;</span>jar-with-dependencies<span class="nt">&lt;/shadedClassifierName&gt;</span>  
+            <span class="nt">&lt;transformers&gt;</span> 
+              <span class="nt">&lt;transformer</span> <span class="na">implementation=</span><span class="s">"org.apache.maven.plugins.shade.resource.ManifestResourceTransformer"</span><span class="nt">&gt;</span> 
+                <span class="nt">&lt;mainClass&gt;</span>cn.huangdayu.falsework.provider.main.Main<span class="nt">&lt;/mainClass&gt;</span> 
+              <span class="nt">&lt;/transformer&gt;</span>  
+              <span class="nt">&lt;transformer</span> <span class="na">implementation=</span><span class="s">"org.apache.maven.plugins.shade.resource.AppendingTransformer"</span><span class="nt">&gt;</span> 
+                <span class="nt">&lt;resource&gt;</span>META-INF/spring.handlers<span class="nt">&lt;/resource&gt;</span> 
+              <span class="nt">&lt;/transformer&gt;</span>  
+              <span class="nt">&lt;transformer</span> <span class="na">implementation=</span><span class="s">"org.apache.maven.plugins.shade.resource.AppendingTransformer"</span><span class="nt">&gt;</span> 
+                <span class="nt">&lt;resource&gt;</span>META-INF/spring.schemas<span class="nt">&lt;/resource&gt;</span> 
+              <span class="nt">&lt;/transformer&gt;</span>  
+              <span class="nt">&lt;transformer</span> <span class="na">implementation=</span><span class="s">"org.apache.maven.plugins.shade.resource.AppendingTransformer"</span><span class="nt">&gt;</span> 
+                <span class="nt">&lt;resource&gt;</span>META-INF/spring.tooling<span class="nt">&lt;/resource&gt;</span> 
+              <span class="nt">&lt;/transformer&gt;</span> 
+            <span class="nt">&lt;/transformers&gt;</span> 
+          <span class="nt">&lt;/configuration&gt;</span> 
+        <span class="nt">&lt;/execution&gt;</span> 
+      <span class="nt">&lt;/executions&gt;</span> 
+    <span class="nt">&lt;/plugin&gt;</span> 
+  <span class="nt">&lt;/plugins&gt;</span> 
+<span class="nt">&lt;/build&gt;</span>
+</code></pre></div></div>
+
+<p>后台运行</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">nohup </span>java <span class="nt">-Ddubbo</span>.service.server.port<span class="o">=</span>20880 <span class="nt">-jar</span> falsework-provider-app.jar <span class="o">&gt;</span> 2018-10-27-falsework-provider-app.log &amp;
+</code></pre></div></div>
+
+
+</article><br/>
+<br/>
+<p style="display: block;text-align:center;">©2012-2022 huangdayu.cn(大鱼叔叔的博客) 版权所有，未经授权，不得转载。</p>
+<br/>
+<a style="display: block;text-align:right;" href="/">Back</a>
+      </div>
+    </main>
+  </body>
+</html>

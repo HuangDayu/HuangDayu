@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  
+  <script src="/assets/js/close_copy.js"></script>
+  
+
+  
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <title>Git填坑记</title>
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/private/icons/huangdayu.png" />
+  <link rel="stylesheet" href="/assets/css/main.css" />
+</head><body a="light">
+    <main class="page-content" aria-label="Content">
+      <div class="w">
+        <a href="/">Back</a><article>
+  
+  <h1 class="post-header">Git填坑记</h1>
+
+  <p class="post-meta">
+    <time datetime="2018-10-31 22:46:51 +0800">2018-10-31</time>
+  </p>
+  
+  <h1 id="git-clone-error">git clone error</h1>
+
+<h2 id="问题呈现">问题呈现</h2>
+
+<p><img src="https://www.huangdayu.cn/assets/private/images/image-65.png" alt="问题呈现" /></p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Administrator@HuangDayu MINGW64 /e/GitHub <span class="o">(</span>master<span class="o">)</span>
+<span class="nv">$ </span>git clone https://github.com/HuangDayu/huangdayu.github.io.git
+Cloning into <span class="s1">'huangdayu.github.io'</span>...
+remote: Enumerating objects: 278, <span class="k">done</span><span class="nb">.</span>
+remote: Counting objects: 100% <span class="o">(</span>278/278<span class="o">)</span>, <span class="k">done</span><span class="nb">.</span>
+remote: Compressing objects: 100% <span class="o">(</span>217/217<span class="o">)</span>, <span class="k">done</span><span class="nb">.</span>
+error: RPC failed<span class="p">;</span> curl 18 transfer closed with outstanding <span class="nb">read </span>data remaining
+fatal: The remote end hung up unexpectedly
+fatal: early EOF
+fatal: index-pack failed
+</code></pre></div></div>
+
+<h2 id="问题原因">问题原因</h2>
+
+<p>克隆的资源文件过大，git的缓存不够用！</p>
+
+<!-- more -->
+
+<h2 id="解决办法">解决办法</h2>
+
+<p>将缓存改大即可</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git config <span class="nt">--global</span> http.postBuffer 524288000
+</code></pre></div></div>
+
+<h1 id="git-pull-error-1">git pull error 1</h1>
+
+<h2 id="问题呈现-1">问题呈现</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Administrator@HuangDayu MINGW64 /e/GitHub/huangdayu.github.io <span class="o">(</span>master<span class="o">)</span>
+<span class="nv">$ </span>git pull
+ssh: Could not resolve <span class="nb">hostname </span>github: Name or service not known
+fatal: Could not <span class="nb">read </span>from remote repository.
+
+Please make sure you have the correct access rights
+and the repository exists.
+</code></pre></div></div>
+
+<h2 id="问题原因-1">问题原因</h2>
+
+<p>hostname 绑定错误</p>
+
+<h3 id="查看hostname">查看hostname</h3>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Administrator@HuangDayu MINGW64 /e/GitHub/huangdayu.github.io <span class="o">(</span>master<span class="o">)</span>
+<span class="nv">$ </span><span class="nb">cat</span> /c/Users/Administrator/.ssh/config
+<span class="c"># Default github user(first@mail.com)</span>
+
+Host github.com
+HostName github.com
+User git
+IdentityFile C:/Users/Administrator/.ssh/github_rsa
+
+Host gitee.com
+HostName gitee.com
+User git
+IdentityFile C:/Users/Administrator/.ssh/gitee_rsa
+
+</code></pre></div></div>
+
+<h2 id="解决办法-1">解决办法</h2>
+
+<p>重新绑定</p>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Administrator@HuangDayu MINGW64 /e/GitHub/huangdayu.github.io <span class="o">(</span>master<span class="o">)</span>
+<span class="nv">$ </span>git remote <span class="nb">rm </span>origin
+
+Administrator@HuangDayu MINGW64 /e/GitHub/huangdayu.github.io <span class="o">(</span>master<span class="o">)</span>
+<span class="nv">$ </span>git remote add origin git@github.com:HuangDayu/huangdayu.github.io.git
+</code></pre></div></div>
+
+<hr />
+
+<p>2019年2月27日更新</p>
+
+<hr />
+
+<h1 id="git-status-error">git status error</h1>
+
+<h2 id="问题呈现-2">问题呈现</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@huangdayu:/media/huangdayu/27413F40C14D581B/Git# git status
+fatal: 不是一个 git 仓库（或者直至挂载点 /media/huangdayu 的任何父目录）
+停止在文件系统边界（未设置 GIT_DISCOVERY_ACROSS_FILESYSTEM）。
+</code></pre></div></div>
+
+<h2 id="解决办法-2">解决办法</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git init
+</code></pre></div></div>
+
+<h1 id="git-pull-error-2">git pull error 2</h1>
+
+<h2 id="问题呈现-3">问题呈现</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@huangdayu:/media/huangdayu/27413F40C14D581B/Git# git pull
+当前分支没有跟踪信息。
+请指定您要合并哪一个分支。
+详见 git-pull<span class="o">(</span>1<span class="o">)</span>。
+
+    git pull &lt;远程&gt; &lt;分支&gt;
+
+如果您想要为此分支创建跟踪信息，您可以执行：
+
+    git branch <span class="nt">--set-upstream-to</span><span class="o">=</span>&lt;远程&gt;/&lt;分支&gt; master
+
+</code></pre></div></div>
+
+<h2 id="解决办法-3">解决办法</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git pull origin master
+</code></pre></div></div>
+
+<h1 id="git-pull-error-3">git pull error 3</h1>
+
+<h2 id="问题呈现-4">问题呈现</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>root@huangdayu:/media/huangdayu/27413F40C14D581B/Git# git pull origin master
+fatal: <span class="s1">'origin'</span> does not appear to be a git repository
+fatal: 无法读取远程仓库。
+
+请确认您有正确的访问权限并且仓库存在。
+</code></pre></div></div>
+
+<h2 id="解决办法-4">解决办法</h2>
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git remote add origin https://github.com/HuangDayu/huangdayu.github.io.git
+</code></pre></div></div>
+
+
+</article><br/>
+<br/>
+<p style="display: block;text-align:center;">©2012-2022 huangdayu.cn(大鱼叔叔的博客) 版权所有，未经授权，不得转载。</p>
+<br/>
+<a style="display: block;text-align:right;" href="/">Back</a>
+      </div>
+    </main>
+  </body>
+</html>

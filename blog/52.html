@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  
+  <script src="/assets/js/close_copy.js"></script>
+  
+
+  
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <title>JVM应用诊断调优记</title>
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/private/icons/huangdayu.png" />
+  <link rel="stylesheet" href="/assets/css/main.css" />
+</head><body a="light">
+    <main class="page-content" aria-label="Content">
+      <div class="w">
+        <a href="/">Back</a><article>
+  
+  <h1 class="post-header">JVM应用诊断调优记</h1>
+
+  <p class="post-meta">
+    <time datetime="2021-08-25 00:00:00 +0800">2021-08-25</time>
+  </p>
+  
+  <h2 id="前言">前言</h2>
+
+<hr />
+
+<p>  成为Javaer已经几年，但并没有真正的触碰到Java的核心，一直执着于高层API的使用。近来因项目需要，做性能测试和诊断调优，以此为记。</p>
+
+<blockquote class="blockquote-center">
+<p style="font-size: 30px;text-align: center;">工欲善其事，必先利其器。</p>
+</blockquote>
+<!-- more -->
+
+<h2 id="jvm应用常见问题">JVM应用常见问题</h2>
+
+<hr />
+
+<ol>
+  <li>Full GC出现的频繁</li>
+  <li>堆栈异常</li>
+  <li>CPU load 负载过高</li>
+  <li>内存泄露或使用过高</li>
+  <li>程序死锁或锁的性能问题</li>
+  <li>Out Of Memory</li>
+  <li>相应时间长，吞吐量低或异常波动</li>
+  <li>线程锁或线程过度等待</li>
+  <li>JVM应用假死或僵尸进程</li>
+</ol>
+
+<h2 id="jvm应用问题常见原因">JVM应用问题常见原因</h2>
+
+<hr />
+
+<ol>
+  <li>网络带宽</li>
+  <li>数据库连接配置（连接池等）</li>
+  <li>数据库索引设计，大表插入查询，排序字段，SQL性能等</li>
+  <li>各种池的配置，TCP/HTTP连接池，线程池，实例池，内存池等</li>
+  <li>线程池核心数，线程池任务队列大小不合理，消费生产不成比例</li>
+  <li>列表，集合，队列，线程池大小太大，一直占用较大内存且不回收不消费不释放</li>
+  <li>多线程操作共享数据或使用共享资源，其中包含了锁操作或原子性操作</li>
+  <li>通信连接机制（阻塞式，响应式，异步式）</li>
+  <li>垃圾回收机制（新生代的Eden和Survivor区频繁的进行Minor GC，老年代的full GC也回收较频繁会占用一定的资源）</li>
+  <li>程序代码效率与性能</li>
+  <li>业务逻辑复杂程度</li>
+  <li>异步任务消费处理效率</li>
+  <li>设计模式运用不合理</li>
+  <li>定时任务时间间隔与性能问题</li>
+  <li>硬件资源，例如磁盘读写速度或磁盘容量</li>
+  <li>系统架构，例如复杂且冗长的程序调用链路</li>
+  <li>框架性能问题，例如大量的Logger输出就会受到Logger框架性能的限制</li>
+  <li>应用配置问题</li>
+  <li>测试工具，测试环境，测试用例，测试脚本，测试配置等问题</li>
+</ol>
+
+<h2 id="jvm应用诊断方向">JVM应用诊断方向</h2>
+
+<hr />
+
+<ol>
+  <li>运行日志分析</li>
+  <li>GC日志分析</li>
+  <li>线程快照分析</li>
+  <li>堆内存转储分析</li>
+  <li>堆栈日志分析</li>
+  <li>耗时统计分析</li>
+  <li>网络连接数量与状态</li>
+  <li>实时JVM状态分析</li>
+  <li>实时系统性能指标监控</li>
+  <li>实时JVM应用性能指标监控</li>
+  <li>各种连接池配置</li>
+  <li>数据库或SQL性能分析</li>
+  <li>对使用的框架，工具进行性能测试</li>
+  <li>Code Review</li>
+</ol>
+
+<h2 id="jvm应用调优方向">JVM应用调优方向</h2>
+
+<hr />
+
+<ol>
+  <li>合理设置各种连接池（HTTP，TCP，数据库）</li>
+  <li>合理设置各种线程池（业务线程池，框架线程池，拒绝策略）</li>
+  <li>JVM调优，如适当增加内存</li>
+  <li>根据业务背景选择垃圾回收器</li>
+  <li>优化代码，控制内存使用</li>
+  <li>增加机器，分散节点压力</li>
+  <li>使用中间件提高程序效率，比如缓存、消息队列等</li>
+  <li>优化业务逻辑，减少IO与网络通信</li>
+  <li>优化架构，减少跨边界调用</li>
+  <li>优化外部框架配置或选型跟符合业务的框架（<code class="language-plaintext highlighter-rouge">tomcat</code>，<code class="language-plaintext highlighter-rouge">undertow</code>，<code class="language-plaintext highlighter-rouge">jetty</code>）</li>
+</ol>
+
+<h2 id="linux命令行工具">Linux命令行工具</h2>
+
+<hr />
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">命令</th>
+      <th style="text-align: center">示例</th>
+      <th style="text-align: center">说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">tail</code></td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">tail -f fileName</code></td>
+      <td style="text-align: center">tail用于显示文件尾部的内容，默认在屏幕上显示指定文件的末尾10行。</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">find</code></td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">find ./ -name fileName</code></td>
+      <td style="text-align: center">find命令可以根据给定的路径和表达式查找的文件或目录。</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">fgrep</code></td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">fgrep content *.java</code></td>
+      <td style="text-align: center">为文件搜索文字字符串</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">awk</code></td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">awk '{ print $2,$3 }' file</code></td>
+      <td style="text-align: center">文本和数据进行处理的编程语言</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">top</code></td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">top -H</code></td>
+      <td style="text-align: center">实时显示进程动态</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">ss</code></td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">ss -anp | grep 8081 | grep ESTAB | wc -l</code></td>
+      <td style="text-align: center">显示活动套接字信息</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">sar</code></td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">sar -u</code></td>
+      <td style="text-align: center">系统运行状态统计</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">pstack</code></td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">pstack 31440 &gt;&gt; pstack.log</code></td>
+      <td style="text-align: center">显示每个进程的栈跟踪</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">perf</code></td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">perf trace -p 12080</code></td>
+      <td style="text-align: center">Perf是Linux kernel自带的系统性能优化工具。</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">interrupts</code></td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">cat /proc/interrupts</code></td>
+      <td style="text-align: center">观察cpu的si指标</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">dmesg </code></td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">dmesg -l err</code></td>
+      <td style="text-align: center">查看启动日志</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">gdb</code></td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">gdb -pid=12080</code></td>
+      <td style="text-align: center">Linux GUN debugger工具</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="java-命令行工具">Java 命令行工具</h2>
+
+<hr />
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">命令</th>
+      <th style="text-align: center">常用示例</th>
+      <th style="text-align: center">说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">jps</code></td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">jps -l -v</code></td>
+      <td style="text-align: center">查看正在运行的Java进程，<a href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jps.html">官方文档</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">jstat</code></td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">jstat -gc -t pid 1000 10</code></td>
+      <td style="text-align: center">查看JVM统计信息，<a href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jstat.html">官方文档</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">jinfo</code></td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">jinfo pid</code></td>
+      <td style="text-align: center">实时查看和修改JVM配置参数，<a href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jinfo.html">官方文档</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">jmap</code></td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">jmap -dump:live,format=b,file=heap.bin pid</code></td>
+      <td style="text-align: center">导出内存映像文件，用MAT做分析，<a href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jmap.html">官方文档</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">jhat</code></td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">jhat -stack true heap.bin</code></td>
+      <td style="text-align: center">JDK自带堆分析工具，<a href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jhat.html">官方文档</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">jstack</code></td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">jstack -l 12080 | grep WAITING | wc -l</code></td>
+      <td style="text-align: center">打印JVM中线程快照，<a href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jstack.html">官方文档</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">jcmd</code></td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">jcmd pid JFR.start name=12080 settings=profile delay=3s duration=5m filename=./12080.jfr compress=true</code></td>
+      <td style="text-align: center">虚拟机 (JVM) 诊断，用JMC做分析，<a href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jcmd.html">官方文档</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">jstatd</code></td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">jrmiregistry 2020 &amp; jstatd -J-Djava.security.policy=all.policy -p 2020</code></td>
+      <td style="text-align: center">远程主机信息收集，<a href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jstatd.html">官方文档</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="java-gui工具">Java GUI工具</h2>
+
+<hr />
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">工具</th>
+      <th style="text-align: center">说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">JConsole</code></td>
+      <td style="text-align: center">JDK自带的可视化监控工具。查看Java应用程序的运行概况、监控堆信息、永久区（或元空间）使用情况、类加载情况等，<a href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/jconsole.html">官方文档</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">Visual VM</code></td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">Visual VM</code>是一个工具，它提供了一个可视界面，用于查看Java虚拟机上运行的基于Java技术的应用程序的详细信息。<a href="https://visualvm.github.io/index.html">官方文档</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">JMC</code></td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">Java Mission Control</code>，内置<code class="language-plaintext highlighter-rouge">Java Flight Recorder</code>。能够以极低的性能开销收集Java虚拟机的性能数据。<a href="https://www.oracle.com/java/technologies/jdk-mission-control.html">官方文档</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">MAT</code></td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">Memory Analyzer Tool</code> 是基于Eclipse的内存分析工具，是一个快速、功能丰富的Java heap分析工具。<a href="https://www.eclipse.org/mat/downloads.php">官方文档</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">JProfiler</code></td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">JProfiler</code> 是由 ej-technologies 公司开发的一款 Java 应用性能诊断工具。<a href="https://www.ej-technologies.com/products/jprofiler/overview.html">官方文档</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">Arthas</code></td>
+      <td style="text-align: center">开源Java应用诊断利器，可以嵌入应用或者在应用坏境中分析诊断应用。<a href="https://arthas.aliyun.com/doc/quick-start.html">官方文档</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">BTrace</code></td>
+      <td style="text-align: center">适用于 Java 平台的安全、动态跟踪工具。<a href="https://github.com/btraceio/btrace">官方文档</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">Greys-Anatomy</code></td>
+      <td style="text-align: center">Java诊断工具，<a href="https://github.com/oldmanpushcart/greys-anatomy">官方文档</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">Byteman</code></td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">Byteman</code> 是一个可以轻松跟踪、监控和测试 Java 应用程序和 JDK 运行时代码行为的工具，<a href="https://byteman.jboss.org/">官方文档</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">YourKit</code></td>
+      <td style="text-align: center">CPU 和内存 Java 分析，<a href="https://www.yourkit.com/java/profiler/features/">官方文档</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">Async-Profiler</code></td>
+      <td style="text-align: center">具有 <code class="language-plaintext highlighter-rouge">AsyncGetCallTrace</code> + <code class="language-plaintext highlighter-rouge">perf_events</code> 的 Java 采样 CPU 和 HEAP 分析器，<a href="https://github.com/jvm-profiling-tools/async-profiler">官方文档</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">TProfiler</code></td>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">TProfiler</code>是一个可以在生产环境长期使用的性能分析工具，<a href="https://github.com/alibaba/Tprofiler">官方文档</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: center">GC analysis</td>
+      <td style="text-align: center">GC analysis 是一个GC日志在线分析平台，<a href="https://gceasy.io/">官方文档</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="jvm常用命令">JVM常用命令</h2>
+
+<hr />
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">示例</th>
+      <th style="text-align: center">说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">java -jar demo.jar</code></td>
+      <td style="text-align: center">执行Jar包</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">java -help</code></td>
+      <td style="text-align: center">查看标准参数选项，<a href="https://docs.oracle.com/javase/8/docs/technotes/tools/windows/java.html">官方文档</a></td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">java -X</code></td>
+      <td style="text-align: center">查看-X参数选项</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">java jar -tvf *.jar</code></td>
+      <td style="text-align: center">参看冲突的Class</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">jinfo -flag [+|-]&lt;name&gt; &lt;pid&gt;</code></td>
+      <td style="text-align: center">运行时设置Boolean类型参数</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><code class="language-plaintext highlighter-rouge">jinfo -flag &lt;name&gt;=&lt;value&gt; &lt;pid&gt;</code></td>
+      <td style="text-align: center">运行时设置非Boolean类型参数</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="jvm常用参数选项">JVM常用参数选项</h2>
+
+<hr />
+
+<div class="language-shell highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="c"># Boolean类型格式</span>
+<span class="nt">-XX</span>:+&lt;option&gt;  启用option属性
+<span class="nt">-XX</span>:-&lt;option&gt;  禁用option属性
+
+<span class="c"># 非Boolean类型格式</span>
+<span class="nt">-XX</span>:&lt;option&gt;<span class="o">=</span>&lt;number&gt;  设置option数值，可以带单位如k/K/m/M/g/G
+<span class="nt">-XX</span>:&lt;option&gt;<span class="o">=</span>&lt;string&gt;  设置option字符值
+
+<span class="c"># 打印设置的XX选项及值</span>
+<span class="nt">-XX</span>:+PrintCommandLineFlags 程序运行时JVM默认设置或用户手动设置的XX选项
+<span class="nt">-XX</span>:+PrintFlagsInitial 打印所有XX选项的默认值
+<span class="nt">-XX</span>:+PrintFlagsFinal 打印所有XX选项的实际值
+<span class="nt">-XX</span>:+PrintVMOptions 打印JVM的参数
+
+<span class="c"># 栈</span>
+<span class="nt">-Xss128k</span> &lt;<span class="o">==&gt;</span> <span class="nt">-XX</span>:ThreadStackSize<span class="o">=</span>128k 设置线程栈的大小为128K
+
+<span class="c"># 堆</span>
+<span class="nt">-Xms2048m</span> &lt;<span class="o">==&gt;</span> <span class="nt">-XX</span>:InitialHeapSize<span class="o">=</span>2048m 设置JVM初始堆内存为2048M
+<span class="nt">-Xmx2048m</span> &lt;<span class="o">==&gt;</span> <span class="nt">-XX</span>:MaxHeapSize<span class="o">=</span>2048m 设置JVM最大堆内存为2048M
+<span class="nt">-Xmn2g</span> &lt;<span class="o">==&gt;</span> <span class="nt">-XX</span>:NewSize<span class="o">=</span>2g <span class="nt">-XX</span>:MaxNewSize<span class="o">=</span>2g 设置年轻代大小为2G
+<span class="nt">-XX</span>:SurvivorRatio<span class="o">=</span>8 设置Eden区与Survivor区的比值，默认为8
+<span class="nt">-XX</span>:NewRatio<span class="o">=</span>2 设置老年代与年轻代的比例，默认为2
+<span class="nt">-XX</span>:+UseAdaptiveSizePolicy 设置大小比例自适应，默认开启
+<span class="nt">-XX</span>:PretenureSizeThreadshold<span class="o">=</span>1024 设置让大于此阈值的对象直接分配在老年代，只对Serial、ParNew收集器有效
+<span class="nt">-XX</span>:MaxTenuringThreshold<span class="o">=</span>15 设置新生代晋升老年代的年龄限制，默认为15
+<span class="nt">-XX</span>:TargetSurvivorRatio 设置MinorGC结束后Survivor区占用空间的期望比例
+
+<span class="c"># 方法区</span>
+<span class="nt">-XX</span>:MetaspaceSize / <span class="nt">-XX</span>:PermSize<span class="o">=</span>256m 设置元空间/永久代初始值为256M
+<span class="nt">-XX</span>:MaxMetaspaceSize / <span class="nt">-XX</span>:MaxPermSize<span class="o">=</span>256m 设置元空间/永久代最大值为256M
+<span class="nt">-XX</span>:+UseCompressedOops 使用压缩对象
+<span class="nt">-XX</span>:+UseCompressedClassPointers 使用压缩类指针
+<span class="nt">-XX</span>:CompressedClassSpaceSize 设置Klass Metaspace的大小，默认1G
+
+<span class="c"># 直接内存</span>
+<span class="nt">-XX</span>:MaxDirectMemorySize 指定DirectMemory容量，默认等于Java堆最大值
+
+<span class="c"># OutOfMemory相关的选项</span>
+<span class="nt">-XX</span>:+HeapDumpOnOutMemoryError 内存出现OOM时生成Heap转储文件，两者互斥
+<span class="nt">-XX</span>:+HeapDumpBeforeFullGC 出现FullGC时生成Heap转储文件，两者互斥
+<span class="nt">-XX</span>:HeapDumpPath<span class="o">=</span>&lt;path&gt; 指定heap转储文件的存储路径，默认当前目录
+<span class="nt">-XX</span>:OnOutOfMemoryError<span class="o">=</span>&lt;path&gt; 指定可行性程序或脚本的路径，当发生OOM时执行脚本
+
+<span class="c"># Serial回收器</span>
+<span class="nt">-XX</span>:+UseSerialGC  年轻代使用Serial GC， 老年代使用Serial Old GC
+
+<span class="c"># ParNew回收器</span>
+<span class="nt">-XX</span>:+UseParNewGC  年轻代使用ParNew GC
+<span class="nt">-XX</span>:ParallelGCThreads  设置年轻代并行收集器的线程数。
+    一般地，最好与CPU数量相等，以避免过多的线程数影响垃圾收集性能。
+
+<span class="c"># CMS回收器</span>
+<span class="nt">-XX</span>:+UseConcMarkSweepGC  年轻代使用CMS GC。
+    开启该参数后会自动将-XX：＋UseParNewGC打开。即：ParNew（Young区）+ CMS（Old区）+ Serial Old的组合
+<span class="nt">-XX</span>:CMSInitiatingOccupanyFraction  设置堆内存使用率的阈值，一旦达到该阈值，便开始进行回收。JDK5及以前版本的默认值为68，DK6及以上版本默认值为92％。
+    如果内存增长缓慢，则可以设置一个稍大的值，大的阈值可以有效降低CMS的触发频率，减少老年代回收的次数可以较为明显地改善应用程序性能。
+    反之，如果应用程序内存使用率增长很快，则应该降低这个阈值，以避免频繁触发老年代串行收集器。
+    因此通过该选项便可以有效降低Fu1l GC的执行次数。
+<span class="nt">-XX</span>:+UseCMSInitiatingOccupancyOnly  是否动态可调，使CMS一直按CMSInitiatingOccupancyFraction设定的值启动
+<span class="nt">-XX</span>:+UseCMSCompactAtFullCollection  用于指定在执行完Full GC后对内存空间进行压缩整理
+    以此避免内存碎片的产生。不过由于内存压缩整理过程无法并发执行，所带来的问题就是停顿时间变得更长了。
+<span class="nt">-XX</span>:CMSFullGCsBeforeCompaction  设置在执行多少次Full GC后对内存空间进行压缩整理。
+<span class="nt">-XX</span>:ParallelCMSThreads  设置CMS的线程数量。
+    CMS 默认启动的线程数是<span class="o">(</span>ParallelGCThreads＋3<span class="o">)</span>/4，ParallelGCThreads 是年轻代并行收集器的线程数。
+    当CPU 资源比较紧张时，受到CMS收集器线程的影响，应用程序的性能在垃圾回收阶段可能会非常糟糕。
+<span class="nt">-XX</span>:ConcGCThreads  设置并发垃圾收集的线程数，默认该值是基于ParallelGCThreads计算出来的
+<span class="nt">-XX</span>:+CMSScavengeBeforeRemark  强制hotspot在cms remark阶段之前做一次minor gc，用于提高remark阶段的速度
+<span class="nt">-XX</span>:+CMSClassUnloadingEnable  如果有的话，启用回收Perm 区（JDK8之前）
+<span class="nt">-XX</span>:+CMSParallelInitialEnabled  用于开启CMS initial-mark阶段采用多线程的方式进行标记
+    用于提高标记速度，在Java8开始已经默认开启
+<span class="nt">-XX</span>:+CMSParallelRemarkEnabled  用户开启CMS remark阶段采用多线程的方式进行重新标记，默认开启
+<span class="nt">-XX</span>:+ExplicitGCInvokesConcurrent
+<span class="nt">-XX</span>:+ExplicitGCInvokesConcurrentAndUnloadsClasses
+    这两个参数用户指定hotspot虚拟在执行System.gc<span class="o">()</span>时使用CMS周期
+<span class="nt">-XX</span>:+CMSPrecleaningEnabled  指定CMS是否需要进行Pre cleaning阶段
+
+<span class="c"># G1回收器</span>
+<span class="nt">-XX</span>:+UseG1GC 手动指定使用G1收集器执行内存回收任务。
+<span class="nt">-XX</span>:G1HeapRegionSize 设置每个Region的大小。
+    值是2的幂，范围是1MB到32MB之间，目标是根据最小的Java堆大小划分出约2048个区域。默认是堆内存的1/2000。
+<span class="nt">-XX</span>:MaxGCPauseMillis  设置期望达到的最大GC停顿时间指标（JVM会尽力实现，但不保证达到）。默认值是200ms
+<span class="nt">-XX</span>:ParallelGCThread  设置STW时GC线程数的值。最多设置为8
+<span class="nt">-XX</span>:ConcGCThreads  设置并发标记的线程数。将n设置为并行垃圾回收线程数（ParallelGCThreads）的1/4左右。
+<span class="nt">-XX</span>:InitiatingHeapOccupancyPercent 设置触发并发GC周期的Java堆占用率阈值。超过此值，就触发GC。默认值是45。
+<span class="nt">-XX</span>:G1NewSizePercent  新生代占用整个堆内存的最小百分比（默认5％）
+<span class="nt">-XX</span>:G1MaxNewSizePercent  新生代占用整个堆内存的最大百分比（默认60％）
+<span class="nt">-XX</span>:G1ReservePercent<span class="o">=</span>10  保留内存区域，防止 to space（Survivor中的to区）溢出
+
+<span class="c"># GC日志相关选项</span>
+<span class="nt">-XX</span>:+PrintGC &lt;<span class="o">==&gt;</span> <span class="nt">-verbose</span>:gc  打印简要日志信息
+<span class="nt">-XX</span>:+PrintGCDetails            打印详细日志信息
+<span class="nt">-XX</span>:+PrintGCTimeStamps  打印程序启动到GC发生的时间，搭配-XX:+PrintGCDetails使用
+<span class="nt">-XX</span>:+PrintGCDateStamps  打印GC发生时的时间戳，搭配-XX:+PrintGCDetails使用
+<span class="nt">-XX</span>:+PrintHeapAtGC  打印GC前后的堆信息，如下图
+<span class="nt">-Xloggc</span>:&lt;file&gt; 输出GC导指定路径下的文件中
+<span class="nt">-XX</span>:+TraceClassLoading  监控类的加载
+<span class="nt">-XX</span>:+PrintGCApplicationStoppedTime  打印GC时线程的停顿时间
+<span class="nt">-XX</span>:+PrintGCApplicationConcurrentTime  打印垃圾收集之前应用未中断的执行时间
+<span class="nt">-XX</span>:+PrintReferenceGC 打印回收了多少种不同引用类型的引用
+<span class="nt">-XX</span>:+PrintTenuringDistribution  打印JVM在每次MinorGC后当前使用的Survivor中对象的年龄分布
+<span class="nt">-XX</span>:+UseGCLogFileRotation 启用GC日志文件的自动转储
+<span class="nt">-XX</span>:NumberOfGCLogFiles<span class="o">=</span>1  设置GC日志文件的循环数目
+<span class="nt">-XX</span>:GCLogFileSize<span class="o">=</span>1M  设置GC日志文件的大小
+
+<span class="c"># 支持JFR</span>
+<span class="nt">-XX</span>:+UnlockCommercialFeatures <span class="nt">-XX</span>:+FlightRecorder
+
+<span class="c"># 其他参数</span>
+<span class="nt">-XX</span>:+DisableExplicitGC  禁用hotspot执行System.gc<span class="o">()</span>，默认禁用
+<span class="nt">-XX</span>:ReservedCodeCacheSize<span class="o">=</span>&lt;n&gt;[g|m|k]、-XX:InitialCodeCacheSize<span class="o">=</span>&lt;n&gt;[g|m|k]  指定代码缓存的大小
+<span class="nt">-XX</span>:+UseCodeCacheFlushing  放弃一些被编译的代码，避免代码缓存被占满时JVM切换到interpreted-only的情况
+<span class="nt">-XX</span>:+DoEscapeAnalysis  开启逃逸分析
+<span class="nt">-XX</span>:+UseBiasedLocking  开启偏向锁
+<span class="nt">-XX</span>:+UseLargePages  开启使用大页面
+<span class="nt">-XX</span>:+PrintTLAB  打印TLAB的使用情况
+<span class="nt">-XX</span>:TLABSize  设置TLAB大小
+</code></pre></div></div>
+
+<h2 id="代码检查工具">代码检查工具</h2>
+
+<hr />
+
+<ol>
+  <li><a href="http://maven.apache.org/enforcer/maven-enforcer-plugin/index.html">Maven Enforcer</a> 插件提供了控制某些环境约束的目标，例如 Maven 版本、JDK 版本和 OS 系列以及更多内置规则和用户创建的规则。</li>
+  <li><a href="https://ossindex.sonatype.org/browse/maven?page=0">OSS Index</a> 是开源组件和扫描工具的免费目录，可帮助开发人员识别漏洞、了解风险并确保其软件安全。</li>
+  <li><a href="https://jeremylong.github.io/DependencyCheck/dependency-check-maven/index.html">OWASP Maven Dependency Check</a> 插件支持依赖项安全检查，它从 NIST 托管的国家漏洞数据库 (<a href="https://nvd.nist.gov/">NVD</a>) 下载和处理安全漏洞，运行<code class="language-plaintext highlighter-rouge">./mvnw verify</code>将在<code class="language-plaintext highlighter-rouge">target</code>目录下生成一个依赖项检查报告。</li>
+  <li><a href="https://www.archunit.org/">ArchUnit</a> 是一个免费、简单且可扩展的库，用于使用任何普通 Java 单元测试框架检查 Java 代码的体系结构。也就是说，ArchUnit 可以检查包和类、层和切片之间的依赖关系，检查循环依赖关系等等。它通过分析给定的 Java 字节码，将所有类导入 Java 代码结构来实现。您可以在<a href="https://github.com/TNG/ArchUnit-Examples"> ArchUnit 示例</a>和 <a href="https://github.com/TNG/ArchUnit">GitHub</a> 上的源中找到当前版本的<a href="https://juejin.cn/post/6844903957635006472#heading-0">示例</a>。</li>
+  <li><a href="https://dependabot.com/">GitHub Dependabot</a> 创建拉取请求以确保依赖项安全且保持最新。</li>
+  <li><a href="https://snyk.io/">Snyk</a>的漏洞扫描器可以帮助你找到并修复项目中的安全漏洞和代码质量问题，所有这些都可以在你最喜欢的IDE中进行。在几秒钟内，该插件将提供一个列表，列出所有不同类型的问题，并将其归类，同时提供可操作的修复建议。</li>
+  <li><a href="https://www.sonarqube.org/downloads/">Sonarqube</a>为静态代码检查工具，采用<code class="language-plaintext highlighter-rouge">B/S</code>架构，帮助检查代码缺陷，可以快速的定位代码中潜在的或者明显的错误，改善代码质量，提高开发速度。</li>
+</ol>
+
+<h2 id="总结">总结</h2>
+
+<p>  虽说工欲善其事，必先利其器，但任何技术或工具都只是实现需求的手段。有其果必有其因，解决问题我们应该从根源上着手，整洁架构，改善设计，规范编码，划定边界，制定标准，坚决执行，防患于未然。</p>
+
+<h2 id="参考文献">参考文献</h2>
+
+<hr />
+
+<ul>
+  <li><a href="https://docs.oracle.com/javase/8/docs/technotes/tools/unix/">Java JDK 工具集</a></li>
+  <li><a href="https://www.cnblogs.com/imyalost/p/8309468.html">性能测试中TPS上不去的几种原因浅析</a></li>
+  <li><a href="https://www.cnblogs.com/lvxueyang/p/14833555.html">JVM监控及诊断工具-GUI篇</a></li>
+  <li><a href="https://www.cnblogs.com/lvxueyang/p/14833528.html">JVM监控及诊断工具-命令行篇</a></li>
+  <li><a href="https://www.cnblogs.com/lvxueyang/p/14833493.html">性能监控与调优(概述篇)</a></li>
+  <li><a href="https://www.cnblogs.com/lvxueyang/p/14833576.html">JVM运行时参数</a></li>
+  <li><a href="https://www.cnblogs.com/lvxueyang/p/14833582.html">分析GC日志</a></li>
+  <li><a href="https://mp.weixin.qq.com/s/dLp0EfUOLq3gz6Plz9nowg">Java问题排查工具箱</a></li>
+  <li><a href="https://confluence.atlassian.com/kb/jvm-is-not-reachable-with-jstat-and-jstack-1031281491.html">jstat 和 jstack 无法访问 JVM</a></li>
+  <li><a href="https://www.jhipster.tech/cn/dependency-vulnerabities-check/">依赖漏洞检查</a></li>
+  <li><a href="https://owasp.org/www-project-top-ten/">owasp 十大 Web 应用程序安全风险</a></li>
+</ul>
+
+<h2 id="更新记录">更新记录</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">时间</th>
+      <th style="text-align: center">说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">2021-08-25</td>
+      <td style="text-align: center">初稿并发布</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2021-09-09</td>
+      <td style="text-align: center">追加代码检查工具</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2021-09-15</td>
+      <td style="text-align: center">修改“JVM应用常见问题”</td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+</article><br/>
+<br/>
+<p style="display: block;text-align:center;">©2012-2022 huangdayu.cn(大鱼叔叔的博客) 版权所有，未经授权，不得转载。</p>
+<br/>
+<a style="display: block;text-align:right;" href="/">Back</a>
+      </div>
+    </main>
+  </body>
+</html>

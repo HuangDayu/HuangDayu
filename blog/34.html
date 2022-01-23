@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  
+  <script src="/assets/js/close_copy.js"></script>
+  
+
+  
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <title>服务端的规范设计</title>
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/private/icons/huangdayu.png" />
+  <link rel="stylesheet" href="/assets/css/main.css" />
+</head><body a="light">
+    <main class="page-content" aria-label="Content">
+      <div class="w">
+        <a href="/">Back</a><article>
+  
+  <h1 class="post-header">服务端的规范设计</h1>
+
+  <p class="post-meta">
+    <time datetime="2019-05-08 17:27:00 +0800">2019-05-08</time>
+  </p>
+  
+  <h1 id="前言">前言</h1>
+
+<p>  后端开发的正确打开方式是先将项目规范设计好，然后再将项目文档（接口文档）写好，最后才开始编码！</p>
+
+<!-- more -->
+
+<h1 id="项目结构规范">项目结构规范</h1>
+
+<h2 id="结构图">结构图</h2>
+
+<p><img src="https://www.huangdayu.cn/assets/private/images/image-75.png" alt="架构图" title="架构图" /></p>
+
+<h2 id="结构设计">结构设计</h2>
+
+<h3 id="controller访问控制转发层">Controller（访问控制转发层）</h3>
+
+<ol>
+  <li>校验token；</li>
+  <li>用户权限校验；</li>
+  <li>用户角色校验；</li>
+  <li>参数校验；</li>
+  <li>数据校验；</li>
+  <li>数据序列化；</li>
+  <li>轻业务逻辑；</li>
+  <li>异常兜底；</li>
+  <li>使用<code class="language-plaintext highlighter-rouge">DTO&lt;VO&gt;</code> 或者 <code class="language-plaintext highlighter-rouge">DTO&lt;BO&gt;</code> 作为对外领域模型；</li>
+  <li>一个<code class="language-plaintext highlighter-rouge">Controller</code>应一个<code class="language-plaintext highlighter-rouge">Service</code></li>
+</ol>
+
+<h3 id="service业务逻辑服务层">Service（业务逻辑服务层）</h3>
+
+<ol>
+  <li>复杂的业务编排逻辑处理；</li>
+  <li>捕捉异常；</li>
+  <li>复用性低；</li>
+  <li>使用<code class="language-plaintext highlighter-rouge">DTO&lt;BO&gt;</code>作为领域模型（Business Object 业务对象）；</li>
+  <li>一个<code class="language-plaintext highlighter-rouge">Controller</code>应一个<code class="language-plaintext highlighter-rouge">Service</code>；</li>
+</ol>
+
+<h3 id="mannager通用业务处理层">Mannager（通用业务处理层）</h3>
+
+<ol>
+  <li>对第三方平台封装的层，预处理返回结果及转化异常信息；</li>
+  <li>对 <code class="language-plaintext highlighter-rouge">Service</code> 层通用能力的下沉，如缓存方案、中间件通用处理；</li>
+  <li>与 <code class="language-plaintext highlighter-rouge">DAO</code> 层交互，对多个 <code class="language-plaintext highlighter-rouge">DAO</code> 的组合复用；</li>
+  <li>复用性高；</li>
+  <li>可以是单个服务，也可以是复合服务，比如多表查询；</li>
+  <li>使用<code class="language-plaintext highlighter-rouge">DTO&lt;BO&gt;</code>作为领域模型；</li>
+</ol>
+
+<h3 id="dao数据持久访问层">DAO（数据持久访问层）</h3>
+
+<ol>
+  <li>将对象与表结构简历ORM映射关系；</li>
+  <li><code class="language-plaintext highlighter-rouge">Redis</code>缓存操作；</li>
+  <li><code class="language-plaintext highlighter-rouge">Cache</code>缓存操作；</li>
+  <li>只允许对应的<code class="language-plaintext highlighter-rouge">Service</code>访问；</li>
+  <li>使用<code class="language-plaintext highlighter-rouge">DO</code>作为领域模型；</li>
+</ol>
+
+<h1 id="表结构规范">表结构规范</h1>
+
+<ol>
+  <li>数据库表的命名<strong>t_</strong>为开头；</li>
+  <li>表的主键有两个，表序号<strong>id</strong>，用户ID<strong>user_id</strong>，分布式的全球唯一标识<strong>only_id</strong>；</li>
+  <li>字段命名<code class="language-plaintext highlighter-rouge">下划线规则</code>，无大写，下划线分离开单词。</li>
+</ol>
+
+<h1 id="请求规范">请求规范</h1>
+
+<ol>
+  <li>创建使用<strong><code class="language-plaintext highlighter-rouge">POST</code></strong>请求；</li>
+  <li>删除使用<strong><code class="language-plaintext highlighter-rouge">DELETE</code></strong>请求；</li>
+  <li>更新使用<strong><code class="language-plaintext highlighter-rouge">PUT</code></strong>请求；</li>
+  <li>查询使用<strong><code class="language-plaintext highlighter-rouge">GET</code></strong>请求；</li>
+</ol>
+
+<h1 id="接口规范">接口规范</h1>
+
+<p>如关于用户的操作：</p>
+
+<h2 id="创建用户">创建用户</h2>
+
+<ul>
+  <li>请求方法：<strong>POST</strong></li>
+  <li>请求路径：<strong>https://aip.huangdayu.cn/v1/users</strong></li>
+</ul>
+
+<h2 id="查询单个用户数据">查询单个用户数据</h2>
+
+<ul>
+  <li>请求方法：<strong>GET</strong></li>
+  <li>请求路径：<strong>https://aip.huangdayu.cn/v1/users/{user_id}</strong></li>
+</ul>
+
+<h2 id="更新用户数据">更新用户数据</h2>
+
+<ul>
+  <li>请求方法：<strong>PUT</strong></li>
+  <li>请求路径：<strong>https://aip.huangdayu.cn/v1/users/{user_id}</strong></li>
+</ul>
+
+<h2 id="删除用户">删除用户</h2>
+
+<ul>
+  <li>请求方法：<strong>DELETE</strong></li>
+  <li>请求路径：<strong>https://aip.huangdayu.cn/v1/users/{user_id}</strong></li>
+</ul>
+
+<h2 id="查询用户列表">查询用户列表</h2>
+
+<ul>
+  <li>请求方法：<strong>GET</strong></li>
+  <li>请求路径：<strong>https://aip.huangdayu.cn/v1/users</strong></li>
+</ul>
+
+<h2 id="查询用户名称">查询用户名称</h2>
+
+<ul>
+  <li>请求方法：<strong>GET</strong></li>
+  <li>请求路径：<strong>https://aip.huangdayu.cn/v1/users/{user_id}/name</strong></li>
+</ul>
+
+<blockquote>
+  <p>说明<br />
+<strong>v1</strong>：为接口版本号
+<strong>users</strong>：为具体对象的名词复数</p>
+</blockquote>
+
+<h2 id="url标准">URL标准</h2>
+
+<ul>
+  <li>URL 的命名 <code class="language-plaintext highlighter-rouge">必须</code> 全部小写，单词之间用<code class="language-plaintext highlighter-rouge">_</code>分隔开</li>
+  <li>URL 中资源（<code class="language-plaintext highlighter-rouge">resource</code>）的命名 <code class="language-plaintext highlighter-rouge">必须</code> 是名词，并且 <code class="language-plaintext highlighter-rouge">必须</code> 是复数形式</li>
+  <li><code class="language-plaintext highlighter-rouge">必须</code> 优先使用 <code class="language-plaintext highlighter-rouge">Restful</code> 类型的 URL</li>
+  <li>URL 中不能出现 <code class="language-plaintext highlighter-rouge">-</code>，<code class="language-plaintext highlighter-rouge">必须</code> 用下划线 <code class="language-plaintext highlighter-rouge">_</code> 代替</li>
+  <li>URL <code class="language-plaintext highlighter-rouge">必须</code> 是易读的</li>
+  <li>URL <code class="language-plaintext highlighter-rouge">一定不可</code> 暴露服务器架构</li>
+</ul>
+
+<h1 id="入参规范">入参规范</h1>
+
+<ol>
+  <li>使用<code class="language-plaintext highlighter-rouge">application/x-www-form-urlencoded</code>与<code class="language-plaintext highlighter-rouge">application/json;charset=UTF-8</code>并存。</li>
+  <li>使用<code class="language-plaintext highlighter-rouge">Token</code>身份认证，解决判断和权限鉴定，采用<code class="language-plaintext highlighter-rouge">AOP</code>面向切面编程认证<code class="language-plaintext highlighter-rouge">Token</code>;</li>
+  <li>请求携带的Token保存在Http Header的<code class="language-plaintext highlighter-rouge">Authorization</code>字段中，例如：Authorization: Bearer token…；</li>
+  <li>分页页数使用<code class="language-plaintext highlighter-rouge">page</code>字段，例如：page=3;</li>
+  <li>每页的数量使用<code class="language-plaintext highlighter-rouge">per_page</code>字段，例如：per_page=10；</li>
+  <li>指定数量使用<code class="language-plaintext highlighter-rouge">limit</code>字段，例如：limit=10；</li>
+  <li>返回结果排序属性使用<code class="language-plaintext highlighter-rouge">sortby</code>字段，例如：sortby=”大鱼叔叔”；</li>
+  <li>返回结果排序顺序使用<code class="language-plaintext highlighter-rouge">order</code>字段，例如：order=asc</li>
+</ol>
+
+<h1 id="出参规范">出参规范</h1>
+
+<ol>
+  <li>响应Content-Type使用标准的<code class="language-plaintext highlighter-rouge">application/json;charset=UTF-8</code></li>
+  <li>响应Header使用标准的<code class="language-plaintext highlighter-rouge">HTTP Status Code</code>；</li>
+  <li>状态码：<code class="language-plaintext highlighter-rouge">code</code>使用<code class="language-plaintext highlighter-rouge">int</code>（内部定义规范）;</li>
+  <li>状态标识：<code class="language-plaintext highlighter-rouge">msg</code>使用<code class="language-plaintext highlighter-rouge">String</code>（内部定义规范）;</li>
+  <li>状态说明：<code class="language-plaintext highlighter-rouge">desc</code>使用<code class="language-plaintext highlighter-rouge">String</code>（内部定义规范）;</li>
+  <li>响应数据体：<code class="language-plaintext highlighter-rouge">data</code>使用<code class="language-plaintext highlighter-rouge">List&lt;T&gt;</code>;</li>
+  <li><code class="language-plaintext highlighter-rouge">List</code>中包含分布式全球唯一标识<code class="language-plaintext highlighter-rouge">only_id</code>；</li>
+  <li><code class="language-plaintext highlighter-rouge">request_id</code>和<code class="language-plaintext highlighter-rouge">server_time</code>为非必须；</li>
+</ol>
+
+<h1 id="参数校验规范">参数校验规范</h1>
+
+<h2 id="存在争议">存在争议</h2>
+
+<h3 id="防御派">防御派</h3>
+
+<p>方法应该为自己负责，我不能保证调用者是否进行了校验，所以我必须要进行校验，从而保证程序的健壮性。</p>
+
+<h3 id="简约派">简约派</h3>
+
+<p>方法应该校验，但是不应该重复校验。重复校验产生了冗余的代码，导致程序可读性差。</p>
+
+<h2 id="本规范标准">本规范标准</h2>
+
+<h3 id="开发自用方法">开发自用方法</h3>
+
+<p>权限：<code class="language-plaintext highlighter-rouge">private</code>,<code class="language-plaintext highlighter-rouge">protected</code> ,<code class="language-plaintext highlighter-rouge">default</code></p>
+
+<p>参数是可控的，在方法中不必校验参数合法性，调用者在调用之前应确认传入参数的合法性。</p>
+
+<h3 id="开发公共方法">开发公共方法</h3>
+
+<p>权限：<code class="language-plaintext highlighter-rouge">public</code></p>
+
+<p>参数是不可控的，在方法中必须校验参数的合法性，因为无法保证调用者的行为和传入参数的合法性。</p>
+
+<h1 id="其他规范">其他规范</h1>
+
+<ol>
+  <li>前后端分离架构</li>
+  <li><code class="language-plaintext highlighter-rouge">Web</code>/<code class="language-plaintext highlighter-rouge">App</code>(<code class="language-plaintext highlighter-rouge">Android</code>/<code class="language-plaintext highlighter-rouge">iOS</code>)/<code class="language-plaintext highlighter-rouge">Open</code>(对外开放<code class="language-plaintext highlighter-rouge">OAuth</code>)共用一套接口；</li>
+  <li>使用<code class="language-plaintext highlighter-rouge">JSON</code>作为交互协议；</li>
+  <li>使用<code class="language-plaintext highlighter-rouge">Swagger</code>作为接口文档；</li>
+  <li>使用<code class="language-plaintext highlighter-rouge">HATEOAS</code>构建<code class="language-plaintext highlighter-rouge">RESTful Web API JSON</code>;</li>
+  <li><code class="language-plaintext highlighter-rouge">RESTful API</code>命名使用名词复数；</li>
+</ol>
+
+<h1 id="参考文献">参考文献</h1>
+
+<p><a href="https://github.com/alibaba/p3c/blob/master/%E9%98%BF%E9%87%8C%E5%B7%B4%E5%B7%B4Java%E5%BC%80%E5%8F%91%E6%89%8B%E5%86%8C%EF%BC%88%E8%AF%A6%E5%B0%BD%E7%89%88%EF%BC%89.pdf">阿里巴巴Java开发手册（详尽版）</a><br />
+<a href="https://juejin.im/post/5b44e62e6fb9a04fc030f216">你的项目应该如何正确分层？</a><br />
+<a href="https://juejin.im/post/5b30ef0ee51d4558dd699414#heading-29">RESETful API 设计规范</a></p>
+
+
+</article><br/>
+<br/>
+<p style="display: block;text-align:center;">©2012-2022 huangdayu.cn(大鱼叔叔的博客) 版权所有，未经授权，不得转载。</p>
+<br/>
+<a style="display: block;text-align:right;" href="/">Back</a>
+      </div>
+    </main>
+  </body>
+</html>
