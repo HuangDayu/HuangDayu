@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  
+  <script src="/assets/js/close_copy.js"></script>
+  
+
+  
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <title>架构契约论</title>
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/private/icons/huangdayu.png" />
+  <link rel="stylesheet" href="/assets/css/main.css" />
+</head><body a="light">
+    <main class="page-content" aria-label="Content">
+      <div class="w">
+        <a href="/">Back</a><article>
+  
+  <h1 class="post-header">架构契约论</h1>
+
+  <p class="post-meta">
+    <time datetime="2022-04-04 00:00:00 +0800">2022-04-04</time>
+  </p>
+  
+  <h2 id="前言">前言</h2>
+
+<p>  新项目让我历经了一次应用架构和工程架构的演进与迭代。从最开始的好高骛远而导致项目工程架构过度设计，到因应用架构思想的不成熟与不规范也导致频繁的重构和调整，到因项目参与人数逐渐增多而导致应用架构混乱和破坏，再到项目不断开发迭代过程中所频繁出现的问题和反设计，让我意识到，没有思想，没有规范，没有契约的项目都不可避免的走向失败的深渊，甚至因此而付出惨痛代价。</p>
+
+<h2 id="何为架构">何为架构</h2>
+
+<p>  架构的本质是在项目的短期利益与长期效益之间权衡取舍取得平衡的一种决策思想与行为准则。那么，好的架构就是既满足项目当下短期利益且不损害长期效益。这就是架构一直在追寻的目标。</p>
+
+<p>  在软件领域，存在多个层次和多个方向的架构，如应用架构、业务架构、工程架构、服务架构、系统架构、数据架构、运维架构和物理架构等。长期效益一般有性能、维护性、扩展性、伸缩性、安全性、可用性、迭代性等指标，短期利益可能是成本（周期、人力、物力、财力）、收益、市场等因素。</p>
+
+<p>  正如Bob大叔所言：软件架构的终极目标是，用最小的人力成本来满足构建和维护该系统的需求。</p>
+
+<h2 id="何为契约">何为契约</h2>
+
+<p>  契约即是契约遵守者都共同认可和执行的决策思想和行为准则。</p>
+
+<h2 id="为何立契">为何立契</h2>
+
+<p>  软件领域项目执行过程中，不难免会出现一些错误思想，错误决策和错误行为。如应用开发过程中先实现后重构的行为，也许到头来你始终没有重构的机会，甚至你会怕于重构，怕于改动；再比如工程架构的不严谨，导致依赖管理混乱而破坏架构，版本冲突等问题。</p>
+
+<p>  所以，契约旨在将决策思想和行为准则贯彻项目始终，以防止项目走入歧途而偏离轨道甚至因此失败。</p>
+
+<p>  千年古训：“不以规矩，不成方圆”时刻在警醒着我们，契约就是项目执行的“最高法律”。</p>
+
+<h2 id="何种契约">何种契约</h2>
+
+<p>  上面提到，在软件领域，存在多个层次和多个方向的架构，每一种架构的出发点都是符合当下利益又兼顾长期效益，那么他的落脚点就必须是控制复杂度，因为只有不复杂的系统才能持续迭代。在应用架构中，把控设计与编码的复杂度；在业务架构中，把控业务关系与交互的复杂度；在工程架构中，控制模块和依赖的复杂度；在服务架构中，控制调用与传递的复杂度；在系统架构中，控制部署和组成的复杂度；在数据架构中，控制存储和事务的复杂度；在运维架构中，控制流程与关系的复杂度；在物理架构中，控制节点与拓扑的复杂度。</p>
+
+<p>  复杂度评估的维度则包括但不限于：内聚、耦合、冗余、体量、质量、模式、依赖等。</p>
+
+<h2 id="如何立契">如何立契</h2>
+
+<p>  与架构的出发点不同，契约的出发点必须是维护架构的长远利益，如果说架构是可以取舍的，那么契约守住的是架构的底线。底线思维是现代社会的关系法则，只要不突破底线，那么都可以让步妥协。所以，架构契约的制定也要设立底线，坚守底线。</p>
+
+<p>  契约的底线要落实到规则、指标和阀值上来，当违反规则或坏味道超出阀值时，应立即纠正，以应用架构的契约规则为例：</p>
+
+<ol>
+  <li>编码设计模式上遵守SOLID原则；</li>
+  <li>应用架构模式上遵守整洁架构的设计原则；
+    <ol>
+      <li>适配器层不能被其他层直接访问；</li>
+      <li>api（clients）只能被业务层，基础设施层，应用层访问；</li>
+      <li>业务层只能被应用层访问；</li>
+      <li>领域层只能被基础设施层和业务层访问；</li>
+      <li>基础措施层不能被任何层次引用和访问；</li>
+      <li>应用层不能被任何层次引用和访问；</li>
+    </ol>
+  </li>
+  <li>严格的依赖关系检查，如禁止循环依赖等；</li>
+  <li>不允许使用停止维护的，不规范的外部依赖，如JodaTime；</li>
+  <li>不允许抛出通用异常（如RuntimeException）；</li>
+  <li>不允许使用<code class="language-plaintext highlighter-rouge">com.sun</code>的包，sun的包已经过时，取而代之的是<code class="language-plaintext highlighter-rouge">java.*</code>或者<code class="language-plaintext highlighter-rouge">jdk.*</code>；</li>
+  <li>不允许使用<code class="language-plaintext highlighter-rouge">System.out</code>,<code class="language-plaintext highlighter-rouge">System.err</code>,<code class="language-plaintext highlighter-rouge">e.printStackTrace();</code>等不规范的日志打印方式；</li>
+</ol>
+
+<p>  我们通常说，架构是演进的，迭代的，那么就意味着契约的迭代，底线的提升。</p>
+
+<h2 id="践行契约">践行契约</h2>
+
+<p>  制定契约并不困难，如何践行和守护契约才是问题的关键所在。</p>
+
+<p>  事实上，项目开发过程中，开发人员的认知不同步不统一，架构规则的不严格不规范，质量阀值的不合理不准确，执行过程中的不贯彻不坚决，决策过程中的不重视不认真等各种阻碍，要害和原因，都将导致架构契约形同虚设，毫无作用。</p>
+
+<p>  所以，如何践行并坚守契约成重中之重。好在在应用架构领域，有众多的依赖安全检查，如<a href="https://dependabot.com/">GitHub Dependabot</a> 、<a href="https://jeremylong.github.io/DependencyCheck/dependency-check-maven/index.html">OWASP Maven Dependency Check</a>、<a href="http://maven.apache.org/enforcer/maven-enforcer-plugin/index.html">Maven Enforcer</a>和<a href="https://ossindex.sonatype.org/browse/maven?page=0">OSS Index</a>等工具，代码质量检查如<a href="https://www.sonarqube.org/downloads/">Sonarqube</a>和<a href="https://snyk.io/">Snyk</a>，应用检查如<a href="https://www.archunit.org/">ArchUnit</a>和最近开源的<a href="https://github.com/archguard/archguard">ArchGuard</a>。</p>
+
+<p>  但是这些远远不够，应该要在设计，架构和开发的整个过程中，都要严格的检查和纠正在这一过程中的错误和违规，要常态化，持久化，贯彻并坚决执行。</p>
+
+<h2 id="小结">小结</h2>
+
+<p>  虽然我没有读过《社会契约论》这本书，但是大概也能从书名中窥探其中的真意，如果要人人都主动自觉的遵守社会契约，那么大概是对人性本善论的过度信任了。《商君书.算地》中曰：民之性，饥而求食，劳而求快，苦则求乐，辱则求荣，生则计利，死则虑名。民之求利，失礼之法；求名，失性之常。</p>
+
+<p>  在软件项目开发过程中，我们有时也会做出只顾眼前利益而抛弃长远效益的选择，而这即使使我们赚取蝇头小利或逃过当下一劫，但到头来依旧逃脱不掉失败的厄运。</p>
+
+<p>  所以，契约就是项目执行过程中共同遵守的“最高法律”。</p>
+
+<p>  <strong>底线不容僭越。</strong></p>
+
+<p align="right">开元4720年弎月初四 广州</p>
+
+<h2 id="更新记录">更新记录</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">时间</th>
+      <th style="text-align: center">说明</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">2022-03-04</td>
+      <td style="text-align: center">构思提纲</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2022-04-04</td>
+      <td style="text-align: center">初稿发布</td>
+    </tr>
+  </tbody>
+</table>
+<br/>
+<a style="display: block;text-align:right;" href="/">Back</a>
+<br/>
+<p style="display: block;text-align:center;">©2012-2022 huangdayu.cn(大鱼叔叔的博客) 版权所有，未经授权，不得转载。</p>
+<br/></article>
+
+
+      </div>
+    </main>
+  </body>
+</html>
