@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  
+  <script src="/assets/js/close_copy.js"></script>
+  
+
+  
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <title>《深入理解Java虚拟机》读后思</title>
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/private/icons/huangdayu.png" />
+  <link rel="stylesheet" href="/assets/css/main.css" />
+
+   <link rel="stylesheet" href="/assets/css/rouge.css" />
+</head><body a="light">
+    <main class="page-content" aria-label="Content">
+      <div class="w">
+        <a href="/">博客首页</a><article>
+  
+  <h1 class="post-header">《深入理解Java虚拟机》读后思</h1>
+
+  <p class="post-meta">
+    <time datetime="2023-12-09 00:00:00 +0800">2023-12-09</time>
+  </p>
+  
+  <p>  以前写过的一系列JVM应用诊断调优的文章，其实都是建立在一些一知半解的经验和网络上一些博客教程的基础之上，难免有些浅薄。一直以来，我学习运用一些技术的出发点都是需要解决问题，而并非是要理解这项技术本身，这也就导致知识储备一直停留在应用层面，甚至是导致我现在失业的一个重要原因。</p>
+
+<p>  说来惭愧，从购买《深入理解Java虚拟机》到读完它，竟然历时8个月，中间我已经历从一家泥潭中脱离，却进入了新的深坑，而后又已从深坑中带伤离开，直到现在失业了，我终于将其读完。读到这里，想必读者也能猜到我是一个什么样的人了吧……</p>
+
+<p>  言归正传，《深入理解Java虚拟机》确实一本好书，周志明博士的学识渊博，表述通俗易懂， 文字行云流水，读起来没有任何的顿挫感和压力感，即使读不懂也不影响读下去，总是能带给人思考与启发，是真博学之士。</p>
+
+<p>  那么，《深入理解Java虚拟机》给予我哪些启发与思考呢？先看一张图：</p>
+
+<p><img src="https://www.huangdayu.cn/assets/private/images/image-103.png" alt="" /></p>
+
+<p>  上图是我读完书后，结合自己的理解所整理而成，叫“Java虚拟机原理图”也许不太恰当，但想表达的是，Java虚拟机在Java语言与操作系统中是什么位置，他们之间有什么关系，以及他们包含哪些功能、资源或者模块，我想这样对理解Java虚拟机是有很大帮助的。</p>
+
+<p>  Java在立项之初，定下的目标就是：一次编写，到处运行。而要实现这个目标，就要解决系统、处理器、硬件资源的差异，而要降低编程语言的难度，就要设计高级的API，要做内存资源管理，要做计算资源调度，要做性能监控与故障修复工具，还要解决启动速度、响应速度、性能、安全、扩展、优化、效率、执行等问题。所以，Java提出的方案是，设计一款名为Java虚拟机的程序解决上述痛点，让程序员只关注自身的业务，而不需要关注虚拟机的实现细节，甚至虚拟机会帮程序员优化代码，提升程序性能。</p>
+
+<p>  为了能让更多的开发者支持Java，让Java虚拟机可以运行在各种各样资源条件下的机器中，“Java虚拟机规范”应运而生。Java虚拟机规范定义了Java虚拟机的工作原理、运行时数据区域的结构、字节码指令集、类文件格式、类加载机制、异常处理、线程同步、垃圾回收等内容。它为Java程序在不同平台上实现“一次编写，到处运行”的特性提供了基础，确保了Java程序的可移植性和安全性。这也让各种各式的虚拟机层出不穷，在各种细分领域大放异彩，进而推动了Java语言的发展壮大。</p>
+
+<p>  Java最初的目标已然实现，但是如何能在各种语言层出不穷，人们对语言的要求越来越高的情况下，还能在编程世界占据一席之地，这就考验Java开发者的能力了。所以这几年Java进入了快速发展迭代时期，各种特性，各种语法糖，各种优化，各种扩展都层出不穷。我大胆的断言，不出几年，Java的劣势必将被一个个补齐，新的优势也将不断涌现，甚至会抛弃Java虚拟机，进入提前编译的新时代。</p>
+
+<p>  很多人总是会说，编程语言只是工具，殊不知一把得心应手的工具将使你事半功倍，当你真正熟悉你手上的工具，它必将使你披荆斩棘，所向披靡。</p>
+
+<p align="right">开元4721年十月廿八 广州黄埔</p>
+
+<br/>
+<a style="display: block;text-align:right;" href="/">博客首页</a>
+<br/>
+<p style="display: block;text-align:center;">©2012-2023 huangdayu.cn(大鱼叔叔的博客) 版权所有，未经授权，不得转载。</p>
+<br/></article>
+
+
+      </div>
+    </main>
+  </body>
+</html>
