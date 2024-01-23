@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  
+  <script src="/assets/js/close_copy.js"></script>
+  
+
+  
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  
+
+  <title>初识大语言模型</title>
+
+  <link rel="shortcut icon" type="image/x-icon" href="/assets/private/icons/huangdayu.png" />
+  <link rel="stylesheet" href="/assets/css/main.css" />
+
+   <link rel="stylesheet" href="/assets/css/rouge.css" />
+</head><body a="light">
+    <main class="page-content" aria-label="Content">
+      <div class="w">
+        <a href="/">博客首页</a><article>
+  
+  <h1 class="post-header">初识大语言模型</h1>
+
+  <p class="post-meta">
+    <time datetime="2024-01-23 00:00:00 +0800">2024-01-23</time>
+  </p>
+  
+  <p>  ChatGPT推出之后，将人工智能这一技术及其应用推向了新的阶段，让人们认为机器“理解”人类意图成为可能，其背后的大语言模型成为了人们茶余饭后的谈资，各种依托大模型而退出产品的公司更是如雨后春笋般涌出，身为一名半桶水的技术人员，我更不能也不甘落后了。</p>
+
+<h4 id="本质">本质</h4>
+
+<p>  大语言模型的本质是依托深度学习算法对大规模数据集（文本、单词、句子、段落）进行语言规律、语法结构、表达方式、语义关系等特征分析，自动提取出语言的内在规律和知识，从而形成大型神经网络模型，实现对自然语言的高效处理。当用户输入提示词之后，模型会基于之前的上下文和语义预测（权重）出下一个可能的词语或句子，从而逐步生成连贯的文本。</p>
+
+<p>  我觉得可以简单的理解为：利用统计学对大规模数据进行分析并形成符合数据规律的预测算法。</p>
+
+<h4 id="模型">模型</h4>
+
+<h5 id="模型架构">模型架构</h5>
+
+<p>  模型架构是指在神经网络中确定神经元之间连接方式和层次结构的设计，CNN（卷积神经网络）、RNN（循环神经网络）和Transformer是深度学习中常用的神经网络架构，各自在不同领域具有优劣势。下面是它们的架构设计细节和对比：</p>
+
+<ol>
+  <li>CNN（卷积神经网络）：
+    <ul>
+      <li>架构设计：CNN主要由卷积层、池化层和全连接层组成。卷积层用于提取图像或序列数据中的局部特征，池化层用于降采样并减少参数量，全连接层用于分类或回归任务。</li>
+      <li>优点：
+        <ul>
+          <li>局部连接和权值共享使得CNN具有较少的参数量，适合处理图像等高维数据。</li>
+          <li>对平移不变性具有良好的建模能力，适合处理图像、语音等具有空间局部性的数据。</li>
+        </ul>
+      </li>
+      <li>缺点：
+        <ul>
+          <li>无法捕捉长期依赖关系，不适合处理需要考虑上下文信息的序列数据。</li>
+          <li>在处理较长序列时，会存在信息丢失或模糊的问题。</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>RNN（循环神经网络）：
+    <ul>
+      <li>架构设计：RNN通过循环结构将上一时刻的隐藏状态传递到当前时刻，以建模序列数据中的时序关系。常见的RNN包括基础RNN、LSTM和GRU等。</li>
+      <li>优点：
+        <ul>
+          <li>能够较好地建模序列数据中的时序依赖关系，适合处理语言模型、机器翻译等需要考虑上下文信息的任务。</li>
+          <li>具有参数共享的特性，可以处理变长序列输入。</li>
+        </ul>
+      </li>
+      <li>缺点：
+        <ul>
+          <li>难以捕捉长期依赖关系，存在梯度消失或梯度爆炸问题。</li>
+          <li>计算效率较低，难以并行化。</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Transformer：
+    <ul>
+      <li>架构设计：Transformer主要由自注意力机制（self-attention）和前馈神经网络组成，取消了传统的循环结构。自注意力机制能够在不同位置之间建立全局依赖关系。</li>
+      <li>优点：
+        <ul>
+          <li>通过自注意力机制，能够捕捉到序列中任意两个位置之间的依赖关系，具有更好的建模能力。</li>
+          <li>并行计算性能较好，能够高效处理长序列。</li>
+        </ul>
+      </li>
+      <li>缺点：
+        <ul>
+          <li>参数量较大，对于小规模数据集可能过拟合。</li>
+          <li>对于时间序列数据，可能无法很好地考虑时间维度的依赖关系。</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ol>
+
+<p>  总体而言，CNN适用于处理图像等高维数据，RNN适用于建模序列数据中的时序依赖关系，而Transformer在NLP领域取得了很大成功，并且在处理长序列时具备优势。不同的大语言模型架构在处理长序列、捕捉长期依赖、计算效率等方面有所差异。选择适合特定任务的模型架构需要根据任务需求、数据集特点以及可用计算资源来进行综合考虑。</p>
+
+<h5 id="模型训练">模型训练</h5>
+
+<p><img src="https://www.huangdayu.cn/assets/private/images/image-104.png" alt="" /></p>
+
+<p>  以ChatGPT的训练为例，大语言模型的训练过程可以分为两个主要阶段：预训练和微调。</p>
+
+<ol>
+  <li>预训练（Pre-training）阶段：
+    <ul>
+      <li>数据收集与预处理：首先，从互联网上收集大量的对话数据，包括聊天记录、论坛对话、电子书等。这些对话数据将用作 ChatGPT 模型的预训练数据。</li>
+      <li>构建训练样本：将对话数据转换为模型可以理解的格式，通常是将对话中的问题和回答配对，并添加特殊标记以区分它们。</li>
+      <li>基于 Transformer 架构进行预训练：ChatGPT 使用了 Transformer 架构，该架构利用了自注意力机制来捕捉句子中的上下文关系。通过自回归的方式，使用预训练数据来训练 ChatGPT 模型。</li>
+      <li>无监督训练：ChatGPT 的预训练过程是无监督的，没有使用人工标注的标签或指导信息。模型通过最大化输入序列中下一个单词的概率来学习上下文信息和语言模式。</li>
+    </ul>
+  </li>
+  <li>微调（Fine-tuning）阶段：
+    <ul>
+      <li>数据准备：为了使 ChatGPT 成为一个实用的聊天机器人，需要使用有监督的对话数据进行微调。这些数据包括用户输入和模型应该生成的回答。有时也会添加一些人工编写的对话示例，以确保模型生成合理的回复。</li>
+      <li>设计任务和设置超参数：定义聊天机器人的具体任务和目标，并根据任务需求设置微调的超参数，如学习率、批次大小等。</li>
+      <li>在有监督的环境下微调：使用微调数据集对 ChatGPT 进行有监督的训练。通过最小化生成回答与标准回答之间的差异来微调模型参数。</li>
+      <li>迭代微调和评估：进行多轮的微调和评估，以改进模型的性能，并确保生成的回答在语法上正确、连贯性好，并且符合预期的目标。</li>
+    </ul>
+  </li>
+</ol>
+
+<p>  既然是基于现有数据训练出来的模型，那必然有其局限性，比如数据过时，计算不准确，回答不专业，胡编乱造，缺乏逻辑或连贯性等问题， 常见的解决办法包括：</p>
+
+<ul>
+  <li>检索增强生成（RAG）：对大型语言模型输出进行优化，使其能够在生成响应之前引用训练数据来源之外的权威知识库，提高生成结果的实时性、准确性和相关性。</li>
+  <li>程序辅助语言模型（PAL）：将自然语言问题分解为可运行的步骤 ，而解决问题则委托给解释器，比如解决科学运算不准确的问题。</li>
+  <li>推理行动结合（ReAct）：生成推理轨迹使模型能够诱导、跟踪和更新操作计划，甚至处理异常情况。操作步骤允许与外部源（如知识库、服务、工具）进行交互并且收集信息。</li>
+</ul>
+
+<p>  总的来说，解决大模型缺陷的手段可表述为提示工程，提示工程（Prompt Engineering）是一门较新的学科，关注提示词开发和优化，帮助用户将大语言模型（Large Language Model, LLM）用于各场景和研究领域。 掌握了提示工程相关技能将有助于用户更好地了解大型语言模型的能力和局限性。</p>
+
+<p>  研究人员可利用提示工程来提升大语言模型处理复杂任务场景的能力，如问答和算术推理能力。开发人员可通过提示工程设计、研发强大的工程技术，实现和大语言模型或其他生态工具的高效接轨。</p>
+
+<p>  提示工程不仅仅是关于设计和研发提示词。它包含了与大语言模型交互和研发的各种技能和技术。提示工程在实现和大语言模型交互、对接，以及理解大语言模型能力方面都起着重要作用。用户可以通过提示工程来提高大语言模型的安全性，也可以赋能大语言模型，比如借助专业领域知识和外部工具来增强大语言模型能力。</p>
+
+<p><img src="https://www.huangdayu.cn/assets/private/images/image-105.png" alt="" /></p>
+
+<p>  上图就是提示技术的例子，第一个问题时GPT的回答是错误的，第二次提问时提示“分步骤思考”，要求GPT像人类一样思考问题，一步步解答，就能够得到正确的答案，这就是提示词发挥了作用。</p>
+
+<h5 id="模型使用">模型使用</h5>
+
+<p>  大语言模型训练结果会保存为二进制格式，训练的数据越多，参数越大文件也就越大。PyTorch的模型格式是.pt，Hugging Face推出.safetensors格式，Georgi Gerganov发布了.gguf格式。以Transformer架构的PyTorch大预言模型文件为例：</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">transformers</span> <span class="kn">import</span> <span class="n">AutoTokenizer</span><span class="p">,</span> <span class="n">AutoModelForCausalLM</span>
+
+<span class="c1"># 加载tokenizer和模型
+</span><span class="n">tokenizer</span> <span class="o">=</span> <span class="n">AutoTokenizer</span><span class="p">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s">"tokenizer_path_name"</span><span class="p">)</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">AutoModelForCausalLM</span><span class="p">.</span><span class="n">from_pretrained</span><span class="p">(</span><span class="s">"model_path_name"</span><span class="p">)</span>
+
+<span class="c1"># 输入文本
+</span><span class="n">input_text</span> <span class="o">=</span> <span class="s">"今天天气真好啊"</span>
+
+<span class="c1"># 将文本编码为输入张量
+</span><span class="n">input_ids</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">.</span><span class="n">encode</span><span class="p">(</span><span class="n">input_text</span><span class="p">,</span> <span class="n">return_tensors</span><span class="o">=</span><span class="s">"pt"</span><span class="p">)</span>
+
+<span class="c1"># 生成文本
+</span><span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">.</span><span class="n">generate</span><span class="p">(</span><span class="n">input_ids</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">do_sample</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="c1"># 将生成的张量解码为文本输出
+</span><span class="n">output_text</span> <span class="o">=</span> <span class="n">tokenizer</span><span class="p">.</span><span class="n">decode</span><span class="p">(</span><span class="n">output</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">skip_special_tokens</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">output_text</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="应用">应用</h4>
+
+<p>  大语言模型的应用较为广泛，在许多领域都能发挥不错的作用，虽说还不能完全替代人类，但也能够切切实实的提升人类的效率，帮助人类更好的工作。</p>
+
+<ol>
+  <li>生成文本：大语言模型可以用于生成各种类型的文本，如新闻文章、故事、诗歌等。它可以根据输入的提示或问题，生成相应的连贯和有逻辑的文本。</li>
+  <li>问答系统：大语言模型可以用于构建问答系统，通过回答用户提出的问题或解决用户的疑惑。它可以理解问题的含义，并给出合理的回答。</li>
+  <li>自动摘要和翻译：大语言模型可以用于自动摘要和翻译任务，它可以从一篇长文中提取出关键信息并生成简洁的摘要，或将一种语言翻译成另一种语言。</li>
+  <li>对话系统：大语言模型可以用于构建对话系统，与用户进行对话并提供相关信息。它可以理解用户的意图和上下文，并做出相应的回应。</li>
+  <li>内容创作辅助：大语言模型可以用于辅助内容创作，提供灵感和写作建议。它可以根据输入的关键词或主题，生成相关的文本段落或提供改进意见。</li>
+  <li>代码自动生成：大语言模型可以用于自动生成代码，提供编程帮助和建议。它可以根据用户的需求和输入，生成相应的代码片段或给出解决方案。</li>
+</ol>
+
+<p>  大语言模型的应用场景是没有边界的，只要能够依托数据和算法来帮助人们工作生活的场景皆可应用大模型，文本、语音、图像、视频、机械都可成为大模型输出它的答案的载体。</p>
+
+<h4 id="趋势">趋势</h4>
+
+<p>  大语言模型的发展趋势可以从以下几个方面来看：</p>
+
+<ol>
+  <li>模型规模的增加：随着硬件和计算能力的提升，大语言模型的规模将不断扩大。更大规模的模型可以拥有更强大的语言表示能力，并能够处理更复杂和细致的任务。</li>
+  <li>多模态融合：当前的大语言模型主要处理文本数据，但未来的发展趋势是将视觉、语音、图像等多种模态信息融合在一起。这将使得模型能够更好地理解和生成与多种感知模态相关的内容。</li>
+  <li>预训练与微调的结合：目前的大语言模型通常通过预训练和微调两个步骤进行训练。未来的发展趋势是进一步优化这两个步骤的结合方式，以提高模型的效果和泛化能力。</li>
+  <li>强化学习与自监督学习的应用：强化学习和自监督学习是当前大语言模型研究的热点方向之一。未来的发展趋势是更深入地探索和应用这些学习方法，以进一步提升模型的性能和适应能力。</li>
+  <li>个性化和可解释性：随着大语言模型的应用范围扩大，个性化和可解释性将成为重要的研究方向。人们对于模型生成内容的个性化需求越来越高，同时也需要模型能够给出合理的解释和理由。</li>
+  <li>隐私和安全保护：随着大语言模型的使用越来越广泛，隐私和安全的问题也越来越重要。未来的发展趋势是在模型设计和应用中更加注重隐私保护和安全防护的考虑。</li>
+</ol>
+
+<p>  总的来说，大语言模型的发展趋势是朝着更大规模、多模态、个性化、更专业、可解释性、隐私保护和安全防护等方向发展。同时，预训练与微调、强化学习与自监督学习等技术的应用也将进一步推动大语言模型的发展。</p>
+
+<h4 id="思考">思考</h4>
+
+<p>  未来，大语言模型可以替代人类重复的、有规律的工作，而一些创造性的工作是很难替代的，因为它没有创造性的思维，它的一切来自于数据与算法，所以，它永远是一个工具，但也是一个强大的工具。</p>
+
+<p>  读这篇文章是否有一种东拼西凑的感觉呢？没有，大部分内容来自ChatGPT-3.5。对于大语言模型的知识，看起来它甚至比我还专业，如果让他生成这样一篇很表面的文章，30秒内它就能搞定，而我需要花3天时间，当然，这里也有我对知识的一点点总结，是为初识大语言模型。</p>
+
+<h4 id="参考">参考</h4>
+
+<ul>
+  <li><a href="https://www.bilibili.com/video/BV19a4y1Q7bY/?spm_id_from=333.788&amp;vd_source=2f61b4ce062ea5fffcea760da95a8d3d">一口气了解ChatGPT的训练过程！</a></li>
+  <li><a href="https://www.promptingguide.ai/zh">提示工程指南 </a></li>
+  <li><a href="https://www.cnblogs.com/nickchen121/p/15105048.html">Transformer、GPT、BERT，预训练语言模型的前世今生（目录）</a></li>
+  <li>
+    <p><a href="https://github.com/huggingface/transformers/blob/main/README_zh-hans.md">HuggingFace Transformers Readme</a></p>
+  </li>
+  <li>
+    <p><a href="https://www.nowcoder.com/discuss/510581715845267456">大语言模型的预训练: 基本概念原理、神经网络的语言模型</a></p>
+  </li>
+  <li>
+    <p><a href="https://arxiv.org/abs/1706.03762">Attention Is All You Need (arxiv.org)</a></p>
+  </li>
+  <li>
+    <p><a href="https://www.cnblogs.com/sandwichnlp/p/11612596.html">三大特征提取器（RNN/CNN/Transformer）</a></p>
+  </li>
+  <li>
+    <p><a href="https://jalammar.github.io/illustrated-transformer/">The Illustrated Transformer （图解Transformer ）</a></p>
+  </li>
+  <li>
+    <p><a href="https://www.datalearner.com/blog/1051705718835586">GGUF格式的大模型文件如何使用</a></p>
+  </li>
+  <li><a href="https://www.bilibili.com/video/BV1pu411o7BE/?spm_id_from=333.788&amp;vd_source=2f61b4ce062ea5fffcea760da95a8d3d">Transformer论文逐段精读【论文精读】</a></li>
+</ul>
+
+<p align="right">开元4721年腊月十三 广州黄埔</p>
+<br/>
+<a style="display: block;text-align:right;" href="/">博客首页</a>
+<br/>
+<p style="display: block;text-align:center;">©2012-2024 huangdayu.cn(大鱼叔叔的博客) 版权所有，未经授权，不得转载。</p>
+<br/></article>
+
+
+      </div>
+    </main>
+  </body>
+</html>
