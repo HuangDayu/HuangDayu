@@ -23,6 +23,10 @@
       <div class="w">
         <a href="/">博客首页</a><h1>简历</h1>
 
+<blockquote>
+  <p>感谢您花时间阅读我的简历，很期待能有机会与您共事，您可以随时<a style="text-decoration: none;" href="mailto:huangdayuemail@gmail.com">联系我</a>，让我们一起造就更好的项目与产品。</p>
+</blockquote>
+
 <h3 id="个人优势">个人优势</h3>
 
 <ol>
@@ -34,28 +38,42 @@
   <li>具备业务需求分析、业务领域划分、业务对象抽象、公共组件封装、从顶层设计到实现落地的能力。</li>
 </ol>
 
-<h3 id="项目经历">项目经历</h3>
+<h3 id="技术栈">技术栈</h3>
+
+<ul>
+  <li>框架：Spring All、Spring Cloud Alibaba、Dubbo、Axon Framework、Mybatis Plus、Alibaba TTL、Dubbo、Sofa Boot 、Sofa Ark、Apache Camel 、JavaCV、FFmpeg、Netty、Easy-Rules</li>
+  <li>组件：MySQL、Redis、Nacos、Seata、Sentinel、RocketMQ、EMQX、RabbitMQ、InfluxDB、ZLMediaKit、WVP Pro、Ehcache、MongoDB、Kafka、SkyWalking、ELK Stack、TDengine、SRS</li>
+  <li>协议：TCP、MQTT、GB28181、SIP、WebSocket、Onvif、RTSP、RTMP、WebRTC、CoAP</li>
+</ul>
+
+<h3 id="项目经验">项目经验</h3>
+
+<h4 id="物联网通用视频监控中台">物联网通用视频监控中台</h4>
+
+<ul>
+  <li>项目描述：建设面向上层应用的企业内部通用的物联网视频中台，实现多种类型的视频流设备的对接与无差别使用，包括视频播放、回放、录像、云台控制、设备配置等功能。</li>
+  <li>个人职责：负责视频中台的架构设计与方案输出、视频中台软件项目工程设计、技术选型、表结构设计、组件封装、核心模块实现</li>
+  <li>项目经验：
+    <ul>
+      <li>设计统一的RESTful API、适配多种协议的视频设备（IPC、NVR）对接服务和组件，支持如国标GB28181（SIP协议）、Onvif、RTSP、海康威视、大华等国内外标准或各大厂家私有SDK协议；</li>
+      <li>二开WVP-PRO平台，搭配ZLMediaKit 与 SRS 流媒体服务和 JavaCV与FFmpeg 流媒体处理框架实现H265、H264等视频流格式的转码和多协议（RTSP、RTMP、FLV、WebRTC、HLS）分发；</li>
+      <li>集成Spring Messaging实现事件驱动架构，多线程高并发执行的告警事件通知、处理和分发，解决设备事件高并发场景下的实时性、复杂性和可靠性的问题；</li>
+      <li>基于Apache Camel 与 Kafka 实现多协议消息集成转换服务，实现高效可靠的多协议消息订阅发布，解决服务间耦合，消息可靠性、消息峰谷、异构异协议消息交互等问题并支撑消息的高并发生产与消费。</li>
+    </ul>
+  </li>
+</ul>
 
 <h4 id="南物智慧公寓paas平台">南物智慧公寓PaaS平台</h4>
 
 <ul>
-  <li>
-    <p>项目描述：面向企业用户或房东的智慧公寓管理平台，包括房源管理、租客管理、租赁管理、订单管理、账单管理、在线支付、物业管理、门店管理、部门管理、小区管理、人员管理、单价管理、设备管理等功能</p>
-  </li>
-  <li>
-    <p>个人职责： 负责软件架构设计与方案输出、软件项目工程设计、技术选型、表结构设计、组件封装、项目规范制定、核心业务实现</p>
-  </li>
-  <li>
-    <p>框架组件：Spring Cloud Alibaba、Mybatis Plus、Spring Security、Transmittable-Thread-Local、EasyExcel、Redis、MySQL</p>
-  </li>
-  <li>
-    <p>项目经验：</p>
-
+  <li>项目描述：面向企业用户或房东的智慧公寓管理平台，包括房源、租客、租赁、订单、账单、支付、物业、门店、部门、小区、人员、单价、设备等业务数据资产管理功能</li>
+  <li>个人职责： 负责软件架构设计与方案输出、软件项目工程设计、技术选型、表结构设计、组件封装、项目规范制定、核心业务实现</li>
+  <li>项目经验：
     <ul>
       <li>基于 Mybatis Plus 表字段级的数据权限设计，实现PaaS平台的租户级与应用级的数据隔离，并基于OAuth2与JWT实现租户数据和应用数据的全链路数据访问控制和安全使用，且业务代码侵入少、可扩展性好、代码可读性高且性能较好；</li>
       <li>使用Alibaba Transmittable-Thread-Local修饰线程池，解决线程池场景下的InheritableThreadLocal类（父子线程传递）的线程上下文丢失问题，实现PaaS平台租户信息的全链路安全可靠传递，同时降低代码复杂度；</li>
       <li>在长耗时数据统计场景下，将一个大任务拆分成多个小任务并行执行，依托CompletableFuture类的API对多线程并行执行结果再聚合数据，解决了请求任务耗时长的问题；</li>
-      <li>基于 Spring AOP 、Spring Boot Starter 自动加载机制和 Mybatis Plus 拦截器扩展，封装统一的可通用可扩展的租户数据权限控制管理组件，降低了维护租户数据的复杂度，提高了使用租户数据的便捷性；</li>
+      <li>基于 Spring AOP 、Spring Boot Starter 自动加载机制和 Mybatis Plus 拦截器扩展，封装统一的可通用可扩展的租户数据权限控制管理组件，降低了维护租户数据的复杂度，提高了使用租户数据的便捷性。</li>
     </ul>
   </li>
 </ul>
@@ -65,14 +83,11 @@
 <ul>
   <li>项目描述：面向企业用户的开放式物联网平台，包括系统管理、企业管理、应用管理、产品管理、设备管理、协议脚本管理、组件管理、边缘服务、视频监控、流量统计、规则引擎、设备联动、预警告警、数据收集、数据订阅、物模型、物影子等功能</li>
   <li>个人职责： 负责边缘服务插件式架构方案设计及实现、视频监控中台、视频流量统计、AI识别预警、设备告警处理、设备接入、设备协议适配、物模型等功能</li>
-  <li>框架组件：Spring Cloud Alibaba、Dubbo、Sofa Boot 、Sofa Ark、Axon Framework、Apache Camel 、ZLMediaKit、JavaCV、FFmpeg</li>
   <li>项目经验：
     <ul>
       <li>基于Java注解与反射实现高性能的物模型引擎、实现物模型属性、服务与事件的命令控制、事件处理、属性存储、文档展示、规范代码生成等功能，解决在多种设备产品下的设备功能复杂、消息结构不规范、消息处理性能低、代码可读性与扩展性差、开发效率低、调用链路不可追踪等问题；</li>
       <li>使用 SofaBoot 与 SofaArk 框架实现组件化、插件化的物联网边缘服务（IOT Edge），通过通用性插件和功能性插件支持设备协议适配、服务离线自治、视频流转换转发、截图AI识别告警、资源动态调度与高效利用、设备状态实时检测、数据预处理与离线存储（H2 Database）等能力，插件皆可随时安装、更新与卸载，解决边缘服务的迭代、扩展与维护成本过高的问题，并且轻量稳定可靠；</li>
-      <li>实现统一API、适配多协议、多种视频流格式的物联网视频中台，支持GB28181（SIP协议）、Onvif、RTSP、海康、大华等标准或私有协议，熟悉ZLMediaKit 与 SRS 流媒体服务和 JavaCV与FFmpeg 流媒体处理框架，能够基于开源WVP-PRO进行扩展或者二次开发；</li>
       <li>选用Axon Framework 实现物联网消息驱动架构，解决了消息分发、事件订阅、命令处理和数据查询响应的高并发性能、代码可扩展性、聚合对象管理、事件存储溯源、架构复杂度等问题；</li>
-      <li>基于Apache Camel 与 Kafka 实现多协议消息集成转换服务，实现高效可靠的多协议消息订阅发布，解决服务间耦合，消息可靠性、消息峰谷、异构异协议消息交互等问题并支撑消息的高并发生产与消费；</li>
       <li>使用JFR、JMC、MAT等应用监控、内存分析等方法手段进行应用问题诊断修复、代码优化和性能调优，解决应用的稳定性（如OOM）和性能（如死锁）等问题，促进性能、稳定性、代码质量的提升。</li>
     </ul>
   </li>
@@ -81,18 +96,15 @@
 <h4 id="亚忆智能家居应用平台">亚忆智能家居应用平台</h4>
 
 <ul>
-  <li>项目描述：面向终端用户的智能家居应用平台，包括账户管理、家庭管理、成员管理、设备分享、房间管理、设备管理与控制、语音控制、场景管理、设备联动、定时任务、设备事件与告警、对外授权开放等功能</li>
+  <li>项目描述：面向终端用户的智能家居应用平台，包括账户管理、家庭管理、成员管理、设备分享、房间管理、设备管理、语音交互、场景管理、设备联动、定时任务、设备事件与告警、对外授权开放等功能</li>
   <li>个人职责： 负责账户管理、家庭管理、设备管理、设备分享、场景管理、定时任务、设备联动、对外授权开放、规则引擎、语音控制等功能</li>
-  <li>框架组件：Spring Cloud Netflix、Netty、Spring Security、Nacos、RabbitMQ、Easy-Rules、InfluxDB、AWS Lambda、MQTT</li>
   <li>项目经验：
     <ul>
       <li>基于NIO网络框架Netty开发支持集群与单机模式部署的TCP Broker，灵活扩展私有协议编解码器和数据帧等处理器解决消息粘包和编解码等问题，由TCP Broker注册中心负责集群管理和连接分配，解决设备就近连接、集群间负载均衡、集群探活与管理等问题；</li>
       <li>基于 Spring Security + OAuth2 + JWT 实现智能家居平台对外开放的授权与验证，以及实现规范的、标准的、安全的对接第三方平台，使智能家居设备可以跨平台互联互通，相互控制，提升用户体验；</li>
-      <li>选用RabbitMQ作为消息队列中间件，基于Topic和Header等规则实现消息路由与分发，实现集群间通信和异步事件广播，解决智能家居设备事件消息生产、路由、消费、峰谷、丢失等问题；</li>
       <li>选用开源规则引擎Easy-Rules，基于MVEL表达式实现智能家居事件处理、场景自动化、告警匹配、设备联动等需求，且轻量、可扩展、性能高、复杂度低、稳定可靠；</li>
       <li>选用时序数据库InfluxDB，实现IOT大量实时消息的高性能的、多写少读的、无结构化的、时序性的消息持久化，解决消息记录的时序性和持久性问题，满足时序消息索引、高效查询、权限管理、时效管理、数据采样、压缩存储等需求，且HTTP接入简单无依赖；</li>
-      <li>熟悉对接百度DuerOS、天猫AliGenie、小米IOT、若琪Rokid、出门问问Mobvoi、猎豹Orion 、京东JDAlpha、科大讯飞AIUI、思必驰DUI 、Google Actions、Amazon Alexa等国内外AI开放平台、智能音箱平台和智能家居平台；</li>
-      <li>了解公有云Serverless服务，如AWS Lambda 的请求流转发云函数和智能家居技能，实现智能家居平台对接亚马逊云平台的需求，使得Amazon Alexa智能音箱可以控制智能家居设备，提升用户体验。</li>
+      <li>熟悉对接百度DuerOS、天猫AliGenie、小米IOT、若琪Rokid、出门问问Mobvoi、猎豹Orion 、京东JDAlpha、科大讯飞AIUI、思必驰DUI 、Google Actions、Amazon Alexa（AWS Lambda）等国内外AI开放平台、智能音箱平台和智能家居平台。</li>
     </ul>
   </li>
 </ul>
