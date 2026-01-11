@@ -1,0 +1,1 @@
+mklink /J _posts "../blog"

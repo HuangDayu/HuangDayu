@@ -1,0 +1,132 @@
+@charset "UTF-8";
+body[a="dark"] {
+  filter: invert(1); }
+  body[a="dark"] img {
+    filter: invert(1); }
+    body[a="dark"] img.ioda {
+      filter: invert(0); }
+
+@media (prefers-color-scheme: dark) {
+  body[a="auto"] {
+    filter: invert(1); }
+    body[a="auto"] img {
+      filter: invert(1); }
+      body[a="auto"] img.ioda {
+        filter: invert(0); } }
+html, body {
+  background: white; }
+
+html {
+  height: 100%; }
+
+body {
+  color: black;
+  font-family: "lucida grande", "lucida sans unicode", lucida, helvetica, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+  font-size: 18px;
+  line-height: 1.8;
+  margin: 0;
+  min-height: 100%;
+  overflow-wrap: break-word; }
+
+.post-header {
+  text-align: center; }
+
+h1 {
+  text-align: center; }
+
+a {
+  text-decoration: none; }
+
+.post-meta {
+  text-align: center; }
+
+h2, h3, h4, h5, h6 {
+  margin-top: 3rem; }
+
+hr {
+  margin: 2rem 0; }
+
+p {
+  margin: 1rem 0; }
+
+li {
+  margin: 0.4rem 0; }
+
+*:target {
+  background: yellow; }
+
+/*适应PC端 宽度大于1000px*/
+@media screen and (min-width: 1000px) {
+  .w {
+    min-width: 498px;
+    max-width: 996px;
+    width: fit-content;
+    margin: 0 auto;
+    padding: 1rem 1rem; } }
+/*适应pad端 宽度在640-1000之间*/
+@media screen and (min-width: 640px) and (max-width: 1000px) {
+  .w {
+    max-width: 996px;
+    width: fit-content;
+    margin: 0 auto;
+    padding: 1rem 1rem; } }
+/*适应移动端 宽度小于640*/
+@media screen and (min-width: 580px) and (max-width: 639px) {
+  .w {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 1rem 1rem; } }
+/*适应移动端 宽度小于640*/
+@media screen and (max-width: 579px) {
+  .w {
+    max-width: 500px;
+    margin: 0 auto;
+    padding: 1rem 1rem; } }
+hr {
+  text-align: center;
+  border: 0; }
+  hr:before {
+    content: "/////"; }
+  hr:after {
+    content: attr(data-content) "/////"; }
+
+table {
+  width: 100%; }
+
+table, th, td {
+  border: thin solid black;
+  border-collapse: collapse;
+  padding: 0.4rem; }
+
+code {
+  color: white;
+  background: black; }
+
+div.highlighter-rouge code {
+  display: block;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  padding: 1rem; }
+
+blockquote {
+  font-style: italic;
+  border: thin solid black;
+  padding: 1rem; }
+  blockquote p {
+    margin: 0; }
+
+img {
+  max-width: 100%;
+  display: block;
+  margin: 0 auto; }
+
+* {
+  /* 禁止选中文字*/
+  -webkit-user-select: none;
+  moz-user-select: -moz-none;
+  -moz-user-select: none;
+  -o-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
