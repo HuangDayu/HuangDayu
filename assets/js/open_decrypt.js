@@ -1,0 +1,1 @@
+document.addEventListener("DOMContentLoaded",function(){isValid("text",12)&&showDecryptContentForSession("text")?document.querySelector("main").style.display="block":validateCode()});

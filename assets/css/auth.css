@@ -1,0 +1,4 @@
+/* 初始状态下隐藏 main 标签 */
+main {
+    display: none;
+}

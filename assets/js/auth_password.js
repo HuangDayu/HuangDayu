@@ -1,0 +1,1 @@
+document.addEventListener("DOMContentLoaded",function(){isValid("password",1)&&showDecryptContentForSession("password")?document.querySelector("main").style.display="block":validatePassword()});
